@@ -1,15 +1,12 @@
 import themes from "../themes/themes";
 type ObjectTypes = {
-     borderBottom?: string;
      textDecoration?: string;
-     paddingBottom?: string;
      color?: string;
-     marginRight?: string;
+     position?: string;
 };
 const NavLinkActiveStyle: ObjectTypes = {
-     borderBottom: "3px solid white",
      textDecoration: "none",
-     paddingBottom: "18px",
      color: themes.white,
+     position: "relative",
 };
 export default NavLinkActiveStyle;

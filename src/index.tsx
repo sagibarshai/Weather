@@ -7,17 +7,21 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./GolbalStyle";
 import themes from "./shared/themes/themes";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./redux/store";
 const root = ReactDOM.createRoot(
      document.getElementById("root") as HTMLElement
 );
 root.render(
      <React.StrictMode>
-          <BrowserRouter>
-               <ThemeProvider theme={themes}>
-                    <GlobalStyle />
-                    <App />
-               </ThemeProvider>
-          </BrowserRouter>
+          <Provider store={store}>
+               <BrowserRouter>
+                    <ThemeProvider theme={themes}>
+                         <GlobalStyle />
+                         <App />
+                    </ThemeProvider>
+               </BrowserRouter>
+          </Provider>
      </React.StrictMode>
 );
 

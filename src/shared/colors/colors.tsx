@@ -9,6 +9,7 @@ export interface Colors {
      errorRed: string;
      yellow: string;
      backgroundPraimary: string;
+     darkBackground: string;
 }
 const colors: Colors = {
      black: "#222222",
@@ -21,5 +22,6 @@ const colors: Colors = {
      errorRed: "#F0274B",
      yellow: "#FFD130",
      backgroundPraimary: "linear-gradient(to left, #47bfdf, #4a91ff)",
+     darkBackground: "linear-gradient(to left, #191634 , #1e437c )",
 };
 export default colors;

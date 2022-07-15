@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import themes from "../shared/themes/themes";
 import Input from "../shared/UIElements/Inputs/Input";
 import { StyledButton } from "../shared/UIElements/Button/Button";
-import { StyledHeader, StyledDiv } from "./StyledHeader";
+import { StyledHeader, StyledDiv, StyledDecloration } from "./StyledHeader";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconLogo } from "../shared/svg/logo.svg";
 import { ReactComponent as IconSearchDark } from "../shared/svg/search-dark.svg";
@@ -15,9 +15,12 @@ import Checkbox from "../shared/UIElements/Inputs/Checkbox";
 import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
 import links, { Links } from "../shared/links/links";
 import { CSSProperties } from "styled-components";
+import { toggleBackground, toggleDegress } from "../redux/headerSlice";
+import { useDispatch } from "react-redux";
 const Header = () => {
      const [activeIcon, setActiveIcon] = useState<JSX.Element>();
      const [activeIconId, setActiveIconId] = useState<string>();
+     const dispatch = useDispatch();
      const NavLinkStyleHandler = (isActive: boolean, link: Links) => {
           if (isActive) {
                return NavLinkActiveStyle;
@@ -61,6 +64,7 @@ const Header = () => {
                                         </StyledIcon>
                                         {link.name}
                                    </StyledButton>
+                                   <StyledDecloration />
                               </NavLink>
                          );
                     })}
@@ -99,6 +103,7 @@ const Header = () => {
                          rightIcon="F°"
                     />
                     <Checkbox
+                         onClick={() => dispatch(toggleBackground())}
                          htmlFor="mood"
                          id="mood"
                          variant="checkbox"

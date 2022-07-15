@@ -12,6 +12,7 @@ interface StyledButtonProps {
      variant?: StyledButtonVariant;
      colors?: Colors;
      textUnderline?: string;
+     position?: string;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`

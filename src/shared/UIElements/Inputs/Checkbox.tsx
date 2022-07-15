@@ -1,3 +1,4 @@
+import { ReactEventHandler } from "react";
 import styled, { css } from "styled-components";
 import themes from "../../themes/themes";
 type Props = {
@@ -5,7 +6,8 @@ type Props = {
      LeftIcon: string | JSX.Element;
      rightIcon: string | JSX.Element;
      id: string;
-     htmlFor?: any;
+     htmlFor?: string;
+     onClick?: ReactEventHandler;
 };
 const StyledLabel = styled.label`
      width: 73px;
@@ -53,7 +55,7 @@ const StyledIconState = styled.div`
 `;
 const Checkbox: React.FC<Props> = (props) => {
      return (
-          <StyledLabel htmlFor={props.htmlFor}>
+          <StyledLabel htmlFor={props.htmlFor} onClick={props.onClick}>
                <StyledInput type="checkbox" id={props.id} />
                <StyledDivToggle>
                     <StyledIconState style={{ left: "30%" }}>
