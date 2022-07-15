@@ -11,6 +11,7 @@ type StyledButtonVariant =
 interface StyledButtonProps {
      variant?: StyledButtonVariant;
      colors?: Colors;
+     textUnderline?: string;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -64,13 +65,14 @@ export const StyledButton = styled.button<StyledButtonProps>`
                       height: 22px;
                       font-weight: 500;
                       line-height: 1.2;
-                      color: #222;
+                      color: ${props.color || "#222"};
                       background: transparent;
                       box-shadow: none;
                       padding: 0;
                       width: max-content;
                       height: max-content;
-                      text-decoration: underline solid 2px;
+                      text-decoration: ${props.textUnderline ||
+                      "underline solid 2px"};
                  `
                : ""}
 `;

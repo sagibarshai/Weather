@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
+import { StyledIcon } from "../../Icons/Icon";
 import themes from "../../themes/themes";
-type InputProps = "inactive" | "focus" | "active" | "validation" | "checkbox";
+type InputProps = "inactive" | "focus" | "active" | "validation";
 interface Variant {
      variant?: InputProps;
 }
@@ -16,7 +17,6 @@ type Props = {
      position?: string;
      padding?: string;
      children?: JSX.Element;
-     border?: string;
 };
 type ErrorMessage = {
      display?: string;
