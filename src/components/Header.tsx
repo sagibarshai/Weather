@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import themes from "../shared/themes/themes";
 import Input from "../shared/UIElements/Inputs/Input";
@@ -20,8 +20,6 @@ const Header = () => {
      const [activeIconId, setActiveIconId] = useState<string>();
      const NavLinkStyleHandler = (isActive: boolean, link: Links) => {
           if (isActive) {
-               setActiveIconId(link.to);
-               setActiveIcon(link.activeIcon);
                return NavLinkActiveStyle;
           }
           return;
@@ -45,6 +43,10 @@ const Header = () => {
                                              isActive,
                                              link
                                         ) as CSSProperties;
+                                   }}
+                                   onClick={() => {
+                                        setActiveIconId(link.to);
+                                        setActiveIcon(link.activeIcon);
                                    }}
                               >
                                    <StyledButton
