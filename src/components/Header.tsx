@@ -1,9 +1,28 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import themes from "../shared/themes/themes";
-import Input from "../shared/UIElements/Inputs/Input";
+import { useDispatch, useSelector } from "react-redux";
+import { CSSProperties } from "styled-components";
+
+import Checkbox from "../shared/UIElements/Inputs/Checkbox";
 import { StyledButton } from "../shared/UIElements/Button/Button";
-import { StyledHeader, StyledDiv, StyledDecloration } from "./StyledHeader";
+import Input from "../shared/UIElements/Inputs/Input";
+
+import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
+import links from "../shared/links/links";
+import themes from "../shared/themes/themes";
+import { LinksType } from "../shared/links/links";
+import { toggleBackground, toggleDegress } from "../redux/headerSlice";
+import { RootState } from "../redux/store";
+
+import {
+     StyledHeader,
+     StyledDiv,
+     StyledDecloration,
+     StyledSpan,
+     StyledTooltip,
+     StyledTooltipText,
+} from "./StyledHeader";
+
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconLogo } from "../shared/svg/logo.svg";
 import { ReactComponent as IconSearchDark } from "../shared/svg/search-dark.svg";
@@ -11,14 +30,6 @@ import { ReactComponent as IconMap } from "../shared/svg/map.svg";
 import { ReactComponent as IconMoonDark } from "../shared/svg/moon-dark.svg";
 import { ReactComponent as IconSunDark } from "../shared/svg/sun-dark.svg";
 import { ReactComponent as IconLogout } from "../shared/svg/log-out.svg";
-import Checkbox from "../shared/UIElements/Inputs/Checkbox";
-import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
-import links from "../shared/links/links";
-import { LinksType } from "../shared/links/links";
-import { CSSProperties } from "styled-components";
-import { toggleBackground, toggleDegress } from "../redux/headerSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../redux/store";
 
 const Header = () => {
      const dispatch = useDispatch();
@@ -43,12 +54,22 @@ const Header = () => {
      );
      return (
           <StyledHeader renderPraimaryBg={renderPraimaryBg}>
-               <StyledDiv marginLeft="70px">
+               <StyledDiv
+                    marginLeftlaptop="50px"
+                    marginLeft="70px"
+                    orderLaptop={1}
+               >
                     <StyledIcon width="auto" height="142px">
                          <IconLogo />
                     </StyledIcon>
                </StyledDiv>
-               <StyledDiv gap="63px" marginLeft="190px">
+               <StyledDiv
+                    marginLeftlaptop="28.2px"
+                    gapLaptop="32px"
+                    gap="63px"
+                    marginLeft="190px"
+                    orderLaptop={2}
+               >
                     {links.map((link) => {
                          return (
                               <NavLink
@@ -70,7 +91,7 @@ const Header = () => {
                                         variant="linkWithImg"
                                         color={themes.white}
                                    >
-                                        <StyledIcon>
+                                        <StyledIcon marginRight="8px">
                                              {activeIconId === link.to
                                                   ? activeIcon
                                                   : link.defaultIcon}
@@ -82,7 +103,11 @@ const Header = () => {
                          );
                     })}
                </StyledDiv>
-               <StyledDiv marginLeft="139px">
+               <StyledDiv
+                    marginLeft="139px"
+                    marginLeftlaptop="56px"
+                    orderLaptop={3}
+               >
                     <Input
                          variant="active"
                          width="324px"
@@ -99,15 +124,35 @@ const Header = () => {
                          </StyledIcon>
                     </Input>
                </StyledDiv>
-               <StyledDiv marginLeft="124px">
-                    <StyledButton variant="linkWithImg" color={themes.white}>
+               <StyledDiv
+                    onHover={true}
+                    marginLeft="124px"
+                    orderLaptop={5}
+                    marginLeftlaptop="96px"
+               >
+                    <StyledButton
+                         variant="linkWithImg"
+                         color={themes.white}
+                         position="relative"
+                    >
                          <StyledIcon width="30px" height="30px">
                               <IconMap />
                          </StyledIcon>
-                         Switch to map
+                         <StyledSpan> Switch to map </StyledSpan>
+                         <StyledTooltip>
+                              <StyledTooltipText>
+                                   Switch to map
+                              </StyledTooltipText>
+                         </StyledTooltip>
                     </StyledButton>
                </StyledDiv>
-               <StyledDiv gap="38px" marginLeft="85px">
+               <StyledDiv
+                    gap="38px"
+                    marginLeft="85px"
+                    marginLeftlaptop="40px"
+                    gapLaptop="30px"
+                    orderLaptop={4}
+               >
                     <Checkbox
                          onClick={() => dispatch(toggleDegress())}
                          htmlFor="degrees"
@@ -127,12 +172,18 @@ const Header = () => {
                          rightIcon={<IconMoonDark />}
                     />
                </StyledDiv>
-               <StyledDiv marginLeft="72px" marginRight="70px">
+               <StyledDiv
+                    marginLeft="72px"
+                    marginRight="70px"
+                    orderLaptop={6}
+                    marginLeftlaptop="32px"
+                    marginRightLaptop="50px"
+               >
                     <StyledButton variant="linkWithImg" color={themes.white}>
                          <StyledIcon width="30px" height="30px">
                               <IconLogout />
                          </StyledIcon>
-                         Logout
+                         <StyledSpan> Logout </StyledSpan>
                     </StyledButton>
                </StyledDiv>
           </StyledHeader>

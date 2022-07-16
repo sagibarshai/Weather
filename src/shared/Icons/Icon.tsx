@@ -6,8 +6,11 @@ type StyledIconProps = {
      position?: string;
      top?: string;
      right?: string;
+     left?: string;
+     bottom?: string;
      transform?: string;
      zIndex?: number;
+     marginRight?: string;
 };
 export const StyledIcon = styled.i<StyledIconProps>`
      width: ${(props) => props.width || "auto"};
@@ -18,5 +21,6 @@ export const StyledIcon = styled.i<StyledIconProps>`
      right: ${(props) => props.right};
      transform: ${(props) => props.transform};
      z-index: ${(props) => props.zIndex};
+     margin-right: ${(props) => props.marginRight};
      vertical-align: middle;
 `;

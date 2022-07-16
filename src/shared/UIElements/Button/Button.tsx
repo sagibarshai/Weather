@@ -29,12 +29,13 @@ export const StyledButton = styled.button<StyledButtonProps>`
      color: white;
      font-size: 18px;
      cursor: pointer;
-     ${(props) =>
-          props.variant === "disabled"
-               ? css`
-                      color: rgba(255, 255, 255, 0.4);
-                 `
-               : ""};
+     position: ${(props) => props.position}
+          ${(props) =>
+               props.variant === "disabled"
+                    ? css`
+                           color: rgba(255, 255, 255, 0.4);
+                      `
+                    : ""};
      ${(props) =>
           props.variant === "white"
                ? css`
