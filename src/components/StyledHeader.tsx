@@ -1,13 +1,20 @@
 import styled from "styled-components";
+import themes from "../shared/themes/themes";
 type StyledDivProps = {
      gap?: string;
      marginLeft?: string;
      marginRight?: string;
 };
-export const StyledHeader = styled.header`
+type StyledHeaderProps = {
+     renderPraimaryBg: boolean;
+};
+export const StyledHeader = styled.header<StyledHeaderProps>`
      width: 100%;
      height: 94px;
-     background-color: #48bae4;
+     background-color: ${(props) => {
+          if (props.renderPraimaryBg) return themes.primary;
+          return themes.praimaryDark;
+     }};
      display: flex;
      justify-content: space-between;
      align-items: center;

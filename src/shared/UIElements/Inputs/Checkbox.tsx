@@ -56,7 +56,11 @@ const StyledIconState = styled.div`
 const Checkbox: React.FC<Props> = (props) => {
      return (
           <StyledLabel htmlFor={props.htmlFor} onClick={props.onClick}>
-               <StyledInput type="checkbox" id={props.id} />
+               <StyledInput
+                    onClick={props.onClick}
+                    type="checkbox"
+                    id={props.id}
+               />
                <StyledDivToggle>
                     <StyledIconState style={{ left: "30%" }}>
                          {props.LeftIcon}

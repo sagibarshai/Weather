@@ -16,20 +16,25 @@ import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
 import links, { Links } from "../shared/links/links";
 import { CSSProperties } from "styled-components";
 import { toggleBackground, toggleDegress } from "../redux/headerSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+
 const Header = () => {
+     const dispatch = useDispatch();
      const [activeIcon, setActiveIcon] = useState<JSX.Element>();
      const [activeIconId, setActiveIconId] = useState<string>();
-     const dispatch = useDispatch();
+
      const NavLinkStyleHandler = (isActive: boolean, link: Links) => {
           if (isActive) {
                return NavLinkActiveStyle;
           }
           return;
      };
-
+     const renderPraimaryBg = useSelector(
+          (state: RootState) => state.headerSlice.renderPraimaryBackground
+     );
      return (
-          <StyledHeader>
+          <StyledHeader renderPraimaryBg={renderPraimaryBg}>
                <StyledDiv marginLeft="70px">
                     <StyledIcon width="auto" height="142px">
                          <IconLogo />
@@ -96,14 +101,17 @@ const Header = () => {
                </StyledDiv>
                <StyledDiv gap="38px" marginLeft="85px">
                     <Checkbox
+                         onClick={() => dispatch(toggleDegress())}
                          htmlFor="degrees"
                          id="degrees"
                          variant="checkbox"
-                         LeftIcon="C°"
-                         rightIcon="F°"
+                         LeftIcon="F°"
+                         rightIcon="C°"
                     />
                     <Checkbox
-                         onClick={() => dispatch(toggleBackground())}
+                         onClick={() => {
+                              dispatch(toggleBackground());
+                         }}
                          htmlFor="mood"
                          id="mood"
                          variant="checkbox"

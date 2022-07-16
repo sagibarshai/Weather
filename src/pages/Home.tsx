@@ -1,15 +1,16 @@
-import React from "react";
+import { useSelector } from "react-redux";
 import Header from "../components/Header";
 import { StyledPageContainer } from "./StyledHome";
-import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 const Home = () => {
-     const background = useSelector(
-          (state) => state.headerSlice.renderBackground
+     const renderPraimaryBackground = useSelector(
+          (state: RootState) => state.headerSlice.renderPraimaryBackground
      );
 
-     console.log(background);
      return (
-          <StyledPageContainer background={background}>
+          <StyledPageContainer
+               renderPraimaryBackground={renderPraimaryBackground}
+          >
                <Header />
           </StyledPageContainer>
      );

@@ -10,11 +10,11 @@ export interface Colors {
      yellow: string;
      backgroundPraimary: string;
      darkBackground: string;
+     praimaryDark: string;
 }
 const colors: Colors = {
      black: "#222222",
      white: "#FFFFFF",
-     primary: "#48BAE4",
      secondary: "#444E72",
      fadeText: "#838BAA",
      gray: "#BEBEBE",
@@ -23,5 +23,7 @@ const colors: Colors = {
      yellow: "#FFD130",
      backgroundPraimary: "linear-gradient(to left, #47bfdf, #4a91ff)",
      darkBackground: "linear-gradient(to left, #191634 , #1e437c )",
+     primary: "#48BAE4",
+     praimaryDark: "#1A2B55",
 };
 export default colors;
