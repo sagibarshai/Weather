@@ -13,7 +13,8 @@ import { ReactComponent as IconSunDark } from "../shared/svg/sun-dark.svg";
 import { ReactComponent as IconLogout } from "../shared/svg/log-out.svg";
 import Checkbox from "../shared/UIElements/Inputs/Checkbox";
 import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
-import links, { Links } from "../shared/links/links";
+import links from "../shared/links/links";
+import { LinksType } from "../shared/links/links";
 import { CSSProperties } from "styled-components";
 import { toggleBackground, toggleDegress } from "../redux/headerSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,10 +22,17 @@ import { RootState } from "../redux/store";
 
 const Header = () => {
      const dispatch = useDispatch();
-     const [activeIcon, setActiveIcon] = useState<JSX.Element>();
-     const [activeIconId, setActiveIconId] = useState<string>();
+     const [activeIconId, setActiveIconId] = useState<string>(
+          window.location.pathname
+     );
+     const currentIcon: LinksType | undefined = links.find((link) => {
+          if (link.to === activeIconId) return link;
+     }) as LinksType;
+     const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
+          currentIcon ? currentIcon.activeIcon : undefined
+     );
 
-     const NavLinkStyleHandler = (isActive: boolean, link: Links) => {
+     const NavLinkStyleHandler = (isActive: boolean, link: LinksType) => {
           if (isActive) {
                return NavLinkActiveStyle;
           }
