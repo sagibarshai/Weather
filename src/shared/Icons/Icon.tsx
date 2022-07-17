@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import cssBreakPoints from "../cssBreakPoints/cssBreakPoints";
 type StyledIconProps = {
      width?: string;
      height?: string;

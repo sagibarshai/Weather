@@ -1,0 +1,81 @@
+import styled, { css } from "styled-components";
+import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
+import themes from "../shared/themes/themes";
+
+type Props = {
+     display?: boolean;
+};
+export const StyledMobileMenuContainer = styled.div`
+     display: none;
+     @media ${cssBreakPoints.mobile} {
+          display: inline-block;
+     }
+`;
+
+export const StyledMenuButton = styled.button`
+     display: none;
+     @media ${cssBreakPoints.mobile} {
+          display: inline-block;
+     }
+     position: absolute;
+     top: 59px;
+     right: 30px;
+     transform: translate(-50%, -50%);
+     background-color: transparent;
+     border: none;
+`;
+export const StyledMenu = styled.div<Props>`
+     display: none;
+     width: calc(100vw - 30px);
+     height: 410px;
+     z-index: 1;
+     ${(props) =>
+          props.display
+               ? css`
+                      display: flex;
+                      flex-direction: column;
+                      gap: 36px;
+                 `
+               : `display:none`};
+     background-color: white;
+     padding: 40px 0 0 30px;
+     box-shadow: 0 -7px 30px 0 rgba(0, 0, 0, 0.16);
+     margin: 0;
+     position: absolute;
+     top: 408px;
+     border-radius: 20px;
+     @media ${cssBreakPoints.laptop} {
+          display: none;
+     }
+     @media ${cssBreakPoints.bigDesktop} {
+          display: none;
+     }
+`;
+export const StyledTitle = styled.h2`
+     padding: 0;
+     margin: 0;
+     font-family: inherit;
+     font-size: 3.2rem;
+     font-weight: bold;
+     line-height: 1.25;
+     color: #444e72;
+`;
+export const StyledRowFlexContainer = styled.div`
+     display: flex;
+     flex-direction: column;
+     gap: 36px;
+     padding-right: 30px;
+`;
+export const StyledColumnContainer = styled.div`
+     justify-content: space-between;
+     display: flex;
+     gap: 36px;
+`;
+export const StyledSubtitle = styled.h4`
+     padding: 0;
+     margin: 0;
+     font-family: inherit;
+     font-size: 1.8rem;
+     line-height: 1.5;
+     color: ${themes.secondary};
+`;

@@ -24,6 +24,9 @@ export const StyledHeader = styled.header<StyledHeaderProps>`
      justify-content: space-between;
      align-items: center;
      display: flex;
+     @media ${cssBreakPoints.mobile} {
+          display: none;
+     }
 `;
 export const StyledDiv = styled.div<StyledDivProps>`
      display: none;

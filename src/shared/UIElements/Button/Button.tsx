@@ -13,6 +13,9 @@ interface StyledButtonProps {
      colors?: Colors;
      textUnderline?: string;
      position?: string;
+     margin?: string;
+     display?: string;
+     gap?: string | number;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -29,13 +32,12 @@ export const StyledButton = styled.button<StyledButtonProps>`
      color: white;
      font-size: 18px;
      cursor: pointer;
-     position: ${(props) => props.position}
-          ${(props) =>
-               props.variant === "disabled"
-                    ? css`
-                           color: rgba(255, 255, 255, 0.4);
-                      `
-                    : ""};
+     ${(props) =>
+          props.variant === "disabled"
+               ? css`
+                      color: rgba(255, 255, 255, 0.4);
+                 `
+               : ""};
      ${(props) =>
           props.variant === "white"
                ? css`
@@ -76,5 +78,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
                       text-decoration: ${props.textUnderline ||
                       "underline solid 2px"};
                  `
-               : ""}
+               : ""};
+     margin: ${(props) => props.margin};
+     position: ${(props) => props.position};
 `;
