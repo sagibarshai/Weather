@@ -40,13 +40,13 @@ const Login = () => {
 
                <StyledContainer gap="16px">
                     <StyledButton variant="linkWithImg">
-                         <StyledIcon>
+                         <StyledIcon marginRight="8px">
                               <IconFacebook />
                          </StyledIcon>
                          Log in with facebook
                     </StyledButton>
                     <StyledButton variant="linkWithImg">
-                         <StyledIcon>
+                         <StyledIcon marginRight="8px">
                               <IconGoogle />
                          </StyledIcon>
                          Log in with google
