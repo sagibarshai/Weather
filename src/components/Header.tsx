@@ -111,8 +111,8 @@ const Header = () => {
                     >
                          <Input
                               variant="active"
-                              width="324px"
-                              height="22px"
+                              width="372px"
+                              height="54px"
                               placeHolder="Try “Tel Aviv - Jaffa”..."
                          >
                               <StyledIcon
