@@ -4,6 +4,7 @@ import { MobileMenuBottom } from "../components/MobileHeader";
 import { StyledPageContainer } from "./StyledHome";
 import { RootState } from "../redux/store";
 import { closeMobileMenu } from "../redux/headerSlice";
+import Login from "./Login";
 
 const Home = () => {
      const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const Home = () => {
                     }
                >
                     <Header />
+                    <Login />
                </StyledPageContainer>
                <MobileMenuBottom />
           </>

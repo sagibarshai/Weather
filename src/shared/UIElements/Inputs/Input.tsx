@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { StyledIcon } from "../../Icons/Icon";
 import themes from "../../themes/themes";
-type InputProps = "inactive" | "focus" | "active" | "validation";
+export type InputProps = "inactive" | "focus" | "active" | "validation";
 interface Variant {
      variant?: InputProps;
 }
@@ -16,6 +16,7 @@ type Props = {
      height?: string;
      position?: string;
      padding?: string;
+     marginTop?: string;
      children?: JSX.Element;
 };
 type ErrorMessage = {
@@ -24,6 +25,7 @@ type ErrorMessage = {
 
 const StyledInputsContainer = styled.div<Variant>`
      position: relative;
+     display: inline-block;
 `;
 
 const StyledLabel = styled.label<Variant>`
@@ -36,12 +38,12 @@ const StyledLabel = styled.label<Variant>`
      line-height: 1.25;
      color: ${(props) => props.color || themes.fadeText};
 `;
-const StyledInput = styled.input<Variant>`
+const StyledInput = styled.input<Props>`
      width: ${(props) => (props.width ? props.width : "354px")};
      height: ${(props) => props.height || "77px"};
      border-radius: 10px;
      border: none;
-     padding: 16px 24px;
+     padding: 0 24px;
 
      ${(props) =>
           props.variant === "inactive"
