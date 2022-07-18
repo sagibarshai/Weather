@@ -20,9 +20,8 @@ interface StyledButtonProps {
 
 export const StyledButton = styled.button<StyledButtonProps>`
      font-family: inherit;
-     width: 354px;
+     width: 402px;
      height: 54px;
-     padding: 16px 146px;
      border-radius: 10px;
      box-shadow: -4px 8px 50px 4px rgba(0, 0, 0, 0.16),
           inset -6px 4px 4px 0 rgba(255, 255, 255, 0.1),
