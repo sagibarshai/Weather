@@ -1,39 +1,32 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Header from "../components/Header";
+import { MobileMenuBottom } from "../components/MobileHeader";
 import { StyledPageContainer } from "./StyledHome";
 import { RootState } from "../redux/store";
+import { closeMobileMenu } from "../redux/headerSlice";
 
-import styled from "styled-components";
-
-const StyledTooltip = styled.div`
-     width: 143px;
-     height: 57px;
-     clip-path: polygon(
-          51% 11%,
-          61% 35%,
-          100% 35%,
-          100% 57%,
-          100% 100%,
-          49% 100%,
-          0 100%,
-          0 58%,
-          0 35%,
-          39% 35%
-     );
-     background-color: white;
-     margin: 0 auto;
-`;
 const Home = () => {
+     const dispatch = useDispatch();
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
      );
+     const openMobileMenu = useSelector(
+          (state: RootState) => state.headerSlice.openMobileMenu
+     );
 
      return (
-          <StyledPageContainer
-               renderPraimaryBackground={renderPraimaryBackground}
-          >
-               <Header />
-          </StyledPageContainer>
+          <>
+               <StyledPageContainer
+                    openMobileMenu={openMobileMenu}
+                    renderPraimaryBackground={renderPraimaryBackground}
+                    onClick={() =>
+                         openMobileMenu ? dispatch(closeMobileMenu()) : ""
+                    }
+               >
+                    <Header />
+               </StyledPageContainer>
+               <MobileMenuBottom />
+          </>
      );
 };
 

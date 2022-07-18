@@ -23,11 +23,13 @@ export const StyledMenuButton = styled.button`
      transform: translate(-50%, -50%);
      background-color: transparent;
      border: none;
+     cursor: pointer;
 `;
 export const StyledMenu = styled.div<Props>`
+     backdrop-filter: blur(0rem);
      display: none;
      width: calc(100vw - 30px);
-     height: 410px;
+     height: 415px;
      z-index: 1;
      ${(props) =>
           props.display
@@ -42,7 +44,7 @@ export const StyledMenu = styled.div<Props>`
      box-shadow: 0 -7px 30px 0 rgba(0, 0, 0, 0.16);
      margin: 0;
      position: absolute;
-     top: 408px;
+     top: 400px;
      border-radius: 20px;
      @media ${cssBreakPoints.laptop} {
           display: none;

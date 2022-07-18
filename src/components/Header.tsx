@@ -42,7 +42,6 @@ const Header = () => {
      const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
           currentIcon ? currentIcon.activeIcon : undefined
      );
-     const [openMobileMenu, setOpenMobileMenu] = useState<boolean>(false);
 
      const NavLinkStyleHandler = (isActive: boolean, link: LinksType) => {
           if (isActive) {
@@ -192,10 +191,7 @@ const Header = () => {
                          </StyledButton>
                     </StyledDiv>
                </StyledHeader>
-               <MobileHeader
-                    setOpenMobileMenu={setOpenMobileMenu}
-                    openMobileMenu={openMobileMenu}
-               />
+               <MobileHeader />
           </>
      );
 };

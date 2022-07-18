@@ -2,11 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 export type HeaderSliceState = {
      renderPraimaryBackground: boolean;
      degreesMood: string;
+     openMobileMenu: boolean;
 };
 
 let initialState: HeaderSliceState = {
      renderPraimaryBackground: true,
      degreesMood: "C",
+     openMobileMenu: false,
 };
 const headerSlice = createSlice({
      name: "headerSlice",
@@ -19,7 +21,18 @@ const headerSlice = createSlice({
                if (state.degreesMood === "C") state.degreesMood = "F";
                else state.degreesMood = "C";
           },
+          toggleMobileMenu(state) {
+               state.openMobileMenu = !state.openMobileMenu;
+          },
+          closeMobileMenu(state) {
+               state.openMobileMenu = false;
+          },
      },
 });
 export default headerSlice.reducer;
-export const { toggleBackground, toggleDegress } = headerSlice.actions;
+export const {
+     toggleBackground,
+     toggleDegress,
+     toggleMobileMenu,
+     closeMobileMenu,
+} = headerSlice.actions;

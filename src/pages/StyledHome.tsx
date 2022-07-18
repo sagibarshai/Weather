@@ -1,8 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import themes from "../shared/themes/themes";
-import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
 type StyledHome = {
      renderPraimaryBackground: boolean;
+     openMobileMenu: boolean;
 };
 
 export const StyledPageContainer = styled.div<StyledHome>`
@@ -12,4 +12,11 @@ export const StyledPageContainer = styled.div<StyledHome>`
      }};
      width: 100vw;
      min-height: 100vh;
+     ${(props) => {
+          if (props.openMobileMenu) {
+               return css`
+                    filter: blur(10px);
+               `;
+          }
+     }};
 `;
