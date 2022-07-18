@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
-import { StyledIcon } from "../../Icons/Icon";
 import themes from "../../themes/themes";
+import { ChangeEvent } from "react";
 export type InputProps = "inactive" | "focus" | "active" | "validation";
 interface Variant {
      variant?: InputProps;
@@ -18,14 +18,19 @@ type Props = {
      padding?: string;
      marginTop?: string;
      children?: JSX.Element;
+     type?: string;
+     onChange: (e: ChangeEvent) => void;
 };
-type ErrorMessage = {
-     display?: string;
-};
-
 const StyledInputsContainer = styled.div<Variant>`
      position: relative;
      display: inline-block;
+     border-radius: 10px;
+
+     ${(props) =>
+          props.variant === "validation" &&
+          css`
+               border: 1px solid ${themes.errorRed};
+          `}
 `;
 
 const StyledLabel = styled.label<Variant>`
@@ -34,9 +39,15 @@ const StyledLabel = styled.label<Variant>`
      top: 14px;
      left: 24px;
      font-family: inherit;
-     font-size: 14px;
+     font-size: 1.4rem;
      line-height: 1.25;
-     color: ${(props) => props.color || themes.fadeText};
+     color: ${themes.black};
+     ${(props) =>
+          props.variant === "validation"
+               ? css`
+                      color: ${themes.errorRed};
+                 `
+               : ``};
 `;
 const StyledInput = styled.input<Props>`
      width: ${(props) => (props.width ? props.width : "354px")};
@@ -44,7 +55,15 @@ const StyledInput = styled.input<Props>`
      border-radius: 10px;
      border: none;
      padding: 0 24px;
-
+     line-height: 1.25;
+     &:focus {
+          outline: none;
+          background-color: ${themes.white};
+          color: ${themes.notificationText};
+          font-size: 1.6rem;
+          line-height: 1.25;
+          margin-top: 4px;
+     }
      ${(props) =>
           props.variant === "inactive"
                ? css`
@@ -54,37 +73,39 @@ const StyledInput = styled.input<Props>`
                  `
                : ""}
      ${(props) =>
-          props.variant === "focus"
-               ? css`
-                      background-color: ${themes.white};
-                      color: #4d4d4d;
-                 `
-               : ""}
-          ${(props) =>
           props.variant === "active"
                ? css`
                       background-color: ${themes.grayBackground};
                       color: #222;
+                      font-size: 1.8rem;
+                      &::placeholder {
+                           font-size: 1.4rem;
+                      }
                  `
                : ""}
           ${(props) =>
           props.variant === "validation"
                ? css`
+                      position: relative;
                       background-color: ${themes.white};
                       color: ${themes.black};
                  `
                : ""};
 `;
 
-const StyledInvalidInput = styled.span<ErrorMessage>`
+const StyledInvalidInput = styled.span<Variant>`
      color: ${themes.errorRed};
      margin-top: 4px;
      font-family: inherit;
      font-size: 1.4rem;
      display: ${(props) =>
-          props.display
+          props.variant === "validation"
                ? css`
-                      display: props.display;
+                      display: flex;
+                      align-self: flex-start;
+                      position: absolute;
+                      bottom: -20px;
+                      left: 0;
                  `
                : css`
                       display: none;
@@ -93,17 +114,23 @@ const StyledInvalidInput = styled.span<ErrorMessage>`
 const Input: React.FC<Props> = (props) => {
      return (
           <>
-               <StyledInputsContainer>
-                    <StyledLabel color={props.color}>{props.label}</StyledLabel>
+               <StyledInputsContainer variant={props.variant}>
+                    <StyledLabel variant={props.variant} color={props.color}>
+                         {props.label}
+                    </StyledLabel>
                     <StyledInput
+                         onChange={props.onChange}
                          width={props.width}
                          height={props.height}
                          variant={props.variant}
                          placeholder={props.placeHolder}
+                         type={props.type || "text"}
                     />
                     {props.children}
+                    <StyledInvalidInput variant={props.variant}>
+                         {props.variant === "validation" && props.errorMessage}
+                    </StyledInvalidInput>
                </StyledInputsContainer>
-               <StyledInvalidInput>{props.errorMessage}</StyledInvalidInput>
           </>
      );
 };

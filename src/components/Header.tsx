@@ -110,6 +110,7 @@ const Header = () => {
                          orderLaptop={3}
                     >
                          <Input
+                              onChange={() => {}}
                               variant="active"
                               width="372px"
                               height="54px"

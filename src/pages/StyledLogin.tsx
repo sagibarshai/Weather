@@ -4,7 +4,7 @@ import themes from "../shared/themes/themes";
 type Props = {
      gap?: string;
 };
-export const StyledLoginContainer = styled.div`
+export const StyledLoginContainer = styled.form`
      background-color: ${themes.white};
      width: 840px;
      height: 757px;
@@ -26,7 +26,7 @@ export const StyledTitle = styled.h3`
 export const StyledInputsContainer = styled.div`
      display: flex;
      flex-direction: column;
-     gap: 16px;
+     gap: 32px;
      width: fit-content;
      margin: 0 auto;
 `;

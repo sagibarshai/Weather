@@ -11,6 +11,8 @@ export interface Colors {
      backgroundPraimary: string;
      darkBackground: string;
      praimaryDark: string;
+     notification: string;
+     notificationText: string;
 }
 const colors: Colors = {
      black: "#222222",
@@ -25,5 +27,7 @@ const colors: Colors = {
      darkBackground: "linear-gradient(to left, #191634 , #1e437c )",
      primary: "#48BAE4",
      praimaryDark: "#1A2B55",
+     notification: "#ffe7e7",
+     notificationText: "#4d4d4d",
 };
 export default colors;
