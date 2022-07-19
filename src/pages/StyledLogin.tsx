@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import themes from "../shared/themes/themes";
-
+import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
 type Props = {
      gap?: string;
+     height?: string;
 };
-export const StyledLoginContainer = styled.form`
+export const StyledLoginContainer = styled.form<Props>`
      background-color: ${themes.white};
      width: 840px;
      height: 757px;
@@ -15,6 +16,10 @@ export const StyledLoginContainer = styled.form`
      transform: translate(-50%, -50%);
      text-align: center;
      border-radius: 30px;
+     @media ${cssBreakPoints.laptop} {
+          width: 588px;
+          height: ${(props) => props.height};
+     }
 `;
 export const StyledTitle = styled.h3`
      font-family: inherit;
@@ -22,6 +27,9 @@ export const StyledTitle = styled.h3`
      font-weight: 900;
      color: ${themes.secondary};
      margin: 54px auto;
+     @media ${cssBreakPoints.laptop} {
+          margin: 24px auto 32px auto;
+     }
 `;
 export const StyledInputsContainer = styled.div`
      display: flex;

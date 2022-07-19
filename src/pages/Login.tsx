@@ -1,4 +1,12 @@
-import React, { useState, ChangeEvent, SyntheticEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
+import Notification from "../shared/notifacation/Notification";
+import Input from "../shared/UIElements/Inputs/Input";
+import { InputProps } from "../shared/UIElements/Inputs/Input";
+import { StyledButton } from "../shared/UIElements/Button/Button";
+import { ReactComponent as IconFacebook } from "../shared/svg/logo-facebook.svg";
+import { ReactComponent as IconGoogle } from "../shared/svg/logo-google.svg";
+import { ReactComponent as IconNotification } from "../shared/svg/info-circle.svg";
+import { StyledIcon } from "../shared/Icons/Icon";
 import {
      StyledLoginContainer,
      StyledTitle,
@@ -7,53 +15,47 @@ import {
      StyledHr,
      StyledSpan,
 } from "./StyledLogin";
-import Input from "../shared/UIElements/Inputs/Input";
-import { InputProps } from "../shared/UIElements/Inputs/Input";
-import { StyledButton } from "../shared/UIElements/Button/Button";
-import { ReactComponent as IconFacebook } from "../shared/svg/logo-facebook.svg";
-import { ReactComponent as IconGoogle } from "../shared/svg/logo-google.svg";
-import { ReactComponent as IconNotification } from "../shared/svg/info-circle.svg";
-import { StyledIcon } from "../shared/Icons/Icon";
-import Notification from "../shared/notifacation/Notification";
-type inputState = {
-     inputState: InputProps;
-     isValid: boolean;
-};
+
 const Login = () => {
      const [email, setEmail] = useState<string>("");
      const [password, setPassword] = useState<string>("");
-     const [passwordErrorMessage, setPasswordErrorMessage] = useState<
-          string | null
-     >(null);
-     const [emailErrorMessage, setEmailErrorMessage] = useState<string | null>(
-          null
-     );
+     const [passwordErrorMessage, setPasswordErrorMessage] =
+          useState<string>("");
+     const [emailErrorMessage, setEmailErrorMessage] = useState<string>("");
      const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
      const [passwordIsValid, setPasswordIsValid] = useState<boolean>(false);
      const [emailInputState, setEmailInputState] =
           useState<InputProps>("inactive");
      const [passwordInputState, setPasswordInputState] =
           useState<InputProps>("inactive");
-
-     const [serverError, setServerError] = useState<string | null>(
-          "connection is lost. please check your connetion device and try again."
-     );
+     const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
+     const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
+     const [serverError, setServerError] = useState<string | null>();
 
      const onSubmitHandler = (e: ChangeEvent<HTMLInputElement>) => {
           e.preventDefault();
+          console.log(email, password);
      };
+
      useEffect(() => {
           const checkPassword =
                password.length >= 6 &&
                /[a-zA-Z]/.test(password) &&
                /\d/.test(password);
-          if (checkPassword) setPasswordIsValid(checkPassword);
           const checkEmail =
-               email.length >= 6 && email.includes("@") && email.includes(".");
-          if (checkEmail) setEmailIsValid(checkEmail);
-     }, [email, password]);
+               email.length >= 6 &&
+               email.includes("@") &&
+               email.includes(".") &&
+               !email.endsWith(".");
+          setPasswordIsValid(checkPassword);
+          setEmailIsValid(checkEmail);
+     }, [email, password, emailIsFocus, passwordIsFocus]);
+
      return (
-          <StyledLoginContainer onSubmit={(e: any) => onSubmitHandler(e)}>
+          <StyledLoginContainer
+               onSubmit={(e: any) => onSubmitHandler(e)}
+               height={serverError ? "737px" : "639px"}
+          >
                <StyledTitle>Log in</StyledTitle>
                <StyledInputsContainer>
                     {serverError && (
@@ -72,29 +74,29 @@ const Login = () => {
                               setEmail(e.target.value);
                          }}
                          onBlur={() => {
-                              console.log("blur");
+                              setEmailIsFocus(false);
                               if (!emailIsValid) {
                                    let errorMessage = "";
                                    if (email.length < 6)
                                         errorMessage +=
-                                             "Email must contain 6 characters";
+                                             "Email must contain at least 6 characters";
                                    else if (!email.includes("@"))
                                         errorMessage +=
                                              'Email must contain "@" ';
                                    else if (!email.includes("."))
                                         errorMessage +=
                                              'Email must contain "." ';
+                                   else if (email.endsWith("."))
+                                        errorMessage +=
+                                             'Email cannot end with "." ';
                                    setEmailInputState("validation");
                                    setEmailErrorMessage(errorMessage);
-                              } else {
-                                   setEmailErrorMessage(null);
-                                   setEmailInputState("inactive");
                               }
                          }}
                          onFocus={() => {
-                              console.log("focus");
+                              setEmailIsFocus(true);
+                              setEmailErrorMessage("");
                               setEmailInputState("active");
-                              setEmailErrorMessage(null);
                          }}
                     />
                     <Input
@@ -107,28 +109,26 @@ const Login = () => {
                               setPassword(e.target.value);
                          }}
                          onBlur={() => {
+                              setPasswordIsFocus(false);
                               if (!passwordIsValid) {
                                    let errorMessage = "";
                                    if (password.length < 6)
                                         errorMessage +=
-                                             "password must contain 6 characters";
+                                             "password must contain at least 6 characters";
                                    else if (!/[a-zA-Z]/.test(password))
                                         errorMessage +=
-                                             "password must contain character/s ";
+                                             "password must contain at least one character ";
                                    else if (!/\d/.test(password))
                                         errorMessage +=
-                                             "password must contain number/s";
+                                             "password must contain at least one number";
                                    setPasswordInputState("validation");
                                    setPasswordErrorMessage(errorMessage);
-                              } else {
-                                   setPasswordErrorMessage(null);
-                                   setPasswordInputState("inactive");
                               }
                          }}
                          onFocus={() => {
-                              console.log("focus");
+                              setPasswordIsFocus(true);
                               setPasswordInputState("active");
-                              setPasswordErrorMessage(null);
+                              setPasswordErrorMessage("");
                          }}
                     />
                </StyledInputsContainer>
