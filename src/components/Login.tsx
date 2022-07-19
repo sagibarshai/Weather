@@ -32,7 +32,7 @@ const Login = () => {
           useState<InputProps>("inactive");
      const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
      const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
-     const [serverError, setServerError] = useState<string | null>("error");
+     const [serverError, setServerError] = useState<string | null>(null);
 
      const onSubmitHandler = (e: ChangeEvent<HTMLInputElement>) => {
           e.preventDefault();

@@ -16,6 +16,7 @@ interface StyledButtonProps {
      margin?: string;
      display?: string;
      gap?: string | number;
+     marginRight?: string;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -79,5 +80,6 @@ export const StyledButton = styled.button<StyledButtonProps>`
                  `
                : ""};
      margin: ${(props) => props.margin};
+     margin-right: ${(props) => props.marginRight};
      position: ${(props) => props.position};
 `;

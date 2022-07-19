@@ -35,6 +35,7 @@ export const StyledDiv = styled.div<StyledDivProps>`
      margin-left: ${(props) => props.marginLeft || "0px"};
      @media ${cssBreakPoints.bigDesktop} {
           display: flex;
+          margin-right: ${(props) => props.marginRight};
      }
      @media ${cssBreakPoints.laptop} {
           display: flex;
