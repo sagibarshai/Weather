@@ -4,7 +4,7 @@ import { MobileMenuBottom } from "../components/MobileHeader";
 import { StyledPageContainer } from "./StyledHome";
 import { RootState } from "../redux/store";
 import { closeMobileMenu } from "../redux/headerSlice";
-import Login from "./Login";
+import Login from "../components/Login";
 
 const Home = () => {
      const dispatch = useDispatch();

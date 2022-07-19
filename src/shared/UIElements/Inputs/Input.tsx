@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import themes from "../../themes/themes";
 import { ChangeEvent } from "react";
+import cssBreakPoints from "../../cssBreakPoints/cssBreakPoints";
 export type InputProps = "inactive" | "focus" | "active" | "validation";
 interface Variant {
      variant?: InputProps;

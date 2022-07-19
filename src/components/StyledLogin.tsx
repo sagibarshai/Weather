@@ -1,9 +1,11 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import themes from "../shared/themes/themes";
 import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
 type Props = {
      gap?: string;
      height?: string;
+     flexDeiraction?: string;
+     mobile?: boolean;
 };
 export const StyledLoginContainer = styled.form<Props>`
      background-color: ${themes.white};
@@ -19,6 +21,22 @@ export const StyledLoginContainer = styled.form<Props>`
      @media ${cssBreakPoints.laptop} {
           width: 588px;
           height: ${(props) => props.height};
+     }
+     @media ${cssBreakPoints.mobile} {
+          width: 100vw;
+          box-shadow: 0 -7px 30px 0 rgba(0, 0, 0, 0.16);
+          border: solid 1px #fff;
+          background-color: #fff;
+          position: absolute;
+          top: 105%;
+          left: 50%;
+          transform: translate(-50%, -97%);
+          ${(props) =>
+               props.mobile === true &&
+               css`
+                    top: 110%;
+                    padding-bottom: 40px;
+               `}
      }
 `;
 export const StyledTitle = styled.h3`
@@ -45,6 +63,11 @@ export const StyledContainer = styled.div<Props>`
      align-items: center;
      justify-content: center;
      gap: ${(props) => props.gap};
+     @media ${cssBreakPoints.mobile} {
+          flex-direction: ${(props) =>
+               props.flexDeiraction ? props.flexDeiraction : "row"};
+          column-gap: 47px;
+     }
 `;
 export const StyledHr = styled.hr`
      width: 254px;
@@ -54,4 +77,13 @@ export const StyledHr = styled.hr`
 export const StyledSpan = styled.span`
      color: ${themes.secondary};
      font-size: 1.4rem;
+     @media ${cssBreakPoints.mobile} {
+          white-space: nowrap;
+     }
+`;
+export const StyledLogoContainer = styled.span`
+     display: none;
+     @media ${cssBreakPoints.mobile} {
+          display: inline;
+     }
 `;
