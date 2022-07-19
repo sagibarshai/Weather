@@ -17,74 +17,41 @@ import { StyledIcon } from "../shared/Icons/Icon";
 import Notification from "../shared/notifacation/Notification";
 type inputState = {
      inputState: InputProps;
-     value: string;
      isValid: boolean;
 };
 const Login = () => {
-     const [inputEmailState, setInputEmailState] = useState<inputState>({
-          inputState: "active",
-          value: "",
-          isValid: false,
-     });
-     const [inputPasswordState, setInputPasswordState] = useState<inputState>({
-          inputState: "inactive",
-          value: "",
-          isValid: false,
-     });
-     const [errorMessage, setErrorMessage] = useState<string>(
-          "email must contain @"
+     const [email, setEmail] = useState<string>("");
+     const [password, setPassword] = useState<string>("");
+     const [passwordErrorMessage, setPasswordErrorMessage] = useState<
+          string | null
+     >(null);
+     const [emailErrorMessage, setEmailErrorMessage] = useState<string | null>(
+          null
      );
+     const [emailIsValid, setEmailIsValid] = useState<boolean>(false);
+     const [passwordIsValid, setPasswordIsValid] = useState<boolean>(false);
+     const [emailInputState, setEmailInputState] =
+          useState<InputProps>("inactive");
+     const [passwordInputState, setPasswordInputState] =
+          useState<InputProps>("inactive");
+
      const [serverError, setServerError] = useState<string | null>(
           "connection is lost. please check your connetion device and try again."
-     );
-     const [formIsValid, setFormIsValid] = useState<boolean>(
-          inputEmailState.isValid && inputPasswordState.isValid
      );
 
      const onSubmitHandler = (e: ChangeEvent<HTMLInputElement>) => {
           e.preventDefault();
-          console.log(inputEmailState.value, inputPasswordState.value);
      };
-     const inputChangeHandler = (
-          e: ChangeEvent<HTMLInputElement>,
-          inputState: string
-     ) => {
-          let emailIsValid: boolean = false;
-          let passwordIsValid: boolean = false;
-          if (inputState === "email") {
-               if (inputEmailState.value.length >= 7) {
-                    emailIsValid = true;
-               }
-               setInputEmailState({
-                    ...inputEmailState,
-                    value: e.target.value,
-               });
-               if (emailIsValid)
-                    setInputEmailState({
-                         ...inputEmailState,
-                         isValid: emailIsValid,
-                    });
-          } else {
-               if (
-                    inputPasswordState.value.length >= 6 &&
-                    /\d/.test(inputPasswordState.value) //   contain a number
-               ) {
-                    passwordIsValid = true;
-               }
-               setInputPasswordState({
-                    ...inputPasswordState,
-                    value: e.target.value,
-               });
-               if (passwordIsValid)
-                    setInputPasswordState({
-                         ...inputPasswordState,
-                         isValid: passwordIsValid,
-                    });
-          }
-          console.log(inputEmailState.isValid && inputPasswordState.isValid);
-          setFormIsValid(inputEmailState.isValid && inputPasswordState.isValid);
-     };
-     // console.log(formIsValid, inputPasswordState, inputEmailState);
+     useEffect(() => {
+          const checkPassword =
+               password.length >= 6 &&
+               /[a-zA-Z]/.test(password) &&
+               /\d/.test(password);
+          if (checkPassword) setPasswordIsValid(checkPassword);
+          const checkEmail =
+               email.length >= 6 && email.includes("@") && email.includes(".");
+          if (checkEmail) setEmailIsValid(checkEmail);
+     }, [email, password]);
      return (
           <StyledLoginContainer onSubmit={(e: any) => onSubmitHandler(e)}>
                <StyledTitle>Log in</StyledTitle>
@@ -96,36 +63,83 @@ const Login = () => {
                          />
                     )}
                     <Input
-                         type="email"
-                         variant={inputEmailState.inputState}
-                         errorMessage={errorMessage}
+                         type="text"
+                         variant={emailInputState}
+                         errorMessage={emailErrorMessage}
                          label="Email Account"
                          placeHolder="example@example.com..."
-                         onChange={(e) =>
-                              inputChangeHandler(
-                                   e as ChangeEvent<HTMLInputElement>,
-                                   "email"
-                              )
-                         }
+                         onChange={(e: any) => {
+                              setEmail(e.target.value);
+                         }}
+                         onBlur={() => {
+                              console.log("blur");
+                              if (!emailIsValid) {
+                                   let errorMessage = "";
+                                   if (email.length < 6)
+                                        errorMessage +=
+                                             "Email must contain 6 characters";
+                                   else if (!email.includes("@"))
+                                        errorMessage +=
+                                             'Email must contain "@" ';
+                                   else if (!email.includes("."))
+                                        errorMessage +=
+                                             'Email must contain "." ';
+                                   setEmailInputState("validation");
+                                   setEmailErrorMessage(errorMessage);
+                              } else {
+                                   setEmailErrorMessage(null);
+                                   setEmailInputState("inactive");
+                              }
+                         }}
+                         onFocus={() => {
+                              console.log("focus");
+                              setEmailInputState("active");
+                              setEmailErrorMessage(null);
+                         }}
                     />
                     <Input
                          type="password"
-                         variant={inputPasswordState.inputState}
+                         variant={passwordInputState}
                          label="Password"
                          placeHolder="6 characters and digit numbers..."
-                         errorMessage={errorMessage}
-                         onChange={(e) =>
-                              inputChangeHandler(
-                                   e as ChangeEvent<HTMLInputElement>,
-                                   "password"
-                              )
-                         }
+                         errorMessage={passwordErrorMessage}
+                         onChange={(e: any) => {
+                              setPassword(e.target.value);
+                         }}
+                         onBlur={() => {
+                              if (!passwordIsValid) {
+                                   let errorMessage = "";
+                                   if (password.length < 6)
+                                        errorMessage +=
+                                             "password must contain 6 characters";
+                                   else if (!/[a-zA-Z]/.test(password))
+                                        errorMessage +=
+                                             "password must contain character/s ";
+                                   else if (!/\d/.test(password))
+                                        errorMessage +=
+                                             "password must contain number/s";
+                                   setPasswordInputState("validation");
+                                   setPasswordErrorMessage(errorMessage);
+                              } else {
+                                   setPasswordErrorMessage(null);
+                                   setPasswordInputState("inactive");
+                              }
+                         }}
+                         onFocus={() => {
+                              console.log("focus");
+                              setPasswordInputState("active");
+                              setPasswordErrorMessage(null);
+                         }}
                     />
                </StyledInputsContainer>
                <StyledButton
                     margin="40px 0 0 0"
-                    disabled={!formIsValid}
-                    variant={!formIsValid ? "disabled" : "default"}
+                    disabled={!(emailIsValid && passwordIsValid)}
+                    variant={
+                         !(emailIsValid && passwordIsValid)
+                              ? "disabled"
+                              : "default"
+                    }
                >
                     Log in
                </StyledButton>

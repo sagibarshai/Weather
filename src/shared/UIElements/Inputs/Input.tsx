@@ -10,7 +10,7 @@ type Props = {
      label?: string;
      placeHolder?: string;
      color?: string;
-     errorMessage?: string;
+     errorMessage?: string | null;
      display?: string;
      width?: string;
      height?: string;
@@ -20,6 +20,8 @@ type Props = {
      children?: JSX.Element;
      type?: string;
      onChange: (e: ChangeEvent) => void;
+     onBlur?: () => void;
+     onFocus?: () => void;
 };
 const StyledInputsContainer = styled.div<Variant>`
      position: relative;
@@ -119,6 +121,8 @@ const Input: React.FC<Props> = (props) => {
                          {props.label}
                     </StyledLabel>
                     <StyledInput
+                         onFocus={props.onFocus}
+                         onBlur={props.onBlur}
                          onChange={props.onChange}
                          width={props.width}
                          height={props.height}
