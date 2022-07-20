@@ -65,7 +65,7 @@ const StyledInput = styled.input<Props>`
           color: ${themes.notificationText};
           font-size: 1.6rem;
           line-height: 1.25;
-          margin-top: 4px;
+          /* margin-top: 4px; */
      }
      ${(props) =>
           props.variant === "inactive"

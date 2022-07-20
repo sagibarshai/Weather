@@ -1,6 +1,10 @@
 import { useState, ChangeEvent, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { closeMobileMenu } from "../redux/headerSlice";
 import Notification from "../shared/notifacation/Notification";
 import Input from "../shared/UIElements/Inputs/Input";
+
+import { RootState } from "../redux/store";
 import { InputProps } from "../shared/UIElements/Inputs/Input";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import { ReactComponent as IconFacebook } from "../shared/svg/logo-facebook.svg";
@@ -17,7 +21,7 @@ import {
      StyledSpan,
      StyledLogoContainer,
 } from "./StyledLogin";
-
+import { StyledPageContainer } from "./StyledHome";
 const Login = () => {
      const [email, setEmail] = useState<string>("");
      const [password, setPassword] = useState<string>("");
@@ -52,9 +56,21 @@ const Login = () => {
           setPasswordIsValid(checkPassword);
           setEmailIsValid(checkEmail);
      }, [email, password, emailIsFocus, passwordIsFocus]);
-
+     const dispatch = useDispatch();
+     const renderPraimaryBackground = useSelector(
+          (state: RootState) => state.headerSlice.renderPraimaryBackground
+     );
+     const openMobileMenu = useSelector(
+          (state: RootState) => state.headerSlice.openMobileMenu
+     );
      return (
-          <>
+          <StyledPageContainer
+               openMobileMenu={openMobileMenu}
+               renderPraimaryBackground={renderPraimaryBackground}
+               onClick={() =>
+                    openMobileMenu ? dispatch(closeMobileMenu()) : ""
+               }
+          >
                <StyledLogoContainer>
                     <StyledIcon
                          position="absolute"
@@ -180,7 +196,7 @@ const Login = () => {
                          </StyledButton>
                     </StyledContainer>
                </StyledLoginContainer>
-          </>
+          </StyledPageContainer>
      );
 };
 

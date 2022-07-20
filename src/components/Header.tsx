@@ -11,7 +11,11 @@ import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
 import links from "../shared/links/links";
 import themes from "../shared/themes/themes";
 import { LinksType } from "../shared/links/links";
-import { toggleBackground, toggleDegress } from "../redux/headerSlice";
+import {
+     toggleBackground,
+     toggleDegress,
+     toggleLogoutPopup,
+} from "../redux/headerSlice";
 import { RootState } from "../redux/store";
 
 import {
@@ -52,9 +56,15 @@ const Header = () => {
      const renderPraimaryBg = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
      );
+     const openLogoutPopup = useSelector(
+          (state: RootState) => state.headerSlice.openLogoutPopup
+     );
      return (
           <>
-               <StyledHeader renderPraimaryBg={renderPraimaryBg}>
+               <StyledHeader
+                    renderPraimaryBg={renderPraimaryBg}
+                    filterBlur={openLogoutPopup}
+               >
                     <StyledDiv
                          marginLeftlaptop="50px"
                          marginLeft="70px"
@@ -182,6 +192,7 @@ const Header = () => {
                          marginRightLaptop="50px"
                     >
                          <StyledButton
+                              onClick={() => dispatch(toggleLogoutPopup())}
                               variant="linkWithImg"
                               color={themes.white}
                          >

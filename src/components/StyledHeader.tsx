@@ -13,6 +13,7 @@ type StyledDivProps = {
 };
 type StyledHeaderProps = {
      renderPraimaryBg: boolean;
+     filterBlur?: boolean;
 };
 export const StyledHeader = styled.header<StyledHeaderProps>`
      width: 100%;
@@ -24,6 +25,7 @@ export const StyledHeader = styled.header<StyledHeaderProps>`
      justify-content: space-between;
      align-items: center;
      display: flex;
+     filter: ${(props) => (props.filterBlur === true ? `blur(10px)` : "")};
      @media ${cssBreakPoints.mobile} {
           display: none;
      }

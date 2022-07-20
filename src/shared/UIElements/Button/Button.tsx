@@ -17,12 +17,14 @@ interface StyledButtonProps {
      display?: string;
      gap?: string | number;
      marginRight?: string;
+     width?: string;
+     height?: string;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
      font-family: inherit;
-     width: 402px;
-     height: 54px;
+     width: ${(props) => props.width || "402px"};
+     height: ${(props) => props.height || "54px"};
      border-radius: 10px;
      box-shadow: -4px 8px 50px 4px rgba(0, 0, 0, 0.16),
           inset -6px 4px 4px 0 rgba(255, 255, 255, 0.1),

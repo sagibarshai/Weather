@@ -1,12 +1,12 @@
 import { useSelector, useDispatch } from "react-redux";
-import Header from "../components/Header";
 import { MobileMenuBottom } from "../components/MobileHeader";
 import { StyledPageContainer } from "./StyledHome";
 import { RootState } from "../redux/store";
-import { closeMobileMenu } from "../redux/headerSlice";
-import Login from "../components/Login";
+import { closeMobileMenu, toggleLogoutPopup } from "../redux/headerSlice";
+import Header from "../components/Header";
+import Popup from "../components/Popup";
 
-const Home = () => {
+const Home: React.FC = () => {
      const dispatch = useDispatch();
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
@@ -14,19 +14,25 @@ const Home = () => {
      const openMobileMenu = useSelector(
           (state: RootState) => state.headerSlice.openMobileMenu
      );
+     const openLogoutPopup = useSelector(
+          (state: RootState) => state.headerSlice.openLogoutPopup
+     );
+
+     const onClickHandler = () => {
+          if (openLogoutPopup) dispatch(toggleLogoutPopup());
+          if (openMobileMenu) dispatch(closeMobileMenu());
+     };
 
      return (
           <>
+               <Header />
                <StyledPageContainer
                     openMobileMenu={openMobileMenu}
                     renderPraimaryBackground={renderPraimaryBackground}
-                    onClick={() =>
-                         openMobileMenu ? dispatch(closeMobileMenu()) : ""
-                    }
-               >
-                    <Header />
-                    <Login />
-               </StyledPageContainer>
+                    onClick={onClickHandler}
+                    openLogoutPopup={openLogoutPopup}
+               ></StyledPageContainer>
+               {openLogoutPopup && <Popup />}
                <MobileMenuBottom />
           </>
      );

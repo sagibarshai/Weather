@@ -21,6 +21,7 @@ import {
      toggleBackground,
      toggleDegress,
      toggleMobileMenu,
+     toggleLogoutPopup,
 } from "../redux/headerSlice";
 import themes from "../shared/themes/themes";
 
@@ -76,6 +77,10 @@ export const MobileMenuBottom = () => {
                     margin="122px auto 40px auto"
                     variant="linkWithImg"
                     color={themes.secondary}
+                    onClick={() => {
+                         dispatch(toggleLogoutPopup());
+                         dispatch(toggleMobileMenu());
+                    }}
                >
                     <StyledIcon width="30px" height="30px" marginRight="8px">
                          <IconLogoutOutline
