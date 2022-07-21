@@ -24,6 +24,7 @@ export const StyledMenuButton = styled.button`
      background-color: transparent;
      border: none;
      cursor: pointer;
+     z-index: 2;
 `;
 export const StyledMenu = styled.div<Props>`
      backdrop-filter: blur(0rem);

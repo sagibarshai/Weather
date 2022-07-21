@@ -5,12 +5,15 @@ type Props = {
      gap?: string;
      height?: string;
      flexDeiraction?: string;
-     mobile?: boolean;
+     mobileServerError?: boolean;
+     margin?: string;
+     serverError?: string | null;
 };
 export const StyledLoginContainer = styled.form<Props>`
      background-color: ${themes.white};
      width: 840px;
-     height: 757px;
+     height: {props => props.serverError? '743px' : '653px'};
+     padding-bottom: 54px;
      box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.16);
      position: absolute;
      top: 50%;
@@ -20,7 +23,7 @@ export const StyledLoginContainer = styled.form<Props>`
      border-radius: 30px;
      @media ${cssBreakPoints.laptop} {
           width: 588px;
-          height: ${(props) => props.height};
+          height: ${(props) => (props.serverError ? "675px" : "559px")};
      }
      @media ${cssBreakPoints.mobile} {
           width: 100vw;
@@ -28,15 +31,18 @@ export const StyledLoginContainer = styled.form<Props>`
           border: solid 1px #fff;
           background-color: #fff;
           position: absolute;
-          top: 105%;
+          top: 100%;
           left: 50%;
           transform: translate(-50%, -97%);
+          height: 76vh;
           ${(props) =>
-               props.mobile === true &&
+               props.mobileServerError === true &&
                css`
+                    position: absolute;
+                    left: 50%;
                     top: 110%;
-                    padding-bottom: 40px;
-               `}
+                    height: 87vh;
+               `};
      }
 `;
 export const StyledTitle = styled.h3`
@@ -47,6 +53,12 @@ export const StyledTitle = styled.h3`
      margin: 54px auto;
      @media ${cssBreakPoints.laptop} {
           margin: 24px auto 32px auto;
+     }
+     @media ${cssBreakPoints.mobile} {
+          font-size: 3.2rem;
+          font-weight: bold;
+          line-height: 1.25;
+          margin: 54px auto 40px auto;
      }
 `;
 export const StyledInputsContainer = styled.div`
@@ -63,23 +75,24 @@ export const StyledContainer = styled.div<Props>`
      align-items: center;
      justify-content: center;
      gap: ${(props) => props.gap};
+     margin: ${(props) => props.margin};
+     column-gap: 16px;
      @media ${cssBreakPoints.mobile} {
           flex-direction: ${(props) =>
                props.flexDeiraction ? props.flexDeiraction : "row"};
-          column-gap: 47px;
      }
 `;
 export const StyledHr = styled.hr`
-     width: 254px;
+     /* width: 40%; */
      background-color: #f2f2f2;
-     height: 1px;
+     width: 40%;
+     flex-grow: 6;
 `;
 export const StyledSpan = styled.span`
      color: ${themes.secondary};
      font-size: 1.4rem;
-     @media ${cssBreakPoints.mobile} {
-          white-space: nowrap;
-     }
+     /* flex-gro/w: 1; */
+     white-space: nowrap;
 `;
 export const StyledLogoContainer = styled.span`
      display: none;

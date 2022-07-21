@@ -28,7 +28,7 @@ import {
 } from "./StyledHeader";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconSearchDark } from "../shared/svg/search-dark.svg";
-import { ReactComponent as IconLogo } from "../shared/svg/logo.svg";
+import { ReactComponent as IconLogo } from "../shared/svg/logo-small.svg";
 import { ReactComponent as IconMap } from "../shared/svg/map.svg";
 import { ReactComponent as IconMoonDark } from "../shared/svg/moon-dark.svg";
 import { ReactComponent as IconSunDark } from "../shared/svg/sun-dark.svg";
@@ -121,7 +121,7 @@ const Header = () => {
                     >
                          <Input
                               onChange={() => {}}
-                              variant="active"
+                              variant="inactive"
                               width="372px"
                               height="54px"
                               placeHolder="Try “Tel Aviv - Jaffa”..."

@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import colors, { Colors } from "../../colors/colors";
+import cssBreakPoints from "../../cssBreakPoints/cssBreakPoints";
 import themes from "../../themes/themes";
 type StyledButtonVariant =
      | "default"
@@ -19,6 +20,7 @@ interface StyledButtonProps {
      marginRight?: string;
      width?: string;
      height?: string;
+     mobileWidth?: string;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -84,4 +86,11 @@ export const StyledButton = styled.button<StyledButtonProps>`
      margin: ${(props) => props.margin};
      margin-right: ${(props) => props.marginRight};
      position: ${(props) => props.position};
+     @media ${cssBreakPoints.mobile} {
+          ${(props) =>
+               props.mobileWidth &&
+               css`
+                    width: calc(${props.mobileWidth} + 48px);
+               `}
+     }
 `;

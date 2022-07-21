@@ -10,7 +10,7 @@ import { StyledButton } from "../shared/UIElements/Button/Button";
 import { ReactComponent as IconFacebook } from "../shared/svg/logo-facebook.svg";
 import { ReactComponent as IconGoogle } from "../shared/svg/logo-google.svg";
 import { ReactComponent as IconNotification } from "../shared/svg/info-circle.svg";
-import { ReactComponent as IconApp } from "../shared/svg/logo.svg";
+import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
 import { StyledIcon } from "../shared/Icons/Icon";
 import {
      StyledLoginContainer,
@@ -86,7 +86,8 @@ const Login = () => {
                <StyledLoginContainer
                     onSubmit={(e: any) => onSubmitHandler(e)}
                     height={serverError ? "737px" : "639px"}
-                    mobile={serverError ? true : false}
+                    mobileServerError={serverError ? true : false}
+                    serverError={serverError}
                >
                     <StyledTitle>Log in</StyledTitle>
                     <StyledInputsContainer>
@@ -94,9 +95,11 @@ const Login = () => {
                               <Notification
                                    icon={<IconNotification />}
                                    message={serverError}
+                                   mobileWidth="75vw"
                               />
                          )}
                          <Input
+                              mobileWidth="75vw"
                               type="text"
                               variant={emailInputState}
                               errorMessage={emailErrorMessage}
@@ -132,6 +135,7 @@ const Login = () => {
                               }}
                          />
                          <Input
+                              mobileWidth="75vw"
                               type="password"
                               variant={passwordInputState}
                               label="Password"
@@ -165,6 +169,7 @@ const Login = () => {
                          />
                     </StyledInputsContainer>
                     <StyledButton
+                         mobileWidth="75vw"
                          margin="40px 0 0 0"
                          disabled={!(emailIsValid && passwordIsValid)}
                          variant={
@@ -175,7 +180,7 @@ const Login = () => {
                     >
                          Log in
                     </StyledButton>
-                    <StyledContainer>
+                    <StyledContainer margin="48px 54px 0">
                          <StyledHr />
                          <StyledSpan>Or log in with</StyledSpan>
                          <StyledHr />

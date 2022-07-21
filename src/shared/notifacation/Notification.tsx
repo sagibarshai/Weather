@@ -1,11 +1,13 @@
 import styled from "styled-components";
 import themes from "../themes/themes";
 import { StyledIcon } from "../Icons/Icon";
+import cssBreakPoints from "../cssBreakPoints/cssBreakPoints";
 type Props = {
      width?: string;
      height?: string;
      backgroundColor?: string;
      message?: string;
+     mobileWidth?: string;
      icon?: JSX.Element;
 };
 
@@ -18,6 +20,9 @@ const StyledNotificationContainer = styled.div<Props>`
           props.backgroundColor || `${themes.notification}`};
      display: flex;
      gap: 16px;
+     @media ${cssBreakPoints.mobile} {
+          width: ${(props) => props.mobileWidth};
+     }
 `;
 export const StyledSpan = styled.span`
      width: 262px;

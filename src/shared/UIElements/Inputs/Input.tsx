@@ -14,6 +14,7 @@ type Props = {
      errorMessage?: string | null;
      display?: string;
      width?: string;
+     mobileWidth?: string;
      height?: string;
      position?: string;
      padding?: string;
@@ -44,7 +45,7 @@ const StyledLabel = styled.label<Variant>`
      font-family: inherit;
      font-size: 1.4rem;
      line-height: 1.25;
-     color: ${themes.black};
+     color: ${themes.fadeText};
      ${(props) =>
           props.variant === "validation"
                ? css`
@@ -57,15 +58,19 @@ const StyledInput = styled.input<Props>`
      height: ${(props) => props.height || "77px"};
      border-radius: 10px;
      border: none;
-     padding: 0 24px;
+     padding: 8px 24px 0 24px;
      line-height: 1.25;
+     @media ${cssBreakPoints.mobile} {
+          width: ${(props) =>
+               props.mobileWidth ? props.mobileWidth : "354px"};
+     }
      &:focus {
           outline: none;
           background-color: ${themes.white};
           color: ${themes.notificationText};
-          font-size: 1.6rem;
+          font-size: 1.8rem;
           line-height: 1.25;
-          /* margin-top: 4px; */
+          margin-top: 4px;
      }
      ${(props) =>
           props.variant === "inactive"
@@ -73,6 +78,7 @@ const StyledInput = styled.input<Props>`
                       background-color: ${themes.grayBackground};
                       font-family: inherit;
                       color: ${themes.gray};
+                      font-size: 1.8rem;
                  `
                : ""}
      ${(props) =>
@@ -82,7 +88,7 @@ const StyledInput = styled.input<Props>`
                       color: #222;
                       font-size: 1.8rem;
                       &::placeholder {
-                           font-size: 1.4rem;
+                           font-size: 1.6rem;
                       }
                  `
                : ""}
@@ -130,6 +136,7 @@ const Input: React.FC<Props> = (props) => {
                          variant={props.variant}
                          placeholder={props.placeHolder}
                          type={props.type || "text"}
+                         mobileWidth={props.mobileWidth}
                     />
                     {props.children}
                     <StyledInvalidInput variant={props.variant}>
