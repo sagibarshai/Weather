@@ -16,7 +16,6 @@ const StyledLabel = styled.label`
      display: inline-block;
      cursor: pointer;
      background-color: blue;
-     /* overflow: hidden; */
 `;
 const StyledDivToggle = styled.div`
      position: relative;

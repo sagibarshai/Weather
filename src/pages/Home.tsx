@@ -33,7 +33,7 @@ const Home: React.FC = () => {
                     onClick={onClickHandler}
                     openLogoutPopup={openLogoutPopup}
                >
-                    <BackgroundAnimation />
+                    {/* <BackgroundAnimation /> */}
                </StyledPageContainer>
                {openLogoutPopup && <Popup />}
                <MobileMenuBottom />
