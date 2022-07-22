@@ -72,16 +72,7 @@ const Login = () => {
                }
           >
                <StyledLogoContainer>
-                    <StyledIcon
-                         position="absolute"
-                         top="56px"
-                         right="50%"
-                         transform="translate(50% , -50%)"
-                         height="97px"
-                         width="148px"
-                    >
-                         <IconApp />
-                    </StyledIcon>
+                    <IconApp />
                </StyledLogoContainer>
                <StyledLoginContainer
                     onSubmit={(e: any) => onSubmitHandler(e)}
@@ -95,11 +86,11 @@ const Login = () => {
                               <Notification
                                    icon={<IconNotification />}
                                    message={serverError}
-                                   mobileWidth="75vw"
+                                   mobileWidth="90vw"
                               />
                          )}
                          <Input
-                              mobileWidth="75vw"
+                              mobileWidth="90vw"
                               type="text"
                               variant={emailInputState}
                               errorMessage={emailErrorMessage}
@@ -135,7 +126,7 @@ const Login = () => {
                               }}
                          />
                          <Input
-                              mobileWidth="75vw"
+                              mobileWidth="90vw"
                               type="password"
                               variant={passwordInputState}
                               label="Password"
@@ -169,7 +160,7 @@ const Login = () => {
                          />
                     </StyledInputsContainer>
                     <StyledButton
-                         mobileWidth="75vw"
+                         mobileWidth="90vw"
                          margin="40px 0 0 0"
                          disabled={!(emailIsValid && passwordIsValid)}
                          variant={

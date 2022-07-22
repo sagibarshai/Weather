@@ -5,50 +5,105 @@ import { ReactComponent as IconCloudS } from "../svg/cloud-S.svg";
 type Props = {
      top?: string | number;
      left?: string | number;
-     leftAnimation?: string | number;
+     right?: string | number;
 };
 const StyledCloud = styled.i<Props>`
      position: absolute;
      top: ${(props) => props.top};
      left: ${(props) => props.left};
-     @keyframes leftToRight {
-          0% {
-               left: ${(props) => props.left};
-          }
-          100% {
-               right: calc(${(props) => props.leftAnimation});
-          }
-     }
-     animation: leftToRight 40s infinite;
-`;
-const StyledContainer = styled.div`
-     position: relative;
+     right: ${(props) => props.right};
      z-index: 0;
-     height: 100vh;
+     &:nth-child(1) {
+          @keyframes leftToRight {
+               0% {
+                    left: ${(props) => props.left};
+               }
+               100% {
+                    left: -10%;
+               }
+          }
+          animation: leftToRight 180s infinite;
+     }
+     &:nth-child(2) {
+          @keyframes rightToLeft {
+               0% {
+                    right: ${(props) => props.right};
+               }
+               100% {
+                    right: -10%;
+               }
+          }
+          animation: rightToLeft 220s infinite;
+     }
+     &:nth-child(3) {
+          @keyframes leftToRight {
+               0% {
+                    left: ${(props) => props.left};
+               }
+               100% {
+                    left: -10%;
+               }
+          }
+          animation: leftToRight 280s infinite;
+     }
+     &:nth-child(4) {
+          @keyframes rightToLeft {
+               0% {
+                    right: ${(props) => props.right};
+               }
+               100% {
+                    right: -10%;
+               }
+          }
+          animation: rightToLeft 190s infinite;
+          transform: rotate(-360deg);
+     }
+     &:nth-child(5) {
+          @keyframes leftToRight {
+               0% {
+                    left: ${(props) => props.left};
+               }
+               100% {
+                    left: -10%;
+               }
+          }
+          animation: leftToRight 180s infinite;
+     }
+     &:nth-child(6) {
+          @keyframes rightToLeft {
+               0% {
+                    right: ${(props) => props.right};
+               }
+               100% {
+                    right: -10%;
+               }
+          }
+          animation: rightToLeft 275s infinite;
+     }
 `;
 
 const BackgroundAnimation = () => {
      return (
-          <StyledContainer>
-               <StyledCloud top="50%" left="20%" leftAnimation="20%">
+          <>
+               <StyledCloud top="15%" left="20%">
                     <IconCloudL />
                </StyledCloud>
-               <StyledCloud top="63%" left="82%" leftAnimation="37%">
+               <StyledCloud top="35%" right="60%">
                     <IconCloudM />
                </StyledCloud>
-               <StyledCloud top="21%" left="91%" leftAnimation="48%">
+               <StyledCloud top="45%" left="91%">
                     <IconCloudS />
                </StyledCloud>
-               <StyledCloud top="10%" left="36%" leftAnimation="11%">
+               <StyledCloud top="60%" right="10%">
                     <IconCloudL />
                </StyledCloud>
-               <StyledCloud top="28%" left="65" leftAnimation="90%">
+               <StyledCloud top="80%" left="65%">
                     <IconCloudM />
                </StyledCloud>
-               <StyledCloud top="40%" left="57%" leftAnimation="79%">
+               <StyledCloud top="90%" right="63%">
                     <IconCloudS />
                </StyledCloud>
-          </StyledContainer>
+          </>
      );
 };
 export default BackgroundAnimation;

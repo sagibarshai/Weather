@@ -177,8 +177,8 @@ const Header = () => {
                               onClick={() => {
                                    dispatch(toggleBackground());
                               }}
-                              htmlFor="mood"
-                              id="mood"
+                              htmlFor="mode"
+                              id="mode"
                               variant="checkbox"
                               LeftIcon={<IconSunDark />}
                               rightIcon={<IconMoonDark />}
