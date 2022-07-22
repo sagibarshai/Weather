@@ -7,6 +7,7 @@ type StyledHome = {
 };
 
 export const StyledPageContainer = styled.div<StyledHome>`
+     display: inline-block;
      background-image: ${(props) => {
           if (props.renderPraimaryBackground) return themes.backgroundPraimary;
           else return themes.darkBackground;
