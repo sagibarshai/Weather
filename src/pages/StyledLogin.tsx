@@ -8,8 +8,19 @@ type Props = {
      mobileServerError?: boolean;
      margin?: string;
      serverError?: string | null;
+     renderPraimaryBackground?: boolean;
 };
+export const StyledLoginPageContainer = styled.div<Props>`
+     display: inline-block;
+     min-width: 100vw;
+     min-height: 100vh;
+     background-image: ${(props) => {
+          if (props.renderPraimaryBackground) return themes.backgroundPraimary;
+          else return themes.darkBackground;
+     }};
+`;
 export const StyledLoginContainer = styled.form<Props>`
+
      background-color: ${themes.white};
      height: {props => props.serverError? '743px' : '649px'};
      width:732px;
@@ -18,6 +29,7 @@ export const StyledLoginContainer = styled.form<Props>`
      border-radius: 30px;
      margin:168px auto 168px auto;
      padding:54px;
+     position: relative;
      z-index:2;
      @media ${cssBreakPoints.laptop} {
           width: 588px;
@@ -34,6 +46,7 @@ export const StyledLoginContainer = styled.form<Props>`
           height: 658px;
           margin:184px 0 0 0;
           padding-bottom: 0;
+     
           ${(props) =>
                props.mobileServerError === true &&
                css`

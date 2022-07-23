@@ -13,6 +13,7 @@ import { ReactComponent as IconNotification } from "../shared/svg/info-circle.sv
 import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
 import { StyledIcon } from "../shared/Icons/Icon";
 import {
+     StyledLoginPageContainer,
      StyledLoginContainer,
      StyledTitle,
      StyledInputsContainer,
@@ -21,7 +22,6 @@ import {
      StyledSpan,
      StyledLogoContainer,
 } from "./StyledLogin";
-import { StyledPageContainer } from "./StyledHome";
 const Login = () => {
      const [email, setEmail] = useState<string>("");
      const [password, setPassword] = useState<string>("");
@@ -64,8 +64,7 @@ const Login = () => {
           (state: RootState) => state.headerSlice.openMobileMenu
      );
      return (
-          <StyledPageContainer
-               openMobileMenu={openMobileMenu}
+          <StyledLoginPageContainer
                renderPraimaryBackground={renderPraimaryBackground}
                onClick={() =>
                     openMobileMenu ? dispatch(closeMobileMenu()) : ""
@@ -192,7 +191,7 @@ const Login = () => {
                          </StyledButton>
                     </StyledContainer>
                </StyledLoginContainer>
-          </StyledPageContainer>
+          </StyledLoginPageContainer>
      );
 };
 

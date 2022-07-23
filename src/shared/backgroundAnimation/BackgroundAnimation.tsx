@@ -6,52 +6,57 @@ type Props = {
      top?: string | number;
      left?: string | number;
      right?: string | number;
+     endLeft?: string | number;
+     endRight?: string | number;
+     time?: string | number;
 };
+
 const StyledCloud = styled.i<Props>`
      position: absolute;
      top: ${(props) => props.top};
      left: ${(props) => props.left};
      right: ${(props) => props.right};
      z-index: 0;
+     transition: all;
      ${(props) =>
-          props.left
+          props.left && props.endLeft
                ? css`
                       @keyframes leftToRight {
                            100% {
-                                transform: translateX(200%);
+                                left: ${props.endLeft};
                            }
                       }
-                      animation: leftToRight 100s infinite;
+                      animation: leftToRight ${props.time} infinite;
                  `
                : css`
                       @keyframes rightToLeft {
                            100% {
-                                transform: translateX(200%);
+                                right: ${props.endRight};
                            }
                       }
-                      animation: rightToLeft 150s infinite;
+                      animation: rightToLeft ${props.time} infinite;
                  `}
 `;
 
 const BackgroundAnimation = () => {
      return (
           <>
-               <StyledCloud top="15%" left="10%">
+               <StyledCloud top="15%" right="0%" endRight="85%" time="120s">
                     <IconCloudL />
                </StyledCloud>
-               <StyledCloud top="35%" right="25%">
+               <StyledCloud top="35%" right="25%" endRight="85%" time="140s">
                     <IconCloudM />
                </StyledCloud>
-               <StyledCloud top="50%" left="91%">
+               <StyledCloud top="50%" left="0%" endLeft="85%" time="100s">
                     <IconCloudS />
                </StyledCloud>
-               <StyledCloud top="60%" right="50%">
+               <StyledCloud top="60%" right="0%" endRight="85%" time="100s">
                     <IconCloudL />
                </StyledCloud>
-               <StyledCloud top="80%" left="65%">
+               <StyledCloud top="80%" left="0%" endLeft="85%" time="122s">
                     <IconCloudM />
                </StyledCloud>
-               <StyledCloud top="90%" right="80%">
+               <StyledCloud top="90%" left="0%" endLeft="85%" time="105s">
                     <IconCloudS />
                </StyledCloud>
           </>
