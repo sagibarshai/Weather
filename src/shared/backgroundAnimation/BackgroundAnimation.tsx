@@ -12,12 +12,13 @@ type Props = {
 };
 
 const StyledCloud = styled.i<Props>`
+     transform: translate(-50% , -50%);
      position: absolute;
+     outline;
      top: ${(props) => props.top};
      left: ${(props) => props.left};
      right: ${(props) => props.right};
      z-index: 0;
-     transition: all;
      ${(props) =>
           props.left && props.endLeft
                ? css`
@@ -41,22 +42,22 @@ const StyledCloud = styled.i<Props>`
 const BackgroundAnimation = () => {
      return (
           <>
-               <StyledCloud top="15%" right="0%" endRight="85%" time="120s">
+               <StyledCloud top="20%" left="0%" endLeft="90%" time="150s">
                     <IconCloudL />
                </StyledCloud>
-               <StyledCloud top="35%" right="25%" endRight="85%" time="140s">
+               <StyledCloud top="40%" left="-25%" endLeft="80%" time="200s">
                     <IconCloudM />
                </StyledCloud>
-               <StyledCloud top="50%" left="0%" endLeft="85%" time="100s">
+               <StyledCloud top="55%" left="-10%" endLeft="60%" time="130s">
                     <IconCloudS />
                </StyledCloud>
-               <StyledCloud top="60%" right="0%" endRight="85%" time="100s">
+               <StyledCloud top="70%" left="50%" endLeft="73%" time="160s">
                     <IconCloudL />
                </StyledCloud>
-               <StyledCloud top="80%" left="0%" endLeft="85%" time="122s">
+               <StyledCloud top="90%" left="-50%" endLeft="94%" time="250s">
                     <IconCloudM />
                </StyledCloud>
-               <StyledCloud top="90%" left="0%" endLeft="85%" time="105s">
+               <StyledCloud top="95%" left="30%" endLeft="89%" time="125s">
                     <IconCloudS />
                </StyledCloud>
           </>
