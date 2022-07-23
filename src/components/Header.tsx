@@ -122,7 +122,7 @@ const Header = () => {
                          <Input
                               onChange={() => {}}
                               variant="inactive"
-                              width="372px"
+                              width="318px"
                               height="54px"
                               placeHolder="Try “Tel Aviv - Jaffa”..."
                          >

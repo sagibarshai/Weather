@@ -16,7 +16,7 @@ type StyledHeaderProps = {
      filterBlur?: boolean;
 };
 export const StyledHeader = styled.header<StyledHeaderProps>`
-     min-width: max-content;
+     width: 100vw;
      height: 94px;
      background-color: ${(props) => {
           if (props.renderPraimaryBg) return themes.primary;

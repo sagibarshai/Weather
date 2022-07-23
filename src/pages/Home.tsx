@@ -3,7 +3,6 @@ import { MobileMenuBottom } from "../components/MobileHeader";
 import { StyledPageContainer } from "./StyledHome";
 import { RootState } from "../redux/store";
 import { closeMobileMenu, toggleLogoutPopup } from "../redux/headerSlice";
-import BackgroundAnimation from "../shared/backgroundAnimation/BackgroundAnimation";
 import Header from "../components/Header";
 import Popup from "../components/Popup";
 
@@ -32,9 +31,7 @@ const Home: React.FC = () => {
                     renderPraimaryBackground={renderPraimaryBackground}
                     onClick={onClickHandler}
                     openLogoutPopup={openLogoutPopup}
-               >
-                    <BackgroundAnimation />
-               </StyledPageContainer>
+               ></StyledPageContainer>
                {openLogoutPopup && <Popup />}
                <MobileMenuBottom />
           </>

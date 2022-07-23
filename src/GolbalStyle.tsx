@@ -5,7 +5,8 @@ html, body {
     margin: 0 ;
     padding:0 ;
     font-family: 'Overpass', sans-serif;
-    width: fit-content;
-    }    
+    width: 100vw;
+    overflow-x: hidden;
+}    
 `;
 export default GlobalStyle;
