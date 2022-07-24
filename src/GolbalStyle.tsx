@@ -6,6 +6,7 @@ html, body {
     padding:0 ;
     font-family: 'Overpass', sans-serif;
     width: 100vw;
+
     }    
 `;
 export default GlobalStyle;
