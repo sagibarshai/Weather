@@ -13,6 +13,8 @@ export const StyledPageContainer = styled.div<StyledHome>`
           else return themes.darkBackground;
      }};
      width: 100vw;
+     margin: 0;
+     overflow-x: hidden;
      min-height: 100vh;
      ${(props) => {
           if (props.openMobileMenu || props.openLogoutPopup) {
