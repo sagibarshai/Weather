@@ -20,7 +20,6 @@ export const StyledLoginPageContainer = styled.div<Props>`
      }};
 `;
 export const StyledLoginContainer = styled.form<Props>`
-
      background-color: ${themes.white};
      height: {props => props.serverError? '743px' : '649px'};
      width:732px;

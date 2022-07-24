@@ -18,6 +18,7 @@ const StyledCloud = styled.i<Props>`
      right: ${(props) => props.right};
      left: ${(props) => props.left};
      z-index: 0;
+     transition: all;
      ${(props) =>
           props.left && props.endLeft
                ? css`

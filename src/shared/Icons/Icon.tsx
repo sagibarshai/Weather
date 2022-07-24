@@ -20,6 +20,7 @@ export const StyledIcon = styled.i<StyledIconProps>`
      position: ${(props) => props.position};
      top: ${(props) => props.top};
      right: ${(props) => props.right};
+     left: ${(props) => props.left};
      transform: ${(props) => props.transform};
      z-index: ${(props) => props.zIndex};
      margin-right: ${(props) => props.marginRight};

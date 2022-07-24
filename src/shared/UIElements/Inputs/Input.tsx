@@ -10,20 +10,23 @@ type Props = {
      variant: InputProps;
      label?: string;
      placeHolder?: string;
+     fontWeight?: string;
      color?: string;
      errorMessage?: string | null;
      display?: string;
      width?: string;
+     laptopWidth?: string;
      mobileWidth?: string;
      height?: string;
      position?: string;
      padding?: string;
      marginTop?: string;
-     children?: JSX.Element;
+     children?: JSX.Element | JSX.Element[];
      type?: string;
      onChange: (e: ChangeEvent) => void;
      onBlur?: () => void;
      onFocus?: () => void;
+     onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => void;
 };
 const StyledInputsContainer = styled.div<Variant>`
      position: relative;
@@ -58,8 +61,11 @@ const StyledInput = styled.input<Props>`
      height: ${(props) => props.height || "77px"};
      border-radius: 10px;
      border: none;
-     padding: 8px 24px 0 24px;
+     padding: 4px 24px;
      line-height: 1.25;
+     @media ${cssBreakPoints.laptop} {
+          width: ${(props) => props.laptopWidth};
+     }
      @media ${cssBreakPoints.mobile} {
           width: ${(props) =>
                props.mobileWidth ? props.mobileWidth : "354px"};
@@ -67,10 +73,13 @@ const StyledInput = styled.input<Props>`
      &:focus {
           outline: none;
           background-color: ${themes.white};
-          color: ${themes.notificationText};
+          color: ${themes.black};
           font-size: 1.8rem;
           line-height: 1.25;
-          margin-top: 4px;
+          font-weight: ${(props) => props.fontWeight};
+     }
+     &::placeholder {
+          font-weight: normal;
      }
      ${(props) =>
           props.variant === "inactive"
@@ -128,8 +137,10 @@ const Input: React.FC<Props> = (props) => {
                          {props.label}
                     </StyledLabel>
                     <StyledInput
+                         laptopWidth={props.laptopWidth}
                          onFocus={props.onFocus}
                          onBlur={props.onBlur}
+                         onKeyDown={props.onKeyDown}
                          onChange={props.onChange}
                          width={props.width}
                          height={props.height}
@@ -137,6 +148,7 @@ const Input: React.FC<Props> = (props) => {
                          placeholder={props.placeHolder}
                          type={props.type || "text"}
                          mobileWidth={props.mobileWidth}
+                         fontWeight={props.fontWeight}
                     />
                     {props.children}
                     <StyledInvalidInput variant={props.variant}>

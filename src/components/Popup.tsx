@@ -26,6 +26,7 @@ const StyledPopupContainer = styled.div<Props>`
      left: 50%;
      transform: translate(-50%, -50%);
      border-radius: 30px;
+     z-index: 1;
      @media ${cssBreakPoints.mobile} {
           width: 334px;
           height: 270px;

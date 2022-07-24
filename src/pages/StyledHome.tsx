@@ -24,3 +24,34 @@ export const StyledPageContainer = styled.div<StyledHome>`
           }
      }};
 `;
+export const StyledLocationDiv = styled.div`
+     display: flex;
+     flex-direction: column;
+     position: absolute;
+     top: 50%;
+     left: 50%;
+     transform: translate(-50%, -50%);
+     align-items: center;
+     justify-content: center;
+     width: 296px;
+     height: 266px;
+     text-align: center;
+`;
+export const StyledLocationTitle = styled.h3`
+     text-shadow: -2px 3px 1px rgba(0, 0, 0, 0.1),
+          -1px 1px 2px rgba(255, 255, 255, 0.25);
+     font-family: inherit;
+     font-size: 3.2rem;
+     font-weight: bold;
+     line-height: 1.25;
+     margin: 0;
+     padding: 0;
+     color: ${themes.white};
+     margin-top: -45px;
+`;
+export const StyledLocationParagraph = styled.p`
+     font-family: inherit;
+     font-size: 18px;
+     line-height: 1.5;
+     color: ${themes.white};
+`;

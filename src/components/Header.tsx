@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CSSProperties } from "styled-components";
@@ -6,7 +6,8 @@ import { CSSProperties } from "styled-components";
 import Checkbox from "../shared/UIElements/Inputs/Checkbox";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import Input from "../shared/UIElements/Inputs/Input";
-
+import { search } from "../shared/utils/search";
+import SearchBox from "./SearchBox";
 import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
 import links from "../shared/links/links";
 import themes from "../shared/themes/themes";
@@ -34,19 +35,21 @@ import { ReactComponent as IconMoonDark } from "../shared/svg/moon-dark.svg";
 import { ReactComponent as IconSunDark } from "../shared/svg/sun-dark.svg";
 import { ReactComponent as IconLogout } from "../shared/svg/log-out.svg";
 import MobileHeader from "./MobileHeader";
-
 const Header = () => {
      const dispatch = useDispatch();
      const [activeIconId, setActiveIconId] = useState<string>(
           window.location.pathname
      );
+     const [searchInput, setSearchInput] = useState<string>("");
+     const [searchIsFocus, setSearchIsFocus] = useState<boolean>(false);
+     const [searchResults, setSearchResults] = useState<[] | string[]>([]);
+     const [hoverIndexResult, setHoverIndexResult] = useState<number>(-1);
      const currentIcon: LinksType | undefined = links.find((link) => {
           if (link.to === activeIconId) return link;
      }) as LinksType;
      const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
           currentIcon ? currentIcon.activeIcon : undefined
      );
-
      const NavLinkStyleHandler = (isActive: boolean, link: LinksType) => {
           if (isActive) {
                return NavLinkActiveStyle;
@@ -59,6 +62,13 @@ const Header = () => {
      const openLogoutPopup = useSelector(
           (state: RootState) => state.headerSlice.openLogoutPopup
      );
+     useEffect(() => {
+          search(searchInput).then((res) => {
+               if (res) {
+                    setSearchResults(res);
+               }
+          });
+     }, [searchInput]);
      return (
           <>
                <StyledHeader
@@ -120,20 +130,46 @@ const Header = () => {
                          orderLaptop={3}
                     >
                          <Input
-                              onChange={() => {}}
+                              onKeyDown={(e) => {
+                                   if (
+                                        e.keyCode === 40 &&
+                                        hoverIndexResult <
+                                             searchResults.length - 1
+                                   )
+                                        setHoverIndexResult((prev) => prev + 1);
+                                   // down
+                                   else if (
+                                        e.keyCode === 38 &&
+                                        hoverIndexResult > -1
+                                   )
+                                        setHoverIndexResult((prev) => prev - 1); //up
+                              }}
+                              onChange={(e: any) => {
+                                   setSearchInput(e.target.value);
+                              }}
+                              onFocus={() => setSearchIsFocus(true)}
+                              onBlur={() => setSearchIsFocus(false)}
                               variant="inactive"
-                              width="318px"
+                              laptopWidth="318px"
+                              width="372px"
                               height="54px"
                               placeHolder="Try “Tel Aviv - Jaffa”..."
+                              fontWeight="bold"
+                              position="relative"
                          >
                               <StyledIcon
                                    position="absolute"
-                                   top="12px"
+                                   top="50%"
                                    right="30px"
-                                   transform="translateY(-50% , -50%)"
+                                   transform="translate(0 , -50%)"
                               >
                                    <IconSearchDark />
                               </StyledIcon>
+                              <SearchBox
+                                   display={searchIsFocus && searchInput !== ""}
+                                   results={searchResults}
+                                   hoverIndexResult={hoverIndexResult}
+                              />
                          </Input>
                     </StyledDiv>
                     <StyledDiv
