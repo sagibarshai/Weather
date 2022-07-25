@@ -13,6 +13,7 @@ export interface Colors {
      praimaryDark: string;
      notification: string;
      notificationText: string;
+     scroll: string;
 }
 const colors: Colors = {
      black: "#222222",
@@ -29,5 +30,6 @@ const colors: Colors = {
      praimaryDark: "#1A2B55",
      notification: "#ffe7e7",
      notificationText: "#4d4d4d",
+     scroll: "#c4c4c4",
 };
 export default colors;

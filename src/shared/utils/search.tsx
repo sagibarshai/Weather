@@ -1,5 +1,5 @@
 import axios from "axios";
-const key = "euHtruhPAnb8v5DTuH7fIi8tPqqsblPq";
+const key = "a0fAeh4WNQogoSnGgTgtd1jurQ55rYAD";
 export const search = async (value: string) => {
      const arr: string[] = [];
      try {

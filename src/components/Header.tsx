@@ -69,6 +69,14 @@ const Header = () => {
                }
           });
      }, [searchInput]);
+     useEffect(() => {
+          const myElement = document.getElementById(`${hoverIndexResult}`);
+          if (myElement) {
+               const topPos = myElement.offsetTop;
+               document.getElementById("scroll").scrollTop = topPos;
+          }
+     }, [hoverIndexResult]);
+
      return (
           <>
                <StyledHeader
@@ -135,20 +143,33 @@ const Header = () => {
                                         e.keyCode === 40 &&
                                         hoverIndexResult <
                                              searchResults.length - 1
-                                   )
+                                   ) {
                                         setHoverIndexResult((prev) => prev + 1);
+                                   }
                                    // down
                                    else if (
                                         e.keyCode === 38 &&
                                         hoverIndexResult > -1
                                    )
-                                        setHoverIndexResult((prev) => prev - 1); //up
+                                        setHoverIndexResult((prev) => prev - 1);
+                                   //up
+                                   else if (e.keyCode === 13) {
+                                        console.log(
+                                             searchResults[hoverIndexResult]
+                                        );
+                                        setSearchIsFocus(false);
+                                   }
                               }}
                               onChange={(e: any) => {
                                    setSearchInput(e.target.value);
+                                   setSearchIsFocus(true);
                               }}
                               onFocus={() => setSearchIsFocus(true)}
-                              onBlur={() => setSearchIsFocus(false)}
+                              onBlur={() => {
+                                   setTimeout(() => {
+                                        setSearchIsFocus(false);
+                                   }, 200);
+                              }}
                               variant="inactive"
                               laptopWidth="318px"
                               width="372px"
