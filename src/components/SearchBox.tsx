@@ -1,5 +1,7 @@
 import styled, { css } from "styled-components";
 import themes from "../shared/themes/themes";
+import { ReactComponent as IconCity } from "../shared/svg/city.svg";
+import { StyledIcon } from "../shared/Icons/Icon";
 type Props = {
      display?: boolean;
      results?: string[] | [];
@@ -7,6 +9,8 @@ type Props = {
      index?: number;
      onClick?: () => void;
      id?: any;
+     searchInput?: string;
+     height?: string;
 };
 const StyledigContainer = styled.div<Props>`
      display: ${(props) => (props.display === true ? "inline-block" : "none")};
@@ -21,6 +25,7 @@ const StyledigContainer = styled.div<Props>`
      z-index: 2;
      padding: 12px 0;
      max-height: 372px;
+     height: ${(props) => props.height};
 `;
 const StyledResultContainer = styled.div<Props>`
      max-height: 372px;
@@ -66,7 +71,42 @@ const StyledItem = styled.p<Props>`
                background-color: ${themes.grayBackground};
           `}
 `;
+const StyledText = styled.p`
+     width: 416px;
+     font-family: inherit;
+     font-size: 1.8rem;
+     line-height: 1.5;
+     text-align: center;
+     color: ${themes.secondary};
+     margin-top: 208px;
+`;
 const SearchBox: React.FC<Props> = (props) => {
+     if (props.results?.length === 0)
+          return (
+               <StyledigContainer
+                    id="scroll"
+                    display={props.display}
+                    height="326px"
+               >
+                    <StyledResultContainer>
+                         <StyledContentWrapper>
+                              <StyledIcon
+                                   position="absolute"
+                                   top="64px"
+                                   left="50%"
+                                   transform="translate(-50%,0)"
+                              >
+                                   <IconCity />
+                              </StyledIcon>
+                              <StyledText>
+                                   We couldn’t find any city named "
+                                   {props.searchInput}", please try again.
+                              </StyledText>
+                         </StyledContentWrapper>
+                    </StyledResultContainer>
+               </StyledigContainer>
+          );
+
      return (
           <StyledigContainer display={props.display}>
                <StyledResultContainer id="scroll">
@@ -83,7 +123,8 @@ const SearchBox: React.FC<Props> = (props) => {
                                              index={index}
                                              onClick={() => {}}
                                         >
-                                             {item.LocalizedName}
+                                             {item.LocalizedName},{" "}
+                                             {item.Country.LocalizedName}
                                         </StyledItem>
                                    );
                               })}

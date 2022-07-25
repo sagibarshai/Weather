@@ -58,7 +58,7 @@ const BackgroundAnimation = () => {
                <StyledCloud top="40%" left="-20%" endLeft="100%" time="250s">
                     <IconCloudM />
                </StyledCloud>
-               <StyledCloud top="55%" right="0" endRight="100%" time="185s">
+               <StyledCloud top="55%" right="0" endRight="100%" time="110s">
                     <IconCloudS />
                </StyledCloud>
                <StyledCloud top="70%" left="-10%" endLeft="100%" time="200s">
@@ -70,11 +70,10 @@ const BackgroundAnimation = () => {
                <StyledCloud top="95%" left="0%" endLeft="100%" time="210s">
                     <IconCloudS />
                </StyledCloud>
-
-               <StyledCloud top="5%" right="20%" endRight="60%" time="270s">
+               <StyledCloud top="5%" right="0%" endRight="100%" time="100s">
                     <IconCloudM />
                </StyledCloud>
-               <StyledCloud top="62.5%" left="0%" endLeft="75%" time="175s">
+               <StyledCloud top="62.5%" left="-20%" endLeft="100%" time="125s">
                     <IconCloudS />
                </StyledCloud>
           </>

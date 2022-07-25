@@ -190,6 +190,7 @@ const Header = () => {
                                    <IconSearchDark />
                               </StyledIcon>
                               <SearchBox
+                                   searchInput={searchInput}
                                    display={searchIsFocus && searchInput !== ""}
                                    results={searchResults}
                                    hoverIndexResult={hoverIndexResult}
