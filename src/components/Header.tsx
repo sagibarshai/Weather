@@ -7,6 +7,7 @@ import Checkbox from "../shared/UIElements/Inputs/Checkbox";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import Input from "../shared/UIElements/Inputs/Input";
 import { search } from "../shared/utils/search";
+import { scrollBarHandler } from "../shared/utils/scrollbarHandler";
 import SearchBox from "./SearchBox";
 import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
 import links from "../shared/links/links";
@@ -69,12 +70,14 @@ const Header = () => {
                }
           });
      }, [searchInput]);
+
      useEffect(() => {
-          const myElement = document.getElementById(`${hoverIndexResult}`);
-          if (myElement) {
-               const topPos = myElement.offsetTop;
-               document.getElementById("scroll").scrollTop = topPos;
-          }
+          scrollBarHandler(
+               "scroll",
+               searchResults,
+               hoverIndexResult,
+               setHoverIndexResult
+          );
      }, [hoverIndexResult]);
 
      return (
@@ -141,8 +144,7 @@ const Header = () => {
                               onKeyDown={(e) => {
                                    if (
                                         e.keyCode === 40 &&
-                                        hoverIndexResult <
-                                             searchResults.length - 1
+                                        hoverIndexResult < searchResults.length
                                    ) {
                                         setHoverIndexResult((prev) => prev + 1);
                                    }
@@ -169,6 +171,7 @@ const Header = () => {
                                    setTimeout(() => {
                                         setSearchIsFocus(false);
                                    }, 200);
+                                   setHoverIndexResult(-1);
                               }}
                               variant="inactive"
                               laptopWidth="318px"

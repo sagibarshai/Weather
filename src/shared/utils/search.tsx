@@ -1,5 +1,5 @@
 import axios from "axios";
-const key = "a0fAeh4WNQogoSnGgTgtd1jurQ55rYAD";
+const key = "8d76Gqi2HkQC428aZ2LXS07F871Eybcq";
 export const search = async (value: string) => {
      const arr: string[] = [];
      try {
@@ -8,7 +8,7 @@ export const search = async (value: string) => {
           );
           const data = await response.data;
           for (let item of data) {
-               arr.push(item.LocalizedName);
+               arr.push(item);
           }
           return arr;
      } catch (err) {

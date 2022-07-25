@@ -70,6 +70,13 @@ const BackgroundAnimation = () => {
                <StyledCloud top="95%" left="0%" endLeft="100%" time="210s">
                     <IconCloudS />
                </StyledCloud>
+
+               <StyledCloud top="5%" right="20%" endRight="60%" time="270s">
+                    <IconCloudM />
+               </StyledCloud>
+               <StyledCloud top="62.5%" left="0%" endLeft="75%" time="175s">
+                    <IconCloudS />
+               </StyledCloud>
           </>
      );
 };
