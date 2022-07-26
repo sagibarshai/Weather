@@ -21,12 +21,16 @@ interface StyledButtonProps {
      width?: string;
      height?: string;
      mobileWidth?: string;
+     mobileWidthWithCalc?: string;
+     fontWeight?: string;
+     color?: string;
+     displayOnlyOnMobile?: boolean;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
      font-family: inherit;
-     width: ${(props) => props.width || "402px"};
-     height: ${(props) => props.height || "54px"};
+     width: 402px;
+     height: 54px;
      border-radius: 10px;
      box-shadow: -4px 8px 50px 4px rgba(0, 0, 0, 0.16),
           inset -6px 4px 4px 0 rgba(255, 255, 255, 0.1),
@@ -50,8 +54,8 @@ export const StyledButton = styled.button<StyledButtonProps>`
                       padding: 16px 24px;
                       box-shadow: inset -6px 4px 4px 0 rgba(255, 255, 255, 0.1),
                            inset 2px -3px 6px 0 rgba(0, 0, 0, 0.1);
-                      background-color: white;
                       background: none;
+                      background-color: white;
                       color: #444e72;
                  `
                : ""}
@@ -86,11 +90,22 @@ export const StyledButton = styled.button<StyledButtonProps>`
      margin: ${(props) => props.margin};
      margin-right: ${(props) => props.marginRight};
      position: ${(props) => props.position};
+     width: ${(props) => props.width};
+     height: ${(props) => props.height};
+     font-weight: ${(props) => props.fontWeight};
+     color: ${(props) => props.color};
+     @media ${cssBreakPoints.bigDesktop} {
+          ${(props) => props.displayOnlyOnMobile === true && "display:none"}
+     }
+     @media ${cssBreakPoints.laptop} {
+          ${(props) => props.displayOnlyOnMobile === true && "display:none"}
+     }
      @media ${cssBreakPoints.mobile} {
           ${(props) =>
-               props.mobileWidth &&
+               props.mobileWidthWithCalc &&
                css`
                     width: calc(${props.mobileWidth} + 48px);
                `}
+          width:${(props) => props.mobileWidth};
      }
 `;

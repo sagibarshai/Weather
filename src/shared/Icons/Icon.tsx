@@ -12,6 +12,8 @@ type StyledIconProps = {
      transform?: string;
      zIndex?: number;
      marginRight?: string;
+     displayMobile?: boolean;
+     displayOnlyOnMobile?: boolean;
 };
 export const StyledIcon = styled.i<StyledIconProps>`
      width: ${(props) => props.width || "auto"};
@@ -25,4 +27,13 @@ export const StyledIcon = styled.i<StyledIconProps>`
      z-index: ${(props) => props.zIndex};
      margin-right: ${(props) => props.marginRight};
      vertical-align: middle;
+     @media ${cssBreakPoints.bigDesktop} {
+          ${(props) => props.displayOnlyOnMobile === true && "display:none"}
+     }
+     @media ${cssBreakPoints.laptop} {
+          ${(props) => props.displayOnlyOnMobile === true && "display:none"}
+     }
+     @media ${cssBreakPoints.mobile} {
+          display: ${(props) => props.displayMobile === false && "none"};
+     }
 `;

@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
 import themes from "../shared/themes/themes";
 type StyledHome = {
      renderPraimaryBackground: boolean;
@@ -36,6 +37,8 @@ export const StyledLocationDiv = styled.div`
      width: 296px;
      height: 266px;
      text-align: center;
+     @media ${cssBreakPoints.mobile} {
+     }
 `;
 export const StyledLocationTitle = styled.h3`
      text-shadow: -2px 3px 1px rgba(0, 0, 0, 0.1),
@@ -48,12 +51,18 @@ export const StyledLocationTitle = styled.h3`
      padding: 0;
      color: ${themes.white};
      margin-top: -45px;
+     @media ${cssBreakPoints.mobile} {
+          margin-top: 67px;
+     }
 `;
 export const StyledLocationParagraph = styled.p`
      font-family: inherit;
      font-size: 18px;
      line-height: 1.5;
      color: ${themes.white};
+     @media ${cssBreakPoints.mobile} {
+          margin-top: 16px;
+     }
 `;
 export const StyledNotFoundCityDiv = styled.div`
      width: 416px;

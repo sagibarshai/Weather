@@ -57,8 +57,10 @@ export const MobileMenuBottom = () => {
                          <Checkbox
                               onClick={() => dispatch(toggleBackground())}
                               variant="checkbox"
-                              LeftIcon={<IconSunDark />}
-                              rightIcon={<IconMoonDark />}
+                              LeftIcon={<IconMoonDark />}
+                              rightIcon={<IconSunDark />}
+                              top="37.5%"
+                              rotate={true}
                               id="mobileMood"
                          ></Checkbox>
                     </StyledColumnContainer>
@@ -69,6 +71,7 @@ export const MobileMenuBottom = () => {
                               variant="checkbox"
                               LeftIcon="F°"
                               rightIcon="C°"
+                              top="55%"
                               id="mobileMood"
                          ></Checkbox>
                     </StyledColumnContainer>

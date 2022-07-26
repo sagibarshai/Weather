@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { MobileMenuBottom } from "../components/MobileHeader";
+import MobileHeader, { MobileMenuBottom } from "../components/MobileHeader";
 import {
      StyledPageContainer,
      StyledLocationTitle,
@@ -16,11 +16,14 @@ import Popup from "../components/Popup";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconLocation } from "../shared/svg/location.svg";
 import { ReactComponent as IconCity } from "../shared/svg/city.svg";
+import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
+import { StyledButton } from "../shared/UIElements/Button/Button";
+import themes from "../shared/themes/themes";
 
 const Home: React.FC = () => {
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
      const [searchInput, setSearchInput] = useState<string>("");
-     const [locationIsOpen, setLocationIsOpen] = useState<boolean>(false);
+     const [locationIsOpen, setLocationIsOpen] = useState<boolean>(true);
      const dispatch = useDispatch();
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
@@ -47,26 +50,56 @@ const Home: React.FC = () => {
                          setNoResultAndEnter={setNoResultAndEnter}
                          noResultAndEnter={noResultAndEnter}
                     />
+                    <MobileHeader />
                     <StyledPageContainer
                          openMobileMenu={openMobileMenu}
                          renderPraimaryBackground={renderPraimaryBackground}
                          onClick={onClickHandler}
                          openLogoutPopup={openLogoutPopup}
-                    ></StyledPageContainer>
-                    {openLogoutPopup && <Popup />}
-
-                    <StyledLocationDiv>
-                         <StyledIcon>
-                              <IconLocation />
+                    >
+                         <StyledIcon
+                              displayOnlyOnMobile={true}
+                              position="absolute"
+                              top="182px"
+                              left="50%"
+                              transform="translate(-50% , 0)"
+                         >
+                              <IconApp />
                          </StyledIcon>
-                         <StyledLocationTitle>
-                              Set up location
-                         </StyledLocationTitle>
-                         <StyledLocationParagraph>
-                              To identify your location please allow WeatherApp
-                              to know your location.
-                         </StyledLocationParagraph>
-                    </StyledLocationDiv>
+                         <StyledLocationDiv>
+                              <StyledIcon displayMobile={false}>
+                                   <IconLocation />
+                              </StyledIcon>
+                              <StyledLocationTitle>
+                                   Set up location
+                              </StyledLocationTitle>
+                              <StyledLocationParagraph>
+                                   To identify your location please allow
+                                   WeatherApp to know your location.
+                              </StyledLocationParagraph>
+                              <StyledButton
+                                   variant="white"
+                                   color={themes.black}
+                                   mobileWidth="63.7vw"
+                                   height="54px"
+                                   margin="0 0 16px 0"
+                                   fontWeight="bold"
+                                   displayOnlyOnMobile={true}
+                              >
+                                   Open location service
+                              </StyledButton>
+                              <StyledButton
+                                   variant="ghost"
+                                   color={themes.white}
+                                   mobileWidth="63.7vw"
+                                   height="54px"
+                                   displayOnlyOnMobile={true}
+                              >
+                                   Search city
+                              </StyledButton>
+                         </StyledLocationDiv>
+                    </StyledPageContainer>
+                    {openLogoutPopup && <Popup />}
                     <MobileMenuBottom />
                </>
           );

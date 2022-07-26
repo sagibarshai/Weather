@@ -161,7 +161,7 @@ const Login = () => {
                          />
                     </StyledInputsContainer>
                     <StyledButton
-                         mobileWidth="90vw"
+                         mobileWidth="98vw"
                          margin="40px 0 0 0"
                          disabled={!(emailIsValid && passwordIsValid)}
                          variant={
