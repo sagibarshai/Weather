@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CSSProperties } from "styled-components";
@@ -37,14 +37,18 @@ import { ReactComponent as IconSunDark } from "../shared/svg/sun-dark.svg";
 import { ReactComponent as IconLogout } from "../shared/svg/log-out.svg";
 import { Result } from "./SearchBox";
 import MobileHeader from "./MobileHeader";
-const Header = () => {
+type Props = {
+     setNoResultAndEnter: (x: boolean) => void;
+     noResultAndEnter: boolean;
+     searchInput: string;
+     setSearchInput: (e: React.ChangeEvent | any) => void;
+};
+const Header: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      const [activeIconId, setActiveIconId] = useState<string>(
           window.location.pathname
      );
-     const [searchInput, setSearchInput] = useState<string>("");
      const [searchIsFocus, setSearchIsFocus] = useState<boolean>(false);
-     const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
      const [hoverIndexResult, setHoverIndexResult] = useState<number>(-1);
      const currentIcon: LinksType | undefined = links.find((link) => {
@@ -65,15 +69,14 @@ const Header = () => {
      const openLogoutPopup = useSelector(
           (state: RootState) => state.headerSlice.openLogoutPopup
      );
-     console.log(noResultAndEnter);
      useEffect(() => {
-          search(searchInput).then((res) => {
+          search(props.searchInput).then((res) => {
                if (res) {
                     setSearchResults(res);
                }
           });
-          setNoResultAndEnter(false);
-     }, [searchInput]);
+          props.setNoResultAndEnter(false);
+     }, [props.searchInput]);
 
      useEffect(() => {
           scrollBarHandler(
@@ -159,9 +162,12 @@ const Header = () => {
                                    else if (e.keyCode === 13) {
                                         // enter
                                         if (!searchResults.length) {
-                                             return setNoResultAndEnter(true);
+                                             props.setNoResultAndEnter(true);
+                                             setSearchIsFocus(false);
+                                             return;
                                         }
-                                        setNoResultAndEnter(false);
+
+                                        props.setNoResultAndEnter(false);
                                         console.log(
                                              searchResults[hoverIndexResult]
                                         );
@@ -169,7 +175,7 @@ const Header = () => {
                                    }
                               }}
                               onChange={(e: any) => {
-                                   setSearchInput(e.target.value);
+                                   props.setSearchInput(e.target.value);
                                    setSearchIsFocus(true);
                               }}
                               onFocus={() => setSearchIsFocus(true)}
@@ -196,9 +202,12 @@ const Header = () => {
                                    <IconSearchDark />
                               </StyledIcon>
                               <SearchBox
-                                   noResultAndEnter={noResultAndEnter}
-                                   searchInput={searchInput}
-                                   display={searchIsFocus && searchInput !== ""}
+                                   noResultAndEnter={props.noResultAndEnter}
+                                   searchInput={props.searchInput}
+                                   display={
+                                        searchIsFocus &&
+                                        props.searchInput !== ""
+                                   }
                                    results={searchResults}
                                    hoverIndexResult={hoverIndexResult}
                               />
@@ -240,6 +249,7 @@ const Header = () => {
                               variant="checkbox"
                               LeftIcon="F°"
                               rightIcon="C°"
+                              top="55%"
                          />
                          <Checkbox
                               onClick={() => {
@@ -250,6 +260,8 @@ const Header = () => {
                               variant="checkbox"
                               LeftIcon={<IconMoonDark />}
                               rightIcon={<IconSunDark />}
+                              top="37.5%"
+                              rotate={true}
                          />
                     </StyledDiv>
                     <StyledDiv

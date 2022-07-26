@@ -94,38 +94,7 @@ const StyledText = styled.p<Props>`
      margin-top: 208px;
 `;
 const SearchBox: React.FC<Props> = (props) => {
-     if (props.noResultAndEnter) {
-          console.log("props");
-          return (
-               <StyledBigContainer
-                    id="scroll"
-                    display={props.display}
-                    height="326px"
-                    backgroundColor="transparent"
-                    top="216px"
-                    boxShadow="none"
-               >
-                    <StyledResultContainer overflow="hidden">
-                         <StyledContentWrapper>
-                              <StyledIcon
-                                   position="absolute"
-                                   top="64px"
-                                   left="50%"
-                                   transform="translate(-50%,0)"
-                              >
-                                   <IconCity />
-                              </StyledIcon>
-                              <StyledText color={themes.white}>
-                                   We couldn’t find any city named "
-                                   {props.searchInput}", please try again.
-                              </StyledText>
-                         </StyledContentWrapper>
-                    </StyledResultContainer>
-               </StyledBigContainer>
-          );
-     }
-
-     if (props.results?.length === 0)
+     if (props.results?.length === 0 && !props.noResultAndEnter)
           return (
                <StyledBigContainer
                     id="scroll"
@@ -150,32 +119,33 @@ const SearchBox: React.FC<Props> = (props) => {
                     </StyledResultContainer>
                </StyledBigContainer>
           );
-
-     return (
-          <StyledBigContainer display={props.display}>
-               <StyledResultContainer id="scroll">
-                    <StyledContentWrapper>
-                         {props.results &&
-                              props.results.map((item, index) => {
-                                   return (
-                                        <StyledItem
-                                             id={index}
-                                             key={index}
-                                             hoverIndexResult={
-                                                  props.hoverIndexResult
-                                             }
-                                             index={index}
-                                             onClick={() => {}}
-                                        >
-                                             {item.LocalizedName},
-                                             {item.Country.LocalizedName}
-                                        </StyledItem>
-                                   );
-                              })}
-                    </StyledContentWrapper>
-               </StyledResultContainer>
-          </StyledBigContainer>
-     );
+     else if (!props.noResultAndEnter)
+          return (
+               <StyledBigContainer display={props.display}>
+                    <StyledResultContainer id="scroll">
+                         <StyledContentWrapper>
+                              {props.results &&
+                                   props.results.map((item, index) => {
+                                        return (
+                                             <StyledItem
+                                                  id={index}
+                                                  key={index}
+                                                  hoverIndexResult={
+                                                       props.hoverIndexResult
+                                                  }
+                                                  index={index}
+                                                  onClick={() => {}}
+                                             >
+                                                  {item.LocalizedName},
+                                                  {item.Country.LocalizedName}
+                                             </StyledItem>
+                                        );
+                                   })}
+                         </StyledContentWrapper>
+                    </StyledResultContainer>
+               </StyledBigContainer>
+          );
+     else return <></>;
 };
 
 export default SearchBox;

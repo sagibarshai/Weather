@@ -1,6 +1,11 @@
 import { ReactEventHandler } from "react";
 import styled, { css } from "styled-components";
 import themes from "../../themes/themes";
+type StyleProps = {
+     top?: string;
+     rotate?: boolean;
+};
+
 type Props = {
      variant: "checkbox";
      LeftIcon: string | JSX.Element;
@@ -8,16 +13,23 @@ type Props = {
      id: string;
      htmlFor?: string;
      onClick?: ReactEventHandler;
+     top?: string;
+     rotate?: boolean;
 };
-const StyledLabel = styled.label`
+const StyledLabel = styled.label<StyleProps>`
      width: 73px;
      height: 40px;
      border-radius: 100px;
      display: inline-block;
      cursor: pointer;
      background-color: blue;
+     ${(props) =>
+          props.rotate === true &&
+          css`
+               transform: rotate(-180deg);
+          `}
 `;
-const StyledDivToggle = styled.div`
+const StyledDivToggle = styled.div<StyleProps>`
      position: relative;
      width: 73px;
      height: 40px;
@@ -37,34 +49,53 @@ const StyledDivToggle = styled.div`
           transition: transform 0.4s;
      }
 `;
-const StyledInput = styled.input`
+const StyledInput = styled.input<StyleProps>`
      display: none;
      &:checked + ${StyledDivToggle}::after {
           transform: translate(35px, -50%);
      }
 `;
-const StyledIconState = styled.div`
+const StyledIconState = styled.div<StyleProps>`
      display: inline-block;
      height: auto;
      font-size: 2.2rem;
      vertical-align: middle;
      position: absolute;
-     top: 60%;
-     transform: translate(-50%, -50%);
+     top: ${(props) => props.top || "50%"};
+     ${(props) =>
+          props.rotate === true
+               ? css`
+                      transform: translate(-50%, -50%) rotate(-180deg);
+                 `
+               : css`
+                      transform: translate(-50%, -50%);
+                 `}
 `;
 const Checkbox: React.FC<Props> = (props) => {
      return (
-          <StyledLabel htmlFor={props.htmlFor} onClick={props.onClick}>
+          <StyledLabel
+               htmlFor={props.htmlFor}
+               onClick={props.onClick}
+               rotate={props.rotate}
+          >
                <StyledInput
                     onClick={props.onClick}
                     type="checkbox"
                     id={props.id}
                />
                <StyledDivToggle>
-                    <StyledIconState style={{ left: "30%" }}>
+                    <StyledIconState
+                         style={{ left: "30%" }}
+                         top={props.top}
+                         rotate={props.rotate}
+                    >
                          {props.LeftIcon}
                     </StyledIconState>
-                    <StyledIconState style={{ left: "70%" }}>
+                    <StyledIconState
+                         style={{ left: "72.5%" }}
+                         top={props.top}
+                         rotate={props.rotate}
+                    >
                          {props.rightIcon}
                     </StyledIconState>
                </StyledDivToggle>

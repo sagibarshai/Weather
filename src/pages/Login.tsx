@@ -36,7 +36,9 @@ const Login = () => {
           useState<InputProps>("inactive");
      const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
      const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
-     const [serverError, setServerError] = useState<string | null>(null);
+     const [serverError, setServerError] = useState<string | null>(
+          "we having some issues with our server , please try again later."
+     );
 
      const onSubmitHandler = (e: ChangeEvent<HTMLInputElement>) => {
           e.preventDefault();

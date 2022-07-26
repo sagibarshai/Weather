@@ -55,3 +55,26 @@ export const StyledLocationParagraph = styled.p`
      line-height: 1.5;
      color: ${themes.white};
 `;
+export const StyledNotFoundCityDiv = styled.div`
+     width: 416px;
+     height: 210px;
+     position: absolute;
+     z-index: 3;
+     top: 292px;
+     left: 50%;
+     transform: translate(-50%, 0);
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     gap: 36px;
+`;
+export const StyledTextNotFoundCity = styled.p`
+     width: 416px;
+     font-family: inherit;
+     font-size: 1.8rem;
+     line-height: 1.5;
+     text-align: center;
+     color: ${themes.white};
+     margin: 0 auto;
+`;
