@@ -1,6 +1,7 @@
+import { Result } from "../../components/SearchBox";
 export const scrollBarHandler = (
      parantId: string,
-     list: [] | string[],
+     list: [] | Result[],
      currentIndex: number,
 
      setIndex: (x: number) => void

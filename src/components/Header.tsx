@@ -35,6 +35,7 @@ import { ReactComponent as IconMap } from "../shared/svg/map.svg";
 import { ReactComponent as IconMoonDark } from "../shared/svg/moon-dark.svg";
 import { ReactComponent as IconSunDark } from "../shared/svg/sun-dark.svg";
 import { ReactComponent as IconLogout } from "../shared/svg/log-out.svg";
+import { Result } from "./SearchBox";
 import MobileHeader from "./MobileHeader";
 const Header = () => {
      const dispatch = useDispatch();
@@ -43,7 +44,8 @@ const Header = () => {
      );
      const [searchInput, setSearchInput] = useState<string>("");
      const [searchIsFocus, setSearchIsFocus] = useState<boolean>(false);
-     const [searchResults, setSearchResults] = useState<[] | string[]>([]);
+     const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
+     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
      const [hoverIndexResult, setHoverIndexResult] = useState<number>(-1);
      const currentIcon: LinksType | undefined = links.find((link) => {
           if (link.to === activeIconId) return link;
@@ -63,12 +65,14 @@ const Header = () => {
      const openLogoutPopup = useSelector(
           (state: RootState) => state.headerSlice.openLogoutPopup
      );
+     console.log(noResultAndEnter);
      useEffect(() => {
           search(searchInput).then((res) => {
                if (res) {
                     setSearchResults(res);
                }
           });
+          setNoResultAndEnter(false);
      }, [searchInput]);
 
      useEffect(() => {
@@ -143,19 +147,21 @@ const Header = () => {
                          <Input
                               onKeyDown={(e) => {
                                    if (
-                                        e.keyCode === 40 &&
+                                        e.keyCode === 40 && //arrow-donw
                                         hoverIndexResult < searchResults.length
                                    ) {
                                         setHoverIndexResult((prev) => prev + 1);
-                                   }
-                                   // down
-                                   else if (
-                                        e.keyCode === 38 &&
+                                   } else if (
+                                        e.keyCode === 38 && //arrow-up
                                         hoverIndexResult > -1
                                    )
                                         setHoverIndexResult((prev) => prev - 1);
-                                   //up
                                    else if (e.keyCode === 13) {
+                                        // enter
+                                        if (!searchResults.length) {
+                                             return setNoResultAndEnter(true);
+                                        }
+                                        setNoResultAndEnter(false);
                                         console.log(
                                              searchResults[hoverIndexResult]
                                         );
@@ -190,6 +196,7 @@ const Header = () => {
                                    <IconSearchDark />
                               </StyledIcon>
                               <SearchBox
+                                   noResultAndEnter={noResultAndEnter}
                                    searchInput={searchInput}
                                    display={searchIsFocus && searchInput !== ""}
                                    results={searchResults}
@@ -241,8 +248,8 @@ const Header = () => {
                               htmlFor="mode"
                               id="mode"
                               variant="checkbox"
-                              LeftIcon={<IconSunDark />}
-                              rightIcon={<IconMoonDark />}
+                              LeftIcon={<IconMoonDark />}
+                              rightIcon={<IconSunDark />}
                          />
                     </StyledDiv>
                     <StyledDiv

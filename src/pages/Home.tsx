@@ -40,7 +40,7 @@ const Home: React.FC = () => {
                     openLogoutPopup={openLogoutPopup}
                ></StyledPageContainer>
                {openLogoutPopup && <Popup />}
-               <StyledLocationDiv>
+               {/* <StyledLocationDiv>
                     <StyledIcon>
                          <IconLocation />
                     </StyledIcon>
@@ -49,7 +49,7 @@ const Home: React.FC = () => {
                          To identify your location please allow WeatherApp to
                          know your location.
                     </StyledLocationParagraph>
-               </StyledLocationDiv>
+               </StyledLocationDiv> */}
                <MobileMenuBottom />
           </>
      );

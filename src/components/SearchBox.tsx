@@ -2,24 +2,36 @@ import styled, { css } from "styled-components";
 import themes from "../shared/themes/themes";
 import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { StyledIcon } from "../shared/Icons/Icon";
+export type Result = {
+     LocalizedName: string;
+     Country: { LocalizedName: string };
+};
+
 type Props = {
      display?: boolean;
-     results?: string[] | [];
+     results?: Result[] | [];
+     noResultAndEnter?: boolean;
      hoverIndexResult?: number;
      index?: number;
      onClick?: () => void;
      id?: any;
      searchInput?: string;
      height?: string;
+     backgroundColor?: string;
+     top?: string;
+     overflow?: string;
+     boxShadow?: string;
+     color?: string;
 };
-const StyledigContainer = styled.div<Props>`
+const StyledBigContainer = styled.div<Props>`
      display: ${(props) => (props.display === true ? "inline-block" : "none")};
      width: 476px;
      border-radius: 30px;
-     box-shadow: 0 4px 80px 0 rgba(0, 0, 0, 0.16);
-     background-color: ${themes.white};
+     box-shadow: ${(props) =>
+          props.boxShadow || "0 4px 80px 0 rgba(0, 0, 0, 0.16)"};
+     background-color: ${(props) => props.backgroundColor || themes.white};
      position: absolute;
-     top: 86px;
+     top: ${(props) => props.top || "86px"};
      left: 50%;
      transform: translate(-50%, 0);
      z-index: 2;
@@ -45,6 +57,7 @@ const StyledResultContainer = styled.div<Props>`
           background-color: ${themes.scroll};
           opacity: 1;
      }
+     overflow: ${(props) => props.overflow};
 `;
 const StyledContentWrapper = styled.div<Props>`
      margin: 24px auto auto 36px;
@@ -71,19 +84,50 @@ const StyledItem = styled.p<Props>`
                background-color: ${themes.grayBackground};
           `}
 `;
-const StyledText = styled.p`
+const StyledText = styled.p<Props>`
      width: 416px;
      font-family: inherit;
      font-size: 1.8rem;
      line-height: 1.5;
      text-align: center;
-     color: ${themes.secondary};
+     color: ${(props) => props.color || themes.secondary};
      margin-top: 208px;
 `;
 const SearchBox: React.FC<Props> = (props) => {
+     if (props.noResultAndEnter) {
+          console.log("props");
+          return (
+               <StyledBigContainer
+                    id="scroll"
+                    display={props.display}
+                    height="326px"
+                    backgroundColor="transparent"
+                    top="216px"
+                    boxShadow="none"
+               >
+                    <StyledResultContainer overflow="hidden">
+                         <StyledContentWrapper>
+                              <StyledIcon
+                                   position="absolute"
+                                   top="64px"
+                                   left="50%"
+                                   transform="translate(-50%,0)"
+                              >
+                                   <IconCity />
+                              </StyledIcon>
+                              <StyledText color={themes.white}>
+                                   We couldn’t find any city named "
+                                   {props.searchInput}", please try again.
+                              </StyledText>
+                         </StyledContentWrapper>
+                    </StyledResultContainer>
+               </StyledBigContainer>
+          );
+     }
+
      if (props.results?.length === 0)
           return (
-               <StyledigContainer
+               <StyledBigContainer
                     id="scroll"
                     display={props.display}
                     height="326px"
@@ -104,11 +148,11 @@ const SearchBox: React.FC<Props> = (props) => {
                               </StyledText>
                          </StyledContentWrapper>
                     </StyledResultContainer>
-               </StyledigContainer>
+               </StyledBigContainer>
           );
 
      return (
-          <StyledigContainer display={props.display}>
+          <StyledBigContainer display={props.display}>
                <StyledResultContainer id="scroll">
                     <StyledContentWrapper>
                          {props.results &&
@@ -123,14 +167,14 @@ const SearchBox: React.FC<Props> = (props) => {
                                              index={index}
                                              onClick={() => {}}
                                         >
-                                             {item.LocalizedName},{" "}
+                                             {item.LocalizedName},
                                              {item.Country.LocalizedName}
                                         </StyledItem>
                                    );
                               })}
                     </StyledContentWrapper>
                </StyledResultContainer>
-          </StyledigContainer>
+          </StyledBigContainer>
      );
 };
 
