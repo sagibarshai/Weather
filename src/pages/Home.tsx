@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MobileHeader, { MobileMenuBottom } from "../components/MobileHeader";
+import FooterMobile from "../components/FooterMobile";
 import {
      StyledPageContainer,
      StyledLocationTitle,
@@ -24,6 +25,8 @@ const Home: React.FC = () => {
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
      const [searchInput, setSearchInput] = useState<string>("");
      const [locationIsOpen, setLocationIsOpen] = useState<boolean>(true);
+     const [openSearchBoxMobile, setOpenSearchBoxMobile] =
+          useState<boolean>(false);
      const dispatch = useDispatch();
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
@@ -57,16 +60,10 @@ const Home: React.FC = () => {
                          onClick={onClickHandler}
                          openLogoutPopup={openLogoutPopup}
                     >
-                         <StyledIcon
-                              displayOnlyOnMobile={true}
-                              position="absolute"
-                              top="182px"
-                              left="50%"
-                              transform="translate(-50% , 0)"
-                         >
-                              <IconApp />
-                         </StyledIcon>
                          <StyledLocationDiv>
+                              <StyledIcon displayOnlyOnMobile={true}>
+                                   <IconApp />
+                              </StyledIcon>
                               <StyledIcon displayMobile={false}>
                                    <IconLocation />
                               </StyledIcon>
@@ -101,6 +98,9 @@ const Home: React.FC = () => {
                     </StyledPageContainer>
                     {openLogoutPopup && <Popup />}
                     <MobileMenuBottom />
+                    <FooterMobile
+                         setOpenSearchBoxMobile={setOpenSearchBoxMobile}
+                    />
                </>
           );
 

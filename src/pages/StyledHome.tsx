@@ -38,6 +38,9 @@ export const StyledLocationDiv = styled.div`
      height: 266px;
      text-align: center;
      @media ${cssBreakPoints.mobile} {
+          height: auto;
+          top: 112px;
+          transform: translate(-50%, 0);
      }
 `;
 export const StyledLocationTitle = styled.h3`

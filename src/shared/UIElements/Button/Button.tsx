@@ -25,6 +25,7 @@ interface StyledButtonProps {
      fontWeight?: string;
      color?: string;
      displayOnlyOnMobile?: boolean;
+     border?: string;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -94,6 +95,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
      height: ${(props) => props.height};
      font-weight: ${(props) => props.fontWeight};
      color: ${(props) => props.color};
+     border: ${(props) => props.border};
      @media ${cssBreakPoints.bigDesktop} {
           ${(props) => props.displayOnlyOnMobile === true && "display:none"}
      }
