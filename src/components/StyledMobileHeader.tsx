@@ -5,10 +5,13 @@ import themes from "../shared/themes/themes";
 type Props = {
      display?: boolean;
 };
-export const StyledMobileMenuContainer = styled.div`
+export const StyledMobileMenuContainer = styled.div<Props>`
      display: none;
      @media ${cssBreakPoints.mobile} {
-          display: inline-block;
+          ${(props) =>
+               props.display === false
+                    ? "display:none"
+                    : "display:inline-block"}
      }
 `;
 
@@ -45,8 +48,8 @@ export const StyledMenu = styled.div<Props>`
      box-shadow: 0 -7px 30px 0 rgba(0, 0, 0, 0.16);
      margin: 0;
      position: absolute;
-     top: 400px;
-     border-radius: 20px;
+     bottom: -5px;
+     border-radius: 20px 20px 0 0;
      @media ${cssBreakPoints.laptop} {
           display: none;
      }

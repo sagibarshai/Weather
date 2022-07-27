@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import themes from "../shared/themes/themes";
 import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { StyledIcon } from "../shared/Icons/Icon";
+import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
 export type Result = {
      LocalizedName: string;
      Country: { LocalizedName: string };
@@ -38,6 +39,16 @@ const StyledBigContainer = styled.div<Props>`
      padding: 12px 0;
      max-height: 372px;
      height: ${(props) => props.height};
+     @media ${cssBreakPoints.mobile} {
+          height: 80vh;
+          width: 100vw;
+          max-height: unset;
+          background-color: ${themes.white};
+          position: absolute;
+          top: unset;
+          bottom: 0;
+          border-radius: 30px 30px 0 0;
+     }
 `;
 const StyledResultContainer = styled.div<Props>`
      max-height: 372px;

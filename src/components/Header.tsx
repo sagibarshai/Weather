@@ -283,7 +283,6 @@ const Header: React.FC<Props> = (props) => {
                          </StyledButton>
                     </StyledDiv>
                </StyledHeader>
-               <MobileHeader />
           </>
      );
 };

@@ -20,11 +20,12 @@ import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import themes from "../shared/themes/themes";
+import SearchBox from "../components/SearchBox";
 
 const Home: React.FC = () => {
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
      const [searchInput, setSearchInput] = useState<string>("");
-     const [locationIsOpen, setLocationIsOpen] = useState<boolean>(true);
+     const [locationIsOpen, setLocationIsOpen] = useState<boolean>(false);
      const [openSearchBoxMobile, setOpenSearchBoxMobile] =
           useState<boolean>(false);
      const dispatch = useDispatch();
@@ -37,11 +38,11 @@ const Home: React.FC = () => {
      const openLogoutPopup = useSelector(
           (state: RootState) => state.headerSlice.openLogoutPopup
      );
-
      const onClickHandler = () => {
           if (openLogoutPopup) dispatch(toggleLogoutPopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
           if (noResultAndEnter) setNoResultAndEnter(false);
+          if (openSearchBoxMobile) setOpenSearchBoxMobile(false);
      };
 
      if (locationIsOpen)
@@ -96,7 +97,7 @@ const Home: React.FC = () => {
                               </StyledButton>
                          </StyledLocationDiv>
                     </StyledPageContainer>
-                    {openLogoutPopup && <Popup />}
+                    <SearchBox display={openLogoutPopup} />
                     <MobileMenuBottom />
                     <FooterMobile
                          setOpenSearchBoxMobile={setOpenSearchBoxMobile}
@@ -113,6 +114,7 @@ const Home: React.FC = () => {
                          setNoResultAndEnter={setNoResultAndEnter}
                          noResultAndEnter={noResultAndEnter}
                     />
+
                     <StyledPageContainer
                          openMobileMenu={openMobileMenu}
                          renderPraimaryBackground={renderPraimaryBackground}
@@ -141,6 +143,8 @@ const Home: React.FC = () => {
                     setNoResultAndEnter={setNoResultAndEnter}
                     noResultAndEnter={noResultAndEnter}
                />
+               <MobileHeader display={!openSearchBoxMobile} />
+
                <StyledPageContainer
                     openMobileMenu={openMobileMenu}
                     renderPraimaryBackground={renderPraimaryBackground}
@@ -149,6 +153,10 @@ const Home: React.FC = () => {
                ></StyledPageContainer>
                {openLogoutPopup && <Popup />}
                <MobileMenuBottom />
+               {openSearchBoxMobile && (
+                    <SearchBox display={openSearchBoxMobile} />
+               )}
+               <FooterMobile setOpenSearchBoxMobile={setOpenSearchBoxMobile} />
           </>
      );
 };

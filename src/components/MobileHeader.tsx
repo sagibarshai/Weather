@@ -25,11 +25,14 @@ import {
 } from "../redux/headerSlice";
 import themes from "../shared/themes/themes";
 
-const MobileHeader = () => {
+type Props = {
+     display?: boolean;
+};
+const MobileHeader: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      return (
           <>
-               <StyledMobileMenuContainer>
+               <StyledMobileMenuContainer display={props.display}>
                     <StyledMenuButton
                          onClick={() => dispatch(toggleMobileMenu())}
                     >
