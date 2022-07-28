@@ -39,16 +39,6 @@ const StyledBigContainer = styled.div<Props>`
      padding: 12px 0;
      max-height: 372px;
      height: ${(props) => props.height};
-     @media ${cssBreakPoints.mobile} {
-          height: 80vh;
-          width: 100vw;
-          max-height: unset;
-          background-color: ${themes.white};
-          position: absolute;
-          top: unset;
-          bottom: 0;
-          border-radius: 30px 30px 0 0;
-     }
 `;
 const StyledResultContainer = styled.div<Props>`
      max-height: 372px;
@@ -104,6 +94,9 @@ const StyledText = styled.p<Props>`
      color: ${(props) => props.color || themes.secondary};
      margin-top: 208px;
 `;
+const StyledConutryText = styled.span`
+     font-weight: normal;
+`;
 const SearchBox: React.FC<Props> = (props) => {
      if (props.results?.length === 0 && !props.noResultAndEnter)
           return (
@@ -148,7 +141,12 @@ const SearchBox: React.FC<Props> = (props) => {
                                                   onClick={() => {}}
                                              >
                                                   {item.LocalizedName},
-                                                  {item.Country.LocalizedName}
+                                                  <StyledConutryText>
+                                                       {
+                                                            item.Country
+                                                                 .LocalizedName
+                                                       }
+                                                  </StyledConutryText>
                                              </StyledItem>
                                         );
                                    })}

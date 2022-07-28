@@ -46,7 +46,6 @@ const Home: React.FC = () => {
           if (noResultAndEnter) setNoResultAndEnter(false);
           if (openSearchBoxMobile) setOpenSearchBoxMobile(false);
      };
-
      if (locationIsOpen)
           return (
                <>
@@ -155,10 +154,16 @@ const Home: React.FC = () => {
                ></StyledPageContainer>
                {openLogoutPopup && <Popup />}
                <MobileMenuBottom />
-               {openSearchBoxMobile && <SearchBoxMobile setOpenSearchBoxMobile={setOpenSearchBoxMobile} />}
+               {openSearchBoxMobile && (
+                    <SearchBoxMobile
+                         searchInput={searchInput}
+                         setSearchInput={setSearchInput}
+                         setOpenSearchBoxMobile={setOpenSearchBoxMobile}
+                    />
+               )}
                <FooterMobile setOpenSearchBoxMobile={setOpenSearchBoxMobile} />
           </>
      );
 };
 
-export default Home;
+export default Home

@@ -148,6 +148,7 @@ const Header: React.FC<Props> = (props) => {
                          orderLaptop={3}
                     >
                          <Input
+                              value={props.searchInput}
                               onKeyDown={(e) => {
                                    if (
                                         e.keyCode === 40 && //arrow-donw

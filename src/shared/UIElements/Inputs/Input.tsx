@@ -7,7 +7,7 @@ interface Variant {
      variant?: InputProps;
 }
 type Props = {
-     variant: InputProps;
+     variant?: InputProps;
      label?: string;
      placeHolder?: string;
      fontWeight?: string;
@@ -21,24 +21,26 @@ type Props = {
      position?: string;
      padding?: string;
      marginTop?: string;
-     children?: JSX.Element | JSX.Element[];
+     children?: any;
      type?: string;
-     onChange: (e: ChangeEvent) => void;
+     onChange?: (e: ChangeEvent) => void;
      onBlur?: () => void;
      onFocus?: () => void;
      onKeyDown?: (e: React.KeyboardEvent<HTMLElement>) => void;
+     value?: string;
 };
-const StyledInputsContainer = styled.div<Variant>`
+const StyledInputsContainer = styled.div<Props>`
      position: relative;
      display: inline-block;
      border-radius: 10px;
-
+     box-shadow: inset -6px 4px 4px 0 rgba(255, 255, 255, 0.1),
+          inset 2px -3px 6px 0 rgba(0, 0, 0, 0.1);
      ${(props) =>
           props.variant === "validation" &&
           css`
                border: 1px solid ${themes.errorRed};
           `}
-     box-shadow: inset -6px 4px 4px 0 rgba(255, 255, 255, 0.1), inset 2px -3px 6px 0 rgba(0, 0, 0, 0.1);
+     margin-top: ${(props) => props.marginTop};
 `;
 
 const StyledLabel = styled.label<Variant>`
@@ -133,11 +135,15 @@ const StyledInvalidInput = styled.span<Variant>`
 const Input: React.FC<Props> = (props) => {
      return (
           <>
-               <StyledInputsContainer variant={props.variant}>
+               <StyledInputsContainer
+                    variant={props.variant}
+                    marginTop={props.marginTop}
+               >
                     <StyledLabel variant={props.variant} color={props.color}>
                          {props.label}
                     </StyledLabel>
                     <StyledInput
+                         value={props.value}
                          laptopWidth={props.laptopWidth}
                          onFocus={props.onFocus}
                          onBlur={props.onBlur}

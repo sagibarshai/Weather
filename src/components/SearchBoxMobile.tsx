@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
 import themes from "../shared/themes/themes";
@@ -6,6 +7,9 @@ import { ReactComponent as IconSearch } from "../shared/svg/search-dark.svg";
 import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { StyledIcon } from "../shared/Icons/Icon";
 import Input from "../shared/UIElements/Inputs/Input";
+import { search } from "../shared/utils/search";
+import { Result } from "./SearchBox";
+
 const StyledMobileSearchBoxContainer = styled.div`
      display: none;
      height: 90vh;
@@ -18,7 +22,6 @@ const StyledMobileSearchBoxContainer = styled.div`
      @media ${cssBreakPoints.mobile} {
           display: flex;
           flex-direction: column;
-          gap: 16px;
           align-items: center;
           justify-content: center;
      }
@@ -29,6 +32,7 @@ const StyledResultDiv = styled.div`
      flex-direction: column;
      width: 100%;
      align-items: center;
+     overflow-y: auto;
 `;
 const StyledText = styled.p`
      width: 270px;
@@ -38,6 +42,7 @@ const StyledText = styled.p`
      line-height: 1.25;
      color: ${themes.secondary};
      margin-top: 36px;
+     text-align: center;
 `;
 const StyledButton = styled.button`
      background-color: transparent;
@@ -45,14 +50,47 @@ const StyledButton = styled.button`
      align-self: flex-start;
      margin: 36px auto auto 30px;
 `;
+const StyledResultList = styled.div`
+     margin: 21px 0 0 30px;
+     align-self: flex-start;
+     display: flex;
+     flex-direction: column;
+     gap: 16px;
+     margin-bottom: 50px;
+`;
+const StyledResultItem = styled.button`
+     all: unset;
+     display: block;
+     height: 27px;
+     font-family: inherit;
+     font-size: 1.8rem;
+     font-weight: bold;
+     line-height: 1.2;
+     color: ${themes.secondary};
+`;
+const StyledResultCountry = styled.span`
+     font-weight: normal;
+`;
 type Props = {
      setOpenSearchBoxMobile: (x: boolean) => void;
+     searchInput: string;
+     setSearchInput: (x: string) => void;
 };
 const SearchBoxMobile: React.FC<Props> = (props) => {
+     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
+     const [noResults, setNoResults] = useState<boolean>(false);
+     useEffect(() => {
+          setNoResults(false);
+          search(props.searchInput).then((res) => {
+               if (res) {
+                    if (props.searchInput !== "" && !searchResults.length)
+                         setNoResults(true);
+                    setSearchResults(res);
+               }
+          });
+     }, [props.searchInput]);
      return (
-          <StyledMobileSearchBoxContainer
-               onClick={() => props.setOpenSearchBoxMobile(false)}
-          >
+          <StyledMobileSearchBoxContainer>
                <StyledButton
                     onClick={() => props.setOpenSearchBoxMobile(false)}
                >
@@ -61,12 +99,14 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                     </StyledIcon>
                </StyledButton>
                <Input
-                    onChange={() => console.log("change")}
+                    value={props.searchInput}
+                    onChange={(e: any) => props.setSearchInput(e.target.value)}
                     variant="inactive"
                     mobileWidth="75vw"
                     height="54px"
                     placeHolder="Try “Tel Aviv - Jaffa”..."
                     fontWeight="bold"
+                    marginTop="16px"
                >
                     <StyledIcon
                          position="absolute"
@@ -78,12 +118,35 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                     </StyledIcon>
                </Input>
                <StyledResultDiv>
-                    <StyledIcon margin="103px 0 0 0">
-                         <IconCity />
-                    </StyledIcon>
-                    <StyledText>
-                         Please search any city in the search button.
-                    </StyledText>
+                    {searchResults.length !== 0 && (
+                         <StyledResultList>
+                              {searchResults.map((item, index) => (
+                                   <StyledResultItem
+                                        key={index}
+                                        onClick={() => console.log(item)}
+                                   >
+                                        {item.LocalizedName},
+                                        <StyledResultCountry>
+                                             {" "}
+                                             {item.Country.LocalizedName}
+                                        </StyledResultCountry>
+                                   </StyledResultItem>
+                              ))}
+                         </StyledResultList>
+                    )}
+                    {!searchResults.length && (
+                         <StyledIcon margin="103px 0 0 0">
+                              <IconCity />
+                         </StyledIcon>
+                    )}
+                    {!searchResults.length && (
+                         <StyledText>
+                              {props.searchInput === "" && noResults === false
+                                   ? "Please search any city in the search button."
+                                   : `We couldn’t find any city named "${props.searchInput}",  
+please try again.`}
+                         </StyledText>
+                    )}
                </StyledResultDiv>
           </StyledMobileSearchBoxContainer>
      );
