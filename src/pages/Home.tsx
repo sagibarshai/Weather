@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MobileHeader, { MobileMenuBottom } from "../components/MobileHeader";
 import FooterMobile from "../components/FooterMobile";
+import Input from "../shared/UIElements/Inputs/Input";
 import {
      StyledPageContainer,
      StyledLocationTitle,
@@ -21,6 +22,7 @@ import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import themes from "../shared/themes/themes";
 import SearchBox from "../components/SearchBox";
+import SearchBoxMobile from "../components/SearchBoxMobile";
 
 const Home: React.FC = () => {
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
@@ -153,9 +155,7 @@ const Home: React.FC = () => {
                ></StyledPageContainer>
                {openLogoutPopup && <Popup />}
                <MobileMenuBottom />
-               {openSearchBoxMobile && (
-                    <SearchBox display={openSearchBoxMobile} />
-               )}
+               {openSearchBoxMobile && <SearchBoxMobile setOpenSearchBoxMobile={setOpenSearchBoxMobile} />}
                <FooterMobile setOpenSearchBoxMobile={setOpenSearchBoxMobile} />
           </>
      );
