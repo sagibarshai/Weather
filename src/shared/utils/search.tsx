@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Result } from "../../components/SearchBox";
-const key = "GABTEO5IFpJa9LXq4Ixq4e9mCKE0HdCz";
+const key = "onelXyhuR2x3xyaGHvCCC7Rg08GcVNIJ";
 export const search = async (value: string) => {
      const arr: Result[] = [];
      try {

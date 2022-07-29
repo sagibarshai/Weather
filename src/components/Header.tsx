@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CSSProperties } from "styled-components";
+import { useQuery } from "react-query";
 
 import Checkbox from "../shared/UIElements/Inputs/Checkbox";
 import { StyledButton } from "../shared/UIElements/Button/Button";
@@ -36,7 +37,6 @@ import { ReactComponent as IconMoonDark } from "../shared/svg/moon-dark.svg";
 import { ReactComponent as IconSunDark } from "../shared/svg/sun-dark.svg";
 import { ReactComponent as IconLogout } from "../shared/svg/log-out.svg";
 import { Result } from "./SearchBox";
-import MobileHeader from "./MobileHeader";
 type Props = {
      setNoResultAndEnter: (x: boolean) => void;
      noResultAndEnter: boolean;
@@ -57,6 +57,23 @@ const Header: React.FC<Props> = (props) => {
      const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
           currentIcon ? currentIcon.activeIcon : undefined
      );
+     const SearchFunction = () => {
+          search(props.searchInput).then((res) => {
+               if (res) {
+                    setSearchResults(res);
+               }
+               props.setNoResultAndEnter(false);
+          });
+     };
+     const { data } = useQuery(
+          ["autoComplete", props.searchInput],
+          SearchFunction,
+          {
+               cacheTime: Infinity,
+               staleTime: Infinity,
+          }
+     );
+     console.log(data);
      const NavLinkStyleHandler = (isActive: boolean, link: LinksType) => {
           if (isActive) {
                return NavLinkActiveStyle;
@@ -69,15 +86,6 @@ const Header: React.FC<Props> = (props) => {
      const openLogoutPopup = useSelector(
           (state: RootState) => state.headerSlice.openLogoutPopup
      );
-     useEffect(() => {
-          search(props.searchInput).then((res) => {
-               if (res) {
-                    setSearchResults(res);
-               }
-          });
-          props.setNoResultAndEnter(false);
-     }, [props.searchInput]);
-
      useEffect(() => {
           scrollBarHandler(
                "scroll",

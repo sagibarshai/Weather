@@ -15,10 +15,12 @@ import "./react-query-types.d.ts";
 const root = ReactDOM.createRoot(
      document.getElementById("root") as HTMLElement
 );
-const Client = new QueryClient();
+
+const client = new QueryClient();
+console.log(client);
 root.render(
      <React.StrictMode>
-          <QueryClientProvider client={Client}>
+          <QueryClientProvider client={client}>
                <Provider store={store as any}>
                     <BrowserRouter>
                          <ThemeProvider theme={themes}>
