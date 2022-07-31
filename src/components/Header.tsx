@@ -57,23 +57,19 @@ const Header: React.FC<Props> = (props) => {
      const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
           currentIcon ? currentIcon.activeIcon : undefined
      );
-     const SearchFunction = () => {
-          search(props.searchInput).then((res) => {
-               if (res) {
-                    setSearchResults(res);
-               }
-               props.setNoResultAndEnter(false);
-          });
-     };
+
      const { data } = useQuery(
           ["autoComplete", props.searchInput],
-          SearchFunction,
+          () => search(props.searchInput),
           {
                cacheTime: Infinity,
                staleTime: Infinity,
           }
      );
-     console.log(data);
+     useEffect(() => {
+          setSearchResults(data);
+          props.setNoResultAndEnter(false);
+     }, [props.searchInput, data]);
      const NavLinkStyleHandler = (isActive: boolean, link: LinksType) => {
           if (isActive) {
                return NavLinkActiveStyle;

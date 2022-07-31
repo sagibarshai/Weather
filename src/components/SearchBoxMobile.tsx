@@ -9,6 +9,8 @@ import { StyledIcon } from "../shared/Icons/Icon";
 import Input from "../shared/UIElements/Inputs/Input";
 import { search } from "../shared/utils/search";
 import { Result } from "./SearchBox";
+import { useQuery } from "react-query";
+import useDebounce from "../shared/utils/useDebouncedSearch";
 
 const StyledMobileSearchBoxContainer = styled.div`
      display: none;
@@ -79,16 +81,20 @@ type Props = {
 const SearchBoxMobile: React.FC<Props> = (props) => {
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
      const [noResults, setNoResults] = useState<boolean>(false);
+     const { data, isFetching } = useQuery(
+          ["autocomplete", props.searchInput],
+          () => search(props.searchInput),
+          {
+               cacheTime: Infinity,
+               staleTime: Infinity,
+          }
+     );
      useEffect(() => {
+          if (data === undefined || data === "") return;
+          setSearchResults(data);
           setNoResults(false);
-          search(props.searchInput).then((res) => {
-               if (res) {
-                    if (props.searchInput !== "" && !searchResults.length)
-                         setNoResults(true);
-                    setSearchResults(res);
-               }
-          });
-     }, [props.searchInput]);
+     }, [props.searchInput, data]);
+
      return (
           <StyledMobileSearchBoxContainer>
                <StyledButton

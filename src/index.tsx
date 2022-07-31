@@ -17,7 +17,6 @@ const root = ReactDOM.createRoot(
 );
 
 const client = new QueryClient();
-console.log(client);
 root.render(
      <React.StrictMode>
           <QueryClientProvider client={client}>
