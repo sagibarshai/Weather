@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import MobileHeader, { MobileMenuBottom } from "../components/MobileHeader";
 import FooterMobile from "../components/FooterMobile";
-import Input from "../shared/UIElements/Inputs/Input";
 import {
      StyledPageContainer,
      StyledLocationTitle,
@@ -23,8 +22,13 @@ import { StyledButton } from "../shared/UIElements/Button/Button";
 import themes from "../shared/themes/themes";
 import SearchBox from "../components/SearchBox";
 import SearchBoxMobile from "../components/SearchBoxMobile";
+import { useScreenWidth } from "../shared/utils/getScreenWidth";
 
 const Home: React.FC = () => {
+     const deviceValue = useScreenWidth()[0];
+     const [renderMobile, setRenderMobile] = useState<boolean>(true);
+     const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
+          useState<boolean>(true);
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
      const [searchInput, setSearchInput] = useState<string>("");
      const [locationIsOpen, setLocationIsOpen] = useState<boolean>(false);
@@ -40,6 +44,16 @@ const Home: React.FC = () => {
      const openLogoutPopup = useSelector(
           (state: RootState) => state.headerSlice.openLogoutPopup
      );
+     useEffect(() => {
+          if (deviceValue === "bigDesktop" || deviceValue === "laptop") {
+               setRenderLaptopAnDesktop(true);
+               setRenderMobile(false);
+          } else {
+               setRenderLaptopAnDesktop(false);
+               setRenderMobile(true);
+          }
+     }, [deviceValue]);
+
      const onClickHandler = () => {
           if (openLogoutPopup) dispatch(toggleLogoutPopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
@@ -49,13 +63,15 @@ const Home: React.FC = () => {
      if (locationIsOpen)
           return (
                <>
-                    <Header
-                         searchInput={searchInput}
-                         setSearchInput={setSearchInput}
-                         setNoResultAndEnter={setNoResultAndEnter}
-                         noResultAndEnter={noResultAndEnter}
-                    />
-                    <MobileHeader />
+                    {renderLaptopAnDesktop && (
+                         <Header
+                              searchInput={searchInput}
+                              setSearchInput={setSearchInput}
+                              setNoResultAndEnter={setNoResultAndEnter}
+                              noResultAndEnter={noResultAndEnter}
+                         />
+                    )}
+                    {renderMobile && <MobileHeader />}
                     <StyledPageContainer
                          openMobileMenu={openMobileMenu}
                          renderPraimaryBackground={renderPraimaryBackground}
@@ -109,12 +125,14 @@ const Home: React.FC = () => {
      if (noResultAndEnter)
           return (
                <>
-                    <Header
-                         searchInput={searchInput}
-                         setSearchInput={setSearchInput}
-                         setNoResultAndEnter={setNoResultAndEnter}
-                         noResultAndEnter={noResultAndEnter}
-                    />
+                    {renderLaptopAnDesktop && (
+                         <Header
+                              searchInput={searchInput}
+                              setSearchInput={setSearchInput}
+                              setNoResultAndEnter={setNoResultAndEnter}
+                              noResultAndEnter={noResultAndEnter}
+                         />
+                    )}
 
                     <StyledPageContainer
                          openMobileMenu={openMobileMenu}
@@ -138,13 +156,15 @@ const Home: React.FC = () => {
 
      return (
           <>
-               <Header
-                    searchInput={searchInput}
-                    setSearchInput={setSearchInput}
-                    setNoResultAndEnter={setNoResultAndEnter}
-                    noResultAndEnter={noResultAndEnter}
-               />
-               <MobileHeader display={!openSearchBoxMobile} />
+               {renderLaptopAnDesktop && (
+                    <Header
+                         searchInput={searchInput}
+                         setSearchInput={setSearchInput}
+                         setNoResultAndEnter={setNoResultAndEnter}
+                         noResultAndEnter={noResultAndEnter}
+                    />
+               )}
+               {renderMobile && <MobileHeader display={!openSearchBoxMobile} />}
 
                <StyledPageContainer
                     openMobileMenu={openMobileMenu}
@@ -166,4 +186,4 @@ const Home: React.FC = () => {
      );
 };
 
-export default Home
+export default Home;
