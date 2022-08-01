@@ -86,9 +86,10 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
      const isCached = client.getQueryData(["autocomplete", props.searchInput], {
           exact: true,
      });
+     const debounce = useDebounce(props.searchInput, 500);
      const { data } = useQuery(
-          ["autocomplete", props.searchInput],
-          () => search(props.searchInput),
+          ["autocomplete", isCached ? props.searchInput : debounce],
+          () => search(isCached ? props.searchInput : debounce),
           {
                refetchOnmount: false,
                refetchOnReconnect: false,
@@ -100,7 +101,7 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
           if (data === undefined || data === "") return;
           setSearchResults(data);
           setNoResults(false);
-     }, [props.searchInput, data]);
+     }, [props.searchInput, data, debounce]);
 
      return (
           <StyledMobileSearchBoxContainer>
@@ -133,18 +134,19 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                <StyledResultDiv>
                     {searchResults.length !== 0 && (
                          <StyledResultList>
-                              {searchResults.map((item, index) => (
-                                   <StyledResultItem
-                                        key={index}
-                                        onClick={() => console.log(item)}
-                                   >
-                                        {item.LocalizedName},
-                                        <StyledResultCountry>
-                                             {" "}
-                                             {item.Country.LocalizedName}
-                                        </StyledResultCountry>
-                                   </StyledResultItem>
-                              ))}
+                              {Array.isArray(searchResults) &&
+                                   searchResults.map((item, index) => (
+                                        <StyledResultItem
+                                             key={index}
+                                             onClick={() => console.log(item)}
+                                        >
+                                             {item.LocalizedName},
+                                             <StyledResultCountry>
+                                                  {" "}
+                                                  {item.Country.LocalizedName}
+                                             </StyledResultCountry>
+                                        </StyledResultItem>
+                                   ))}
                          </StyledResultList>
                     )}
                     {!searchResults.length && (
