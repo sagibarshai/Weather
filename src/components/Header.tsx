@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { CSSProperties } from "styled-components";
 import { useQuery, useQueryClient } from "react-query";
 
+import { selectCity } from "../shared/utils/selectCity";
+
 import Checkbox from "../shared/UIElements/Inputs/Checkbox";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import Input from "../shared/UIElements/Inputs/Input";
@@ -43,6 +45,7 @@ type Props = {
      noResultAndEnter: boolean;
      searchInput: string;
      setSearchInput: (e: React.ChangeEvent | any) => void;
+     setSelectedCity: (x: Result) => void;
 };
 const Header: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
@@ -52,6 +55,9 @@ const Header: React.FC<Props> = (props) => {
      const [searchIsFocus, setSearchIsFocus] = useState<boolean>(false);
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
      const [hoverIndexResult, setHoverIndexResult] = useState<number>(-1);
+     const [selectedCityKey, setSelectedCityKey] = useState<
+          string | number | null
+     >(null);
      const currentIcon: LinksType | undefined = links.find((link) => {
           if (link.to === activeIconId) return link;
      }) as LinksType;
@@ -95,7 +101,6 @@ const Header: React.FC<Props> = (props) => {
                setHoverIndexResult
           );
      }, [hoverIndexResult]);
-
      return (
           <>
                <StyledHeader
@@ -178,9 +183,13 @@ const Header: React.FC<Props> = (props) => {
                                         }
 
                                         props.setNoResultAndEnter(false);
-                                        console.log(
+                                        selectCity(
+                                             searchResults[hoverIndexResult].Key
+                                        );
+                                        props.setSelectedCity(
                                              searchResults[hoverIndexResult]
                                         );
+
                                         setSearchIsFocus(false);
                                    }
                               }}
@@ -220,6 +229,7 @@ const Header: React.FC<Props> = (props) => {
                                    }
                                    results={searchResults}
                                    hoverIndexResult={hoverIndexResult}
+                                   setSelectedCity={props.setSelectedCity}
                               />
                          </Input>
                     </StyledDiv>

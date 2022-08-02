@@ -2,10 +2,10 @@ import styled, { css } from "styled-components";
 import themes from "../shared/themes/themes";
 import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { StyledIcon } from "../shared/Icons/Icon";
-import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
 export type Result = {
      LocalizedName: string;
      Country: { LocalizedName: string };
+     Key: string | number;
 };
 
 type Props = {
@@ -23,6 +23,7 @@ type Props = {
      overflow?: string;
      boxShadow?: string;
      color?: string;
+     setSelectedCity?: (x: Result) => void;
 };
 const StyledBigContainer = styled.div<Props>`
      display: ${(props) => (props.display === true ? "inline-block" : "none")};
@@ -138,7 +139,12 @@ const SearchBox: React.FC<Props> = (props) => {
                                                        props.hoverIndexResult
                                                   }
                                                   index={index}
-                                                  onClick={() => {}}
+                                                  onClick={() => {
+                                                       props.setSelectedCity &&
+                                                            props.setSelectedCity(
+                                                                 item
+                                                            );
+                                                  }}
                                              >
                                                   {item.LocalizedName},
                                                   <StyledConutryText>

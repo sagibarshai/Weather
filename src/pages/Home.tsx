@@ -20,12 +20,15 @@ import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import themes from "../shared/themes/themes";
-import SearchBox from "../components/SearchBox";
+import SearchBox, { Result } from "../components/SearchBox";
 import SearchBoxMobile from "../components/SearchBoxMobile";
 import { useScreenWidth } from "../shared/utils/getScreenWidth";
 
 const Home: React.FC = () => {
      const deviceValue = useScreenWidth()[0];
+     const [selectedCity, setSelectedCity] = useState<Result | undefined>(
+          undefined
+     );
      const [renderMobile, setRenderMobile] = useState<boolean>(true);
      const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
           useState<boolean>(true);
@@ -60,6 +63,7 @@ const Home: React.FC = () => {
           if (noResultAndEnter) setNoResultAndEnter(false);
           if (openSearchBoxMobile) setOpenSearchBoxMobile(false);
      };
+     console.log(selectedCity);
      if (locationIsOpen)
           return (
                <>
@@ -69,6 +73,7 @@ const Home: React.FC = () => {
                               setSearchInput={setSearchInput}
                               setNoResultAndEnter={setNoResultAndEnter}
                               noResultAndEnter={noResultAndEnter}
+                              setSelectedCity={setSelectedCity}
                          />
                     )}
                     {renderMobile && <MobileHeader />}
@@ -127,6 +132,7 @@ const Home: React.FC = () => {
                <>
                     {renderLaptopAnDesktop && (
                          <Header
+                              setSelectedCity={setSelectedCity}
                               searchInput={searchInput}
                               setSearchInput={setSearchInput}
                               setNoResultAndEnter={setNoResultAndEnter}
@@ -158,6 +164,7 @@ const Home: React.FC = () => {
           <>
                {renderLaptopAnDesktop && (
                     <Header
+                         setSelectedCity={setSelectedCity}
                          searchInput={searchInput}
                          setSearchInput={setSearchInput}
                          setNoResultAndEnter={setNoResultAndEnter}
