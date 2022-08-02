@@ -24,6 +24,7 @@ type Props = {
      boxShadow?: string;
      color?: string;
      setSelectedCity?: (x: Result) => void;
+     setSelectedCityKey?: (x: number | string) => void;
 };
 const StyledBigContainer = styled.div<Props>`
      display: ${(props) => (props.display === true ? "inline-block" : "none")};
@@ -140,9 +141,9 @@ const SearchBox: React.FC<Props> = (props) => {
                                                   }
                                                   index={index}
                                                   onClick={() => {
-                                                       props.setSelectedCity &&
-                                                            props.setSelectedCity(
-                                                                 item
+                                                       props.setSelectedCityKey &&
+                                                            props.setSelectedCityKey(
+                                                                 item.Key
                                                             );
                                                   }}
                                              >

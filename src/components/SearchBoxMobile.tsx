@@ -86,7 +86,7 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
      const isCached = client.getQueryData(["autocomplete", props.searchInput], {
           exact: true,
      });
-     const debounce = useDebounce(props.searchInput, 500);
+     const debounce = useDebounce(props.searchInput, 300);
      const { data } = useQuery(
           ["autocomplete", isCached ? props.searchInput : debounce],
           () => search(isCached ? props.searchInput : debounce),

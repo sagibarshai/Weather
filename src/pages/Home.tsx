@@ -20,15 +20,24 @@ import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import themes from "../shared/themes/themes";
-import SearchBox, { Result } from "../components/SearchBox";
+import SearchBox from "../components/SearchBox";
 import SearchBoxMobile from "../components/SearchBoxMobile";
 import { useScreenWidth } from "../shared/utils/getScreenWidth";
-
+import HomePageDisplayCity, {
+     SelectedCityType,
+} from "../components/HomePageDisplayCity";
+import { selectCity } from "../shared/utils/selectCity";
+import { Result } from "../components/SearchBox";
 const Home: React.FC = () => {
      const deviceValue = useScreenWidth()[0];
-     const [selectedCity, setSelectedCity] = useState<Result | undefined>(
-          undefined
-     );
+     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
+
+     const [selectedCity, setSelectedCity] = useState<
+          SelectedCityType | undefined
+     >(undefined);
+     const [selectedCityKey, setSelectedCityKey] = useState<
+          string | number | null
+     >(null);
      const [renderMobile, setRenderMobile] = useState<boolean>(true);
      const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
           useState<boolean>(true);
@@ -56,6 +65,13 @@ const Home: React.FC = () => {
                setRenderMobile(true);
           }
      }, [deviceValue]);
+     useEffect(() => {
+          selectedCityKey &&
+               selectCity(selectedCityKey)
+                    .then((res) => setSelectedCity(res))
+                    .catch((err) => console.log(err));
+     }, [selectedCityKey]);
+     // console.log(selectedCity);
 
      const onClickHandler = () => {
           if (openLogoutPopup) dispatch(toggleLogoutPopup());
@@ -63,17 +79,18 @@ const Home: React.FC = () => {
           if (noResultAndEnter) setNoResultAndEnter(false);
           if (openSearchBoxMobile) setOpenSearchBoxMobile(false);
      };
-     console.log(selectedCity);
      if (locationIsOpen)
           return (
                <>
                     {renderLaptopAnDesktop && (
                          <Header
+                              searchResults={searchResults}
+                              setSearchResults={setSearchResults}
                               searchInput={searchInput}
                               setSearchInput={setSearchInput}
                               setNoResultAndEnter={setNoResultAndEnter}
                               noResultAndEnter={noResultAndEnter}
-                              setSelectedCity={setSelectedCity}
+                              setSelectedCityKey={setSelectedCityKey}
                          />
                     )}
                     {renderMobile && <MobileHeader />}
@@ -132,7 +149,9 @@ const Home: React.FC = () => {
                <>
                     {renderLaptopAnDesktop && (
                          <Header
-                              setSelectedCity={setSelectedCity}
+                              searchResults={searchResults}
+                              setSearchResults={setSearchResults}
+                              setSelectedCityKey={setSelectedCityKey}
                               searchInput={searchInput}
                               setSearchInput={setSearchInput}
                               setNoResultAndEnter={setNoResultAndEnter}
@@ -164,7 +183,9 @@ const Home: React.FC = () => {
           <>
                {renderLaptopAnDesktop && (
                     <Header
-                         setSelectedCity={setSelectedCity}
+                         searchResults={searchResults}
+                         setSearchResults={setSearchResults}
+                         setSelectedCityKey={setSelectedCityKey}
                          searchInput={searchInput}
                          setSearchInput={setSearchInput}
                          setNoResultAndEnter={setNoResultAndEnter}
@@ -178,7 +199,13 @@ const Home: React.FC = () => {
                     renderPraimaryBackground={renderPraimaryBackground}
                     onClick={onClickHandler}
                     openLogoutPopup={openLogoutPopup}
-               ></StyledPageContainer>
+               >
+                    <HomePageDisplayCity
+                         selectedCity={selectedCity}
+                         searchResults={searchResults}
+                         selectedCityKey={selectedCityKey}
+                    />
+               </StyledPageContainer>
                {openLogoutPopup && <Popup />}
                <MobileMenuBottom />
                {openSearchBoxMobile && (

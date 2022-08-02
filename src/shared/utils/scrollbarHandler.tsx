@@ -15,7 +15,7 @@ export const scrollBarHandler = (
           const topPos = myElement.offsetTop;
           scrollElement.scrollTop = topPos;
      }
-     if (currentIndex === list.length) {
+     if (list && currentIndex === list.length) {
           scrollElement.scrollTop = 0;
           setIndex(-1);
      }

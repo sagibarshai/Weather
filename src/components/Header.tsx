@@ -45,7 +45,9 @@ type Props = {
      noResultAndEnter: boolean;
      searchInput: string;
      setSearchInput: (e: React.ChangeEvent | any) => void;
-     setSelectedCity: (x: Result) => void;
+     setSelectedCityKey: (x: number | string) => void;
+     searchResults: [] | Result[];
+     setSearchResults: (x: Result[]) => void;
 };
 const Header: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
@@ -53,11 +55,7 @@ const Header: React.FC<Props> = (props) => {
           window.location.pathname
      );
      const [searchIsFocus, setSearchIsFocus] = useState<boolean>(false);
-     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
      const [hoverIndexResult, setHoverIndexResult] = useState<number>(-1);
-     const [selectedCityKey, setSelectedCityKey] = useState<
-          string | number | null
-     >(null);
      const currentIcon: LinksType | undefined = links.find((link) => {
           if (link.to === activeIconId) return link;
      }) as LinksType;
@@ -68,7 +66,7 @@ const Header: React.FC<Props> = (props) => {
      const isCached = client.getQueryData(["autocomplete", props.searchInput], {
           exact: true,
      });
-     const debounce = useDebounce(props.searchInput, 500);
+     const debounce = useDebounce(props.searchInput, 300);
      const { data } = useQuery(
           ["autoComplete", isCached ? props.searchInput : debounce],
           () => search(isCached ? props.searchInput : debounce),
@@ -78,7 +76,7 @@ const Header: React.FC<Props> = (props) => {
           }
      );
      useEffect(() => {
-          setSearchResults(data);
+          props.setSearchResults(data);
           props.setNoResultAndEnter(false);
      }, [props.searchInput, data]);
      const NavLinkStyleHandler = (isActive: boolean, link: LinksType) => {
@@ -96,7 +94,7 @@ const Header: React.FC<Props> = (props) => {
      useEffect(() => {
           scrollBarHandler(
                "scroll",
-               searchResults,
+               props.searchResults,
                hoverIndexResult,
                setHoverIndexResult
           );
@@ -166,7 +164,8 @@ const Header: React.FC<Props> = (props) => {
                               onKeyDown={(e) => {
                                    if (
                                         e.keyCode === 40 && //arrow-donw
-                                        hoverIndexResult < searchResults.length
+                                        hoverIndexResult <
+                                             props.searchResults.length
                                    ) {
                                         setHoverIndexResult((prev) => prev + 1);
                                    } else if (
@@ -176,18 +175,17 @@ const Header: React.FC<Props> = (props) => {
                                         setHoverIndexResult((prev) => prev - 1);
                                    else if (e.keyCode === 13) {
                                         // enter
-                                        if (!searchResults.length) {
+                                        if (!props.searchResults.length) {
                                              props.setNoResultAndEnter(true);
                                              setSearchIsFocus(false);
                                              return;
                                         }
 
                                         props.setNoResultAndEnter(false);
-                                        selectCity(
-                                             searchResults[hoverIndexResult].Key
-                                        );
-                                        props.setSelectedCity(
-                                             searchResults[hoverIndexResult]
+                                        props.setSelectedCityKey(
+                                             props.searchResults[
+                                                  hoverIndexResult
+                                             ].Key
                                         );
 
                                         setSearchIsFocus(false);
@@ -227,9 +225,9 @@ const Header: React.FC<Props> = (props) => {
                                         searchIsFocus &&
                                         props.searchInput !== ""
                                    }
-                                   results={searchResults}
+                                   results={props.searchResults}
                                    hoverIndexResult={hoverIndexResult}
-                                   setSelectedCity={props.setSelectedCity}
+                                   setSelectedCityKey={props.setSelectedCityKey}
                               />
                          </Input>
                     </StyledDiv>
