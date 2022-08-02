@@ -23,18 +23,16 @@ import themes from "../shared/themes/themes";
 import SearchBox from "../components/SearchBox";
 import SearchBoxMobile from "../components/SearchBoxMobile";
 import { useScreenWidth } from "../shared/utils/getScreenWidth";
-import HomePageDisplayCity, {
-     SelectedCityType,
-} from "../components/HomePageDisplayCity";
-import { selectCity } from "../shared/utils/selectCity";
+import HomePageDisplayCity from "../components/HomePageDisplayCity";
 import { Result } from "../components/SearchBox";
+
 const Home: React.FC = () => {
      const deviceValue = useScreenWidth()[0];
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
 
-     const [selectedCity, setSelectedCity] = useState<
-          SelectedCityType | undefined
-     >(undefined);
+     const [selectedCity, setSelectedCity] = useState<Result | undefined>(
+          undefined
+     );
      const [selectedCityKey, setSelectedCityKey] = useState<
           string | number | null
      >(null);
@@ -65,14 +63,6 @@ const Home: React.FC = () => {
                setRenderMobile(true);
           }
      }, [deviceValue]);
-     useEffect(() => {
-          selectedCityKey &&
-               selectCity(selectedCityKey)
-                    .then((res) => setSelectedCity(res))
-                    .catch((err) => console.log(err));
-     }, [selectedCityKey]);
-     // console.log(selectedCity);
-
      const onClickHandler = () => {
           if (openLogoutPopup) dispatch(toggleLogoutPopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
@@ -201,6 +191,7 @@ const Home: React.FC = () => {
                     openLogoutPopup={openLogoutPopup}
                >
                     <HomePageDisplayCity
+                         setSelectedCity={setSelectedCity}
                          selectedCity={selectedCity}
                          searchResults={searchResults}
                          selectedCityKey={selectedCityKey}

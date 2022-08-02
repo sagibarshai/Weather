@@ -1,6 +1,7 @@
 import axios from "axios";
-const key = "zM88EAJOyO21yWdjPEFbbYWWy6iN4iFN";
-export const selectCity = async (cityKey: string | number) => {
+const key = "VId0UPkrAwOSuqSrVdPhI4GOGhjIlnvX";
+export const selectCity = async (cityKey: string | number | undefined) => {
+     if (!cityKey) return;
      try {
           const response = await axios.get(
                `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=${key}`,
