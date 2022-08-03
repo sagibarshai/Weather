@@ -9,42 +9,43 @@ import { StyledIcon } from "../Icons/Icon";
 type Props = {
      IconPhrase: string;
      margin?: string;
-     setDescription: (x: string) => void;
+     setDescription?: (x: string) => void;
+     width?: string;
+     height?: string;
 };
 
 const DiscoverIcon: React.FC<Props> = ({
      IconPhrase,
      margin,
      setDescription,
+     width,
+     height,
 }) => {
      if (
           IconPhrase === "Sunny" ||
           IconPhrase === "Mostly sunny" ||
-          IconPhrase === "Partly sunny"
+          IconPhrase === "Partly sunny" ||
+          IconPhrase === "Hot"
      ) {
-          setDescription("Sunny");
+          setDescription && setDescription("Clear");
           return (
                <StyledIcon margin={margin}>
                     {" "}
-                    <IconForcastSun
-                         style={{ width: "180px", height: "180px" }}
-                    />
+                    <IconForcastSun style={{ width, height }} />
                </StyledIcon>
           );
      } else if (
           IconPhrase === "Hazy Sunshine" ||
-          IconPhrase === "Mostly Cloudy" ||
+          IconPhrase === "Mostly cloudy" ||
           IconPhrase === "Mostly Cloudy w/ Flurries" ||
           IconPhrase === "Partly Sunny w/ Flurries" ||
           IconPhrase === "Intermittent clouds"
      ) {
-          setDescription("Sun & Cloudy");
+          setDescription && setDescription("Sun & Cloudy");
 
           return (
                <StyledIcon margin={margin}>
-                    <IconForcastSunAndCloudy
-                         style={{ width: "180px", height: "180px" }}
-                    />
+                    <IconForcastSunAndCloudy style={{ width, height }} />
                </StyledIcon>
           );
      } else if (
@@ -52,13 +53,11 @@ const DiscoverIcon: React.FC<Props> = ({
           IconPhrase === "Dreary (Overcast)" ||
           IconPhrase === "Fog"
      ) {
-          setDescription("Cloudy");
+          setDescription && setDescription("Cloudy");
 
           return (
                <StyledIcon margin={margin}>
-                    <IconForcastCloudy
-                         style={{ width: "180px", height: "180px" }}
-                    />
+                    <IconForcastCloudy style={{ width, height }} />
                </StyledIcon>
           );
      } else if (
@@ -67,16 +66,14 @@ const DiscoverIcon: React.FC<Props> = ({
           IconPhrase === "Partly sunny w/ showers" ||
           IconPhrase === "T-Storms" ||
           IconPhrase === "Mostly cloudy w/ t-storms" ||
-          IconPhrase === "Partly Sunny w/ T-Storms" ||
+          IconPhrase === "Partly sunny w/ t-storms" ||
           IconPhrase === "Rain"
      ) {
-          setDescription("Rainy");
+          setDescription && setDescription("Rainy");
 
           return (
                <StyledIcon margin={margin}>
-                    <IconForcastRain
-                         style={{ width: "180px", height: "180px" }}
-                    />
+                    <IconForcastRain style={{ width, height }} />
                </StyledIcon>
           );
      } else if (
@@ -84,13 +81,11 @@ const DiscoverIcon: React.FC<Props> = ({
           IconPhrase === "Mostly Cloudy w/ Snow" ||
           IconPhrase === "Ice"
      ) {
-          setDescription("Snowy");
+          setDescription && setDescription("Snowy");
 
           return (
                <StyledIcon margin={margin}>
-                    <IconForcastSnow
-                         style={{ width: "180px", height: "180px" }}
-                    />
+                    <IconForcastSnow style={{ width, height }} />
                </StyledIcon>
           );
      } else if (
@@ -100,23 +95,19 @@ const DiscoverIcon: React.FC<Props> = ({
           IconPhrase === "Rain and Snow" ||
           IconPhrase === "Thunderstorms"
      ) {
-          setDescription("Storm");
+          setDescription && setDescription("Storm");
 
           return (
                <StyledIcon margin={margin}>
-                    <IconForcastStorm
-                         style={{ width: "180px", height: "180px" }}
-                    />
+                    <IconForcastStorm style={{ width, height }} />
                </StyledIcon>
           );
      } else if (IconPhrase === "Windy") {
-          setDescription("Windy");
+          setDescription && setDescription("Windy");
 
           return (
                <StyledIcon margin={margin}>
-                    <IconForcastWind
-                         style={{ width: "180px", height: "180px" }}
-                    />
+                    <IconForcastWind style={{ width, height }} />
                </StyledIcon>
           );
      }

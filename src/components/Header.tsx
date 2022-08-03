@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { CSSProperties } from "styled-components";
 import { useQuery, useQueryClient } from "react-query";
 
-import { selectCity } from "../shared/utils/selectCity";
-
 import Checkbox from "../shared/UIElements/Inputs/Checkbox";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import Input from "../shared/UIElements/Inputs/Input";
@@ -149,7 +147,9 @@ const Header: React.FC<Props> = (props) => {
                                              </StyledIcon>
                                              {link.name}
                                         </StyledButton>
-                                        <StyledDecloration />
+                                        {link.to === activeIconId && (
+                                             <StyledDecloration />
+                                        )}
                                    </NavLink>
                               );
                          })}

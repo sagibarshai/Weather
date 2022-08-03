@@ -1,7 +1,7 @@
 import { ReactComponent as IconHomeFull } from "../svg/home-full.svg";
 import { ReactComponent as IconFavoriteFull } from "../svg/fav-full.svg";
 import { ReactComponent as IconHomeOutline } from "../svg/home-outline.svg";
-import { ReactComponent as IconFavoriteOutline } from "../svg/fav-outline.svg";
+import { ReactComponent as IconFavoriteOutlineWhite } from "../svg/fav-outline-white.svg";
 
 export type LinksType = {
      to: string;
@@ -20,7 +20,7 @@ const links: LinksType[] = [
           to: "/favorite",
           name: "Favorite",
           activeIcon: <IconFavoriteFull />,
-          defaultIcon: <IconFavoriteOutline />,
+          defaultIcon: <IconFavoriteOutlineWhite />,
      },
 ];
 export default links;

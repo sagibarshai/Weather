@@ -26,6 +26,7 @@ interface StyledButtonProps {
      color?: string;
      displayOnlyOnMobile?: boolean;
      border?: string;
+     alignItem?: string;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -39,7 +40,9 @@ export const StyledButton = styled.button<StyledButtonProps>`
      background-image: ${themes.backgroundPraimary};
      border: none;
      color: white;
-     font-size: 18px;
+     font-size: 1.8rem;
+     display: ${(props) => props.display};
+     align-items: ${(props) => props.alignItem};
      cursor: pointer;
      ${(props) =>
           props.variant === "disabled"
