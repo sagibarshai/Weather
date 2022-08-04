@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
+import cssBreakPoints from "../../shared/cssBreakPoints/cssBreakPoints";
 import { Link } from "react-router-dom";
-import themes from "../shared/themes/themes";
+import themes from "../../shared/themes/themes";
 export const StyledFooterContainer = styled.footer`
      display: none;
      @media ${cssBreakPoints.mobile} {

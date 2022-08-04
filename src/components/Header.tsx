@@ -28,7 +28,7 @@ import {
      StyledSpan,
      StyledTooltip,
      StyledTooltipText,
-} from "./StyledHeader";
+} from "./styles/StyledHeader";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconSearchDark } from "../shared/svg/search-dark.svg";
 import { ReactComponent as IconLogo } from "../shared/svg/logo-small.svg";

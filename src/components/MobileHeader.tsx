@@ -8,7 +8,7 @@ import {
      StyledRowFlexContainer,
      StyledColumnContainer,
      StyledSubtitle,
-} from "./StyledMobileHeader";
+} from "./styles/StyledMobileHeader";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconMenu } from "../shared/svg/menu.svg";

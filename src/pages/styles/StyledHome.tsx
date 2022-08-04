@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
-import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
-import themes from "../shared/themes/themes";
+import cssBreakPoints from "../../shared/cssBreakPoints/cssBreakPoints";
+import themes from "../../shared/themes/themes";
 type StyledHome = {
      renderPraimaryBackground: boolean;
      openMobileMenu: boolean;

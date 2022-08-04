@@ -9,7 +9,7 @@ import {
      StyledLocationParagraph,
      StyledNotFoundCityDiv,
      StyledTextNotFoundCity,
-} from "./StyledHome";
+} from "./styles/StyledHome";
 import { RootState } from "../redux/store";
 import { closeMobileMenu, toggleLogoutPopup } from "../redux/headerSlice";
 import Header from "../components/Header";
@@ -23,14 +23,16 @@ import themes from "../shared/themes/themes";
 import SearchBox from "../components/SearchBox";
 import SearchBoxMobile from "../components/SearchBoxMobile";
 import { useScreenWidth } from "../shared/utils/getScreenWidth";
-import HomePageDisplayCity from "../components/HomePageDisplayCity";
+import HomePageDisplayCity, {
+     DataType,
+} from "../components/HomePageDisplayCity";
 import { Result } from "../components/SearchBox";
 
 const Home: React.FC = () => {
      const deviceValue = useScreenWidth()[0];
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
 
-     const [selectedCity, setSelectedCity] = useState<Result | undefined>(
+     const [selectedCity, setSelectedCity] = useState<DataType | undefined>(
           undefined
      );
      const [selectedCityKey, setSelectedCityKey] = useState<

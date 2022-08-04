@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
-import themes from "../shared/themes/themes";
-import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
+import themes from "../../shared/themes/themes";
+import cssBreakPoints from "../../shared/cssBreakPoints/cssBreakPoints";
 type StyledDivProps = {
      gap?: string;
      marginLeft?: string;

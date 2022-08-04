@@ -12,6 +12,7 @@ type Props = {
      setDescription?: (x: string) => void;
      width?: string;
      height?: string;
+     description?: string;
 };
 
 const DiscoverIcon: React.FC<Props> = ({

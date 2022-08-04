@@ -21,7 +21,7 @@ import {
      StyledHr,
      StyledSpan,
      StyledLogoContainer,
-} from "./StyledLogin";
+} from "./styles/StyledLogin";
 const Login = () => {
      const [email, setEmail] = useState<string>("");
      const [password, setPassword] = useState<string>("");

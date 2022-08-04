@@ -3,7 +3,7 @@ import {
      StyledButtonFooter,
      StyledLink,
      StyledText,
-} from "./StyledFooterMobile";
+} from "./styles/StyledFooterMobile";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconFavorite } from "../shared/svg/fav-outline.svg";
 import { ReactComponent as IconSearch } from "../shared/svg/search-white.svg";
