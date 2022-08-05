@@ -10,6 +10,9 @@ import { ReactComponent as IconFavroiteOutline } from "../shared/svg/fav-outline
 import { ReactComponent as IconArrowWind } from "../shared/svg/arrow-wind.svg";
 import { returnShortDayFromDate } from "../shared/utils/returnShortDayFromDate";
 import DiscoverDescription from "../shared/utils/DiscoverDescription";
+import { getForcastFor12Hours } from "../shared/utils/getForcastFor12Hours";
+import { epochConverter } from "../shared/utils/epochConverter";
+
 import {
      StyledContainer,
      StyledCityName,
@@ -18,14 +21,11 @@ import {
      StyledMaxTemperatureText,
      StyledText,
      StyledDate,
-     StyledDescription,
      StyledColumnDiv,
 } from "./styles/StyledHomePageDisplayCity";
 export type SelectedCityType = {
-     selectedCity?: {};
      searchResults?: Result[] | [];
      selectedCityKey?: number | string | null;
-     setSelectedCity: (x: DataType) => void;
 };
 
 export type DailyForecastsType = {
@@ -42,29 +42,38 @@ export type DataType = {
           DailyForecasts: DailyForecastsType[];
      };
 };
-
+type forcast12HoursType = {
+     data: {
+          EpochDateTime: number;
+          Temperature: { Value: number };
+          IconPhrase: string;
+     }[];
+};
 const twelveHours = 1000 * 60 * 60 * 12;
 const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
-     const [description, setDescription] = useState<string>("");
      const [now, setNow] = useState<string>(convertDateToText());
      const existingResult = props.searchResults?.find(
           (result) => result.Key === props.selectedCityKey
      );
-     const { data } = useQuery(
+     const { data: forcasst5Days } = useQuery(
           ["5daysForcast", existingResult && existingResult.Key],
           () => selectCity(existingResult && existingResult.Key),
           { cacheTime: twelveHours, staleTime: twelveHours }
      ) as DataType;
 
-     useEffect(() => {
-          data && props.setSelectedCity(data as any);
-     }, [props.selectedCityKey, data]);
      setInterval(() => {
           setNow(convertDateToText());
      }, 1000 * 60);
+
+     const { data: forcast12Hours } = useQuery(
+          ["forcast12Hours", existingResult && existingResult.Key],
+          () => getForcastFor12Hours(existingResult && existingResult.Key),
+          { cacheTime: twelveHours / 6, staleTime: twelveHours / 6 }
+     ) as forcast12HoursType;
+     forcast12Hours && console.log(forcast12Hours);
      return (
           <>
-               {existingResult && data && (
+               {existingResult && forcasst5Days && (
                     <StyledContainer>
                          <StyledCityName>
                               {existingResult.LocalizedName}
@@ -75,28 +84,32 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    height="180px"
                                    margin="32px 0 0 -24px"
                                    IconPhrase={
-                                        data.DailyForecasts[0].Day.IconPhrase
+                                        forcasst5Days.DailyForecasts[0].Day
+                                             .IconPhrase
                                    }
                               />
 
                               <StyledMaxTemperatureText>
                                    {
-                                        data.DailyForecasts[0].Temperature
-                                             .Maximum.Value
+                                        forcasst5Days.DailyForecasts[0]
+                                             .Temperature.Maximum.Value
                                    }{" "}
                                    °
                               </StyledMaxTemperatureText>
                               <StyledMinTemperatureText>
                                    -{" "}
                                    {
-                                        data.DailyForecasts[0].Temperature
-                                             .Minimum.Value
+                                        forcasst5Days.DailyForecasts[0]
+                                             .Temperature.Minimum.Value
                                    }
                                    °
                               </StyledMinTemperatureText>
                          </StyledDivRow>
                          <DiscoverDescription
-                              IconPhrase={data.DailyForecasts[0].Day.IconPhrase}
+                              IconPhrase={
+                                   forcasst5Days.DailyForecasts[0].Day
+                                        .IconPhrase
+                              }
                          />
                          <StyledDivRow justifayContent="space-between">
                               <StyledDate>{now}</StyledDate>
@@ -119,9 +132,12 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               border="solid 1px white"
                               borderRadius="20px"
                          >
-                              {data &&
-                                   data.DailyForecasts.map(
-                                        (day, index: number) => {
+                              {forcasst5Days &&
+                                   forcasst5Days.DailyForecasts.map(
+                                        (
+                                             day: DailyForecastsType,
+                                             index: number
+                                        ) => {
                                              if (index === 0) return;
                                              return (
                                                   <StyledColumnDiv
@@ -173,6 +189,40 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         }
                                    )}
                          </StyledDivRow>
+                         <StyledDivRow
+                              marginTop="88px"
+                              height="181px"
+                              justifayContent="space-between"
+                         >
+                              {forcast12Hours &&
+                                   forcast12Hours.map((day, index) => {
+                                        if (index % 2 !== 0) return;
+                                        return (
+                                             <StyledColumnDiv
+                                                  gap="24px"
+                                                  key={index}
+                                             >
+                                                  <StyledText>
+                                                       {epochConverter(
+                                                            day.EpochDateTime
+                                                       )}
+                                                  </StyledText>
+                                                  <StyledText fontWeight="bold">
+                                                       {day.Temperature.Value} °
+                                                  </StyledText>
+                                                  <DiscoverIcon
+                                                       IconPhrase={
+                                                            day.IconPhrase
+                                                       }
+                                                  />
+                                                  <StyledText>
+                                                       <IconArrowWind /> 21.4
+                                                       km/h
+                                                  </StyledText>
+                                             </StyledColumnDiv>
+                                        );
+                                   })}
+                         </StyledDivRow>
                     </StyledContainer>
                )}
           </>
@@ -186,8 +236,8 @@ export default HomePageDisplayCity;
                               height="181px"
                               justifayContent="space-between"
                          >
-                              {data &&
-                                   forcast5DaysData.DailyForecasts.map(
+                              {forcast12Hours &&
+                                   forcast12Hours.DailyForecasts.map(
                                         (day, index) => {
                                              return (
                                                   <StyledColumnDiv gap="24px">

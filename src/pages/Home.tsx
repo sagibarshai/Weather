@@ -23,18 +23,13 @@ import themes from "../shared/themes/themes";
 import SearchBox from "../components/SearchBox";
 import SearchBoxMobile from "../components/SearchBoxMobile";
 import { useScreenWidth } from "../shared/utils/getScreenWidth";
-import HomePageDisplayCity, {
-     DataType,
-} from "../components/HomePageDisplayCity";
+import HomePageDisplayCity from "../components/HomePageDisplayCity";
 import { Result } from "../components/SearchBox";
 
 const Home: React.FC = () => {
      const deviceValue = useScreenWidth()[0];
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
 
-     const [selectedCity, setSelectedCity] = useState<DataType | undefined>(
-          undefined
-     );
      const [selectedCityKey, setSelectedCityKey] = useState<
           string | number | null
      >(null);
@@ -193,8 +188,6 @@ const Home: React.FC = () => {
                     openLogoutPopup={openLogoutPopup}
                >
                     <HomePageDisplayCity
-                         setSelectedCity={setSelectedCity}
-                         selectedCity={selectedCity}
                          searchResults={searchResults}
                          selectedCityKey={selectedCityKey}
                     />

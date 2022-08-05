@@ -1,5 +1,5 @@
 import { ReactComponent as IconForcastSun } from "../svg/sun.svg";
-import { ReactComponent as IconForcastSunAndCloudy } from "../svg/sun-cloud.svg";
+import { ReactComponent as IconForcastSunAndCloudy } from "../svg/sun-cloud-1.svg";
 import { ReactComponent as IconForcastCloudy } from "../svg/cloud.svg";
 import { ReactComponent as IconForcastRain } from "../svg/rain.svg";
 import { ReactComponent as IconForcastStorm } from "../svg/storm.svg";
@@ -45,7 +45,7 @@ const DiscoverIcon: React.FC<Props> = ({
           setDescription && setDescription("Sun & Cloudy");
 
           return (
-               <StyledIcon margin={margin}>
+               <StyledIcon margin={margin} width="32px" height="32px">
                     <IconForcastSunAndCloudy style={{ width, height }} />
                </StyledIcon>
           );

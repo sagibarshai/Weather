@@ -83,6 +83,7 @@ export const StyledColumnDiv = styled.div<StyledProps>`
      display: flex;
      flex-direction: column;
      gap: ${(props) => props.gap};
+     align-items: center;
 `;
 // const { data: forcastEveryHour } = useQuery(
 //      ["forcastEveryHour", existingResult && existingResult.Key],
