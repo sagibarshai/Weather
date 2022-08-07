@@ -1,12 +1,12 @@
 import axios from "axios";
-const key = "yXrT65x8TG2XpEH2Aatvz9vey0QnECKl";
+const key = "jxrHoEAmA16qJK9k7lCTwvL0eShwxAYi";
 export const getForcastFor12Hours = async (
      cityKey: number | string | undefined
 ) => {
      if (!cityKey) return;
      try {
           const response = await axios.get(
-               `http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${cityKey}?apikey=${key}`,
+               `http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${cityKey}?apikey=${key}&details=true&metric=true`,
                {
                     headers: { "Content-type": "application/json" },
                }

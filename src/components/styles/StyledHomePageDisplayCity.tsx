@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import themes from "../../shared/themes/themes";
 type StyledProps = {
      fontSize?: string;
@@ -10,6 +10,9 @@ type StyledProps = {
      alignItems?: string;
      borderRadius?: string;
      border?: string;
+     marginLeft?: string;
+     selected?: boolean;
+     padding?: string;
 };
 
 export const StyledContainer = styled.div`
@@ -37,6 +40,7 @@ export const StyledDivRow = styled.div<StyledProps>`
      text-align: center;
      border-radius: ${(props) => props.borderRadius};
      border: ${(props) => props.border};
+     margin-left: ${(props) => props.marginLeft};
 `;
 export const StyledMinTemperatureText = styled.span<StyledProps>`
      font-family: inherit;
@@ -83,10 +87,12 @@ export const StyledColumnDiv = styled.div<StyledProps>`
      display: flex;
      flex-direction: column;
      gap: ${(props) => props.gap};
+     padding: ${(props) => props.padding};
+     border-radius: ${(props) => props.borderRadius};
      align-items: center;
+     ${(props) =>
+          props.selected === true &&
+          css`
+               background-color: rgba(255, 255, 255, 0.2);
+          `}
 `;
-// const { data: forcastEveryHour } = useQuery(
-//      ["forcastEveryHour", existingResult && existingResult.Key],
-//      () => getForcastEveryHour(existingResult && existingResult.Key),
-//      { cacheTime: twelveHours / 12, staleTime: twelveHours / 12 }
-// );

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { selectCity } from "../shared/utils/selectCity";
 import { Result } from "./SearchBox";
 import { useQuery } from "react-query";
-import DiscoverIcon from "../shared/utils/DiscoverIcon";
 import { convertDateToText } from "../shared/utils/convertDateToText";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import { StyledIcon } from "../shared/Icons/Icon";
@@ -12,7 +11,8 @@ import { returnShortDayFromDate } from "../shared/utils/returnShortDayFromDate";
 import DiscoverDescription from "../shared/utils/DiscoverDescription";
 import { getForcastFor12Hours } from "../shared/utils/getForcastFor12Hours";
 import { epochConverter } from "../shared/utils/epochConverter";
-
+import ReturnIconForcast from "../shared/utils/ReturnIconForcast";
+import LineChart from "./LineChart";
 import {
      StyledContainer,
      StyledCityName,
@@ -27,16 +27,14 @@ export type SelectedCityType = {
      searchResults?: Result[] | [];
      selectedCityKey?: number | string | null;
 };
-
 export type DailyForecastsType = {
      Date: Date;
      Temperature: {
           Minimum: { Value: number };
           Maximum: { Value: number };
      };
-     Day: { IconPhrase: string };
+     Day: { IconPhrase: string; Icon: number };
 };
-
 export type DataType = {
      data: {
           DailyForecasts: DailyForecastsType[];
@@ -45,13 +43,23 @@ export type DataType = {
 type forcast12HoursType = {
      data: {
           EpochDateTime: number;
+          DateTime: string;
           Temperature: { Value: number };
           IconPhrase: string;
+          WeatherIcon: number;
+          Wind: {
+               Speed: { Value: number; Unit: string };
+               Direction: { Degrees: number };
+          };
      }[];
 };
 const twelveHours = 1000 * 60 * 60 * 12;
 const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const [now, setNow] = useState<string>(convertDateToText());
+     const [currentDateTime, setCurrentDateTime] = useState(
+          new Date().toLocaleString()
+     );
+     const [selected, setSelected] = useState<null | string>(null);
      const existingResult = props.searchResults?.find(
           (result) => result.Key === props.selectedCityKey
      );
@@ -60,9 +68,9 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           () => selectCity(existingResult && existingResult.Key),
           { cacheTime: twelveHours, staleTime: twelveHours }
      ) as DataType;
-
      setInterval(() => {
           setNow(convertDateToText());
+          setCurrentDateTime(new Date().toLocaleString());
      }, 1000 * 60);
 
      const { data: forcast12Hours } = useQuery(
@@ -70,22 +78,30 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           () => getForcastFor12Hours(existingResult && existingResult.Key),
           { cacheTime: twelveHours / 6, staleTime: twelveHours / 6 }
      ) as forcast12HoursType;
-     forcast12Hours && console.log(forcast12Hours);
+     useEffect(() => {
+          if (forcast12Hours)
+               for (let day of forcast12Hours) {
+                    if (day.DateTime < currentDateTime) {
+                         setSelected(day.DateTime);
+                         break;
+                    }
+               }
+     }, [forcast12Hours]);
+     forcasst5Days && console.log(forcasst5Days);
      return (
           <>
-               {existingResult && forcasst5Days && (
+               {existingResult && forcasst5Days && forcast12Hours && selected && (
                     <StyledContainer>
                          <StyledCityName>
                               {existingResult.LocalizedName}
                          </StyledCityName>
-                         <StyledDivRow alignItems="flex-end">
-                              <DiscoverIcon
-                                   width="180px"
-                                   height="180px"
-                                   margin="32px 0 0 -24px"
-                                   IconPhrase={
-                                        forcasst5Days.DailyForecasts[0].Day
-                                             .IconPhrase
+                         <StyledDivRow alignItems="flex-end" marginLeft="-35px">
+                              <ReturnIconForcast
+                                   height="200px"
+                                   width="200px"
+                                   margin="16px 32px 0 0"
+                                   WeatherIcon={
+                                        forcasst5Days.DailyForecasts[0].Day.Icon
                                    }
                               />
 
@@ -158,10 +174,13 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                             />
                                                        </StyledText>
                                                        <StyledDivRow>
-                                                            <DiscoverIcon
-                                                                 IconPhrase={
+                                                            <ReturnIconForcast
+                                                                 height="40px"
+                                                                 width="40px"
+                                                                 margin="0 4px 0 0 "
+                                                                 WeatherIcon={
                                                                       day.Day
-                                                                           .IconPhrase
+                                                                           .Icon
                                                                  }
                                                             />
                                                             <StyledMaxTemperatureText fontSize="3.2rem">
@@ -191,7 +210,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                          </StyledDivRow>
                          <StyledDivRow
                               marginTop="88px"
-                              height="181px"
+                              height="293px"
                               justifayContent="space-between"
                          >
                               {forcast12Hours &&
@@ -199,8 +218,17 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         if (index % 2 !== 0) return;
                                         return (
                                              <StyledColumnDiv
+                                                  padding="40px 17px 39.9px 16px"
                                                   gap="24px"
                                                   key={index}
+                                                  height="293px"
+                                                  selected={
+                                                       day.DateTime.toLocaleString() ==
+                                                       selected
+                                                            ? true
+                                                            : false
+                                                  }
+                                                  borderRadius="20px"
                                              >
                                                   <StyledText>
                                                        {epochConverter(
@@ -210,19 +238,27 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                   <StyledText fontWeight="bold">
                                                        {day.Temperature.Value} °
                                                   </StyledText>
-                                                  <DiscoverIcon
-                                                       IconPhrase={
-                                                            day.IconPhrase
+                                                  <ReturnIconForcast
+                                                       height="40px"
+                                                       width="40px"
+                                                       WeatherIcon={
+                                                            day.WeatherIcon
                                                        }
                                                   />
                                                   <StyledText>
-                                                       <IconArrowWind /> 21.4
-                                                       km/h
+                                                       <IconArrowWind
+                                                            style={{
+                                                                 transform: `rotate(${day.Wind.Direction.Degrees}deg)`,
+                                                            }}
+                                                       />{" "}
+                                                       {day.Wind.Speed.Value}{" "}
+                                                       {day.Wind.Speed.Unit}
                                                   </StyledText>
                                              </StyledColumnDiv>
                                         );
                                    })}
                          </StyledDivRow>
+                         <LineChart />
                     </StyledContainer>
                )}
           </>
@@ -230,31 +266,3 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
 };
 
 export default HomePageDisplayCity;
-/*
- <StyledDivRow
-                              marginTop="88px"
-                              height="181px"
-                              justifayContent="space-between"
-                         >
-                              {forcast12Hours &&
-                                   forcast12Hours.DailyForecasts.map(
-                                        (day, index) => {
-                                             return (
-                                                  <StyledColumnDiv gap="24px">
-                                                       <StyledText>
-                                                            08:00
-                                                       </StyledText>
-                                                       <StyledText fontWeight="bold">
-                                                            5
-                                                       </StyledText>
-                                                       <DiscoverIcon IconPhrase="hot" />
-                                                       <StyledText>
-                                                            <IconArrowWind />{" "}
-                                                            21.4 km/h
-                                                       </StyledText>
-                                                  </StyledColumnDiv>
-                                             );
-                                        }
-                                   )}
-                         </StyledDivRow>
-*/

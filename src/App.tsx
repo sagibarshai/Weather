@@ -4,7 +4,6 @@ import Header from "./components/Header";
 import BackgroundAnimation from "./shared/backgroundAnimation/BackgroundAnimation";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Routes, Route, Navigate } from "react-router-dom";
-// https://developer.accuweather.com/
 
 const App: React.FC = () => {
      return (
