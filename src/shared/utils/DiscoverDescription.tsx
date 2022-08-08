@@ -5,6 +5,7 @@ type Props = {
 };
 
 const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
+     console.log(IconPhrase + "From DiscoverDescriptio");
      if (
           IconPhrase === "Sunny" ||
           IconPhrase === "Mostly sunny" ||
@@ -28,7 +29,7 @@ const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
           );
      } else if (
           IconPhrase === "Cloudy" ||
-          IconPhrase === "Dreary (Overcast)" ||
+          IconPhrase === "Dreary" ||
           IconPhrase === "Fog"
      ) {
           return (
@@ -69,6 +70,6 @@ const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
                <StyledDescription fontSize={fontSize}>Windy</StyledDescription>
           );
      }
-     return <h1>no icon</h1>;
+     return <></>;
 };
 export default DiscoverDescription;

@@ -17,9 +17,18 @@ export const StyledChartContainer = styled.div`
      height: 602px;
      padding: 16px 96px 16px 95px;
      border-radius: 20px;
-     -webkit-filter: blur(1px);
-     filter: blur(1px);
+     /* -webkit-filter: blur(1px); */
+     /* filter: blur(1px); */
      background-color: rgba(255, 255, 255, 0.3);
      margin-top: 24px;
      margin-bottom: 85px;
+     flex-direction: column;
+     gap: 200px;
+`;
+export const StyledDay = styled.span`
+     font-family: inherit;
+     font-size: 2.4rem;
+     font-weight: 500;
+     line-height: 1.25;
+     color: ${themes.white};
 `;

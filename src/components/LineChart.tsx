@@ -14,8 +14,14 @@ import {
      Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
-
-const LineChart = () => {
+type Props = {
+     forcast5daystemperatureDay: number[];
+     forcast5daystemperatureNight: number[];
+     forcast5daysLables: string[];
+     forcastNightIcon?: JSX.Element;
+     forcastDayIcon?: JSX.Element;
+};
+const LineChart: React.FC<Props> = (props) => {
      ChartJS.register(
           CategoryScale,
           LinearScale,
@@ -26,15 +32,15 @@ const LineChart = () => {
           Legend
      );
 
-     const options = {
+     const optionsDay = {
+          title: { display: false },
+          legend: { display: false },
           responsive: true,
 
-          legend: {
-               display: false,
-          },
           plugins: {
                legend: {
-                    position: "top" as const,
+                    // position: "bottom" as const,
+                    display: false,
                },
           },
           scales: {
@@ -42,30 +48,62 @@ const LineChart = () => {
                     grid: {
                          display: false,
                     },
+                    display: false,
                },
                y: {
                     grid: {
                          display: false,
                     },
+                    display: false,
                },
           },
      };
+     const optionsNight = {
+          title: { display: false },
+          legend: { display: false },
+          responsive: true,
 
-     const labels = ["Sun", "Mon", "Tuh", "Wed", "Tuh"]; //bottom
+          plugins: {
+               legend: {
+                    // position: "bottom" as const,
+                    display: false,
+               },
+          },
 
-     const data = {
-          labels,
+          scales: {
+               x: {
+                    grid: {
+                         display: false,
+                    },
+                    position: "bottom" as const,
+                    // display: false,
+               },
+               y: {
+                    grid: {
+                         display: false,
+                    },
+                    display: false,
+               },
+          },
+     };
+     const dataDay = {
+          labels: props.forcast5daysLables,
           datasets: [
                {
-                    label: false,
-                    data: [27, 20, 27, 23, 27],
+                    label: "",
+                    data: props.forcast5daystemperatureDay,
                     borderColor: "white",
-                    backgroundColor: "black",
+                    backgroundColor: "white",
                },
+          ],
+     };
+     const dataNight = {
+          labels: props.forcast5daysLables,
+          datasets: [
                {
-                    label: false,
-                    data: [27, 33, 30, 22, 27],
-                    borderColor: "rgb(53, 162, 235)",
+                    label: "",
+                    data: props.forcast5daystemperatureNight,
+                    borderColor: "white",
                     backgroundColor: "white",
                },
           ],
@@ -74,7 +112,12 @@ const LineChart = () => {
           <StyledChartBigContainer>
                <StyledTitle>5-days forcast</StyledTitle>
                <StyledChartContainer>
-                    <Line options={options} data={data} />
+                    <Line options={optionsDay} data={dataDay} height="50px" />
+                    <Line
+                         options={optionsNight}
+                         data={dataNight}
+                         height="50px"
+                    />
                </StyledChartContainer>
           </StyledChartBigContainer>
      );

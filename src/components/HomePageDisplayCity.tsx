@@ -88,6 +88,9 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                }
      }, [forcast12Hours]);
      forcasst5Days && console.log(forcasst5Days);
+     const forcast5daystemperatureDay: number[] = [];
+     const forcast5daystemperatureNight: number[] = [];
+     const forcast5daysLables: string[] = [];
      return (
           <>
                {existingResult && forcasst5Days && forcast12Hours && selected && (
@@ -154,6 +157,19 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                              day: DailyForecastsType,
                                              index: number
                                         ) => {
+                                             forcast5daystemperatureDay.push(
+                                                  day.Temperature.Maximum.Value
+                                             );
+                                             forcast5daystemperatureNight.push(
+                                                  day.Temperature.Minimum.Value
+                                             );
+                                             let dayString = String(
+                                                  returnShortDayFromDate(
+                                                       day.Date
+                                                  )
+                                             );
+                                             forcast5daysLables.push(dayString);
+
                                              if (index === 0) return;
                                              return (
                                                   <StyledColumnDiv
@@ -258,7 +274,17 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         );
                                    })}
                          </StyledDivRow>
-                         <LineChart />
+                         {forcast5daystemperatureDay.length === 5 && (
+                              <LineChart
+                                   forcast5daysLables={forcast5daysLables}
+                                   forcast5daystemperatureNight={
+                                        forcast5daystemperatureNight
+                                   }
+                                   forcast5daystemperatureDay={
+                                        forcast5daystemperatureDay
+                                   }
+                              />
+                         )}
                     </StyledContainer>
                )}
           </>
