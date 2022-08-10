@@ -23,7 +23,7 @@ export const StyledChartContainer = styled.div`
      margin-top: 24px;
      margin-bottom: 85px;
      flex-direction: column;
-     gap: 200px;
+     gap: 20px;
 `;
 export const StyledDay = styled.span`
      font-family: inherit;
@@ -31,4 +31,16 @@ export const StyledDay = styled.span`
      font-weight: 500;
      line-height: 1.25;
      color: ${themes.white};
+`;
+export const StyledColumnDiv = styled.div`
+     display: flex;
+     flex-direction: column;
+     width: 100%;
+     /* gap: 10px; */
+`;
+export const StyledIconsRow = styled.div`
+     width: 100%;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-between;
 `;

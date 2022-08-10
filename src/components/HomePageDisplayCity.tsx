@@ -7,12 +7,14 @@ import { StyledButton } from "../shared/UIElements/Button/Button";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconFavroiteOutline } from "../shared/svg/fav-outline.svg";
 import { ReactComponent as IconArrowWind } from "../shared/svg/arrow-wind.svg";
+import { ReactComponent as IconSunYellow } from "../shared/svg/sun-yellow.svg";
 import { returnShortDayFromDate } from "../shared/utils/returnShortDayFromDate";
 import DiscoverDescription from "../shared/utils/DiscoverDescription";
 import { getForcastFor12Hours } from "../shared/utils/getForcastFor12Hours";
 import { epochConverter } from "../shared/utils/epochConverter";
 import ReturnIconForcast from "../shared/utils/ReturnIconForcast";
 import LineChart from "./LineChart";
+import { getDayNumber } from "../shared/utils/getDateNumber";
 import {
      StyledContainer,
      StyledCityName,
@@ -86,11 +88,20 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                          break;
                     }
                }
+          if (forcast12Hours) console.log(forcast12Hours[0]);
      }, [forcast12Hours]);
      forcasst5Days && console.log(forcasst5Days);
      const forcast5daystemperatureDay: number[] = [];
      const forcast5daystemperatureNight: number[] = [];
-     const forcast5daysLables: string[] = [];
+     const forcast5daysLablesDays: string[] = [];
+     const forcast5daysLablesDates: string[] = [];
+     const forcast5daysLablesIcons: JSX.Element[] = [
+          <IconSunYellow />,
+          <IconSunYellow />,
+          <IconSunYellow />,
+          <IconSunYellow />,
+          <IconSunYellow />,
+     ];
      return (
           <>
                {existingResult && forcasst5Days && forcast12Hours && selected && (
@@ -103,9 +114,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    height="200px"
                                    width="200px"
                                    margin="16px 32px 0 0"
-                                   WeatherIcon={
-                                        forcasst5Days.DailyForecasts[0].Day.Icon
-                                   }
+                                   WeatherIcon={forcast12Hours[0].WeatherIcon}
                               />
 
                               <StyledMaxTemperatureText>
@@ -163,12 +172,17 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                              forcast5daystemperatureNight.push(
                                                   day.Temperature.Minimum.Value
                                              );
-                                             let dayString = String(
-                                                  returnShortDayFromDate(
-                                                       day.Date
+
+                                             forcast5daysLablesDays.push(
+                                                  String(
+                                                       returnShortDayFromDate(
+                                                            day.Date
+                                                       )
                                                   )
                                              );
-                                             forcast5daysLables.push(dayString);
+                                             forcast5daysLablesDates.push(
+                                                  getDayNumber(String(day.Date))
+                                             );
 
                                              if (index === 0) return;
                                              return (
@@ -274,17 +288,19 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         );
                                    })}
                          </StyledDivRow>
-                         {forcast5daystemperatureDay.length === 5 && (
-                              <LineChart
-                                   forcast5daysLables={forcast5daysLables}
-                                   forcast5daystemperatureNight={
-                                        forcast5daystemperatureNight
-                                   }
-                                   forcast5daystemperatureDay={
-                                        forcast5daystemperatureDay
-                                   }
-                              />
-                         )}
+                         {/* {forcast5daystemperatureDay.length === 5 && ( */}
+                         <LineChart
+                              forcast5daysLablesIcons={forcast5daysLablesIcons}
+                              forcast5daysLablesDates={forcast5daysLablesDates}
+                              forcast5daysLablesDays={forcast5daysLablesDays}
+                              forcast5daystemperatureNight={
+                                   forcast5daystemperatureNight
+                              }
+                              forcast5daystemperatureDay={
+                                   forcast5daystemperatureDay
+                              }
+                         />
+                         {/* )}    */}
                     </StyledContainer>
                )}
           </>

@@ -5,7 +5,6 @@ type Props = {
 };
 
 const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
-     console.log(IconPhrase + "From DiscoverDescriptio");
      if (
           IconPhrase === "Sunny" ||
           IconPhrase === "Mostly sunny" ||
