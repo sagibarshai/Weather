@@ -67,7 +67,7 @@ const ReturnIconForcast: React.FC<Props> = (props) => {
      const index = iconsNumbers.findIndex((num) => num === props.WeatherIcon);
      return (
           <StyledImgIcon
-               src={`/images/${weatherIcons[index]}`}
+               src={`/accuweatherImages/${weatherIcons[index]}`}
                width={props.width}
                height={props.height}
                margin={props.margin}

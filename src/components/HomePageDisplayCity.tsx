@@ -88,9 +88,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                          break;
                     }
                }
-          if (forcast12Hours) console.log(forcast12Hours[0]);
      }, [forcast12Hours]);
-     forcasst5Days && console.log(forcasst5Days);
      const forcast5daystemperatureDay: number[] = [];
      const forcast5daystemperatureNight: number[] = [];
      const forcast5daysLablesDays: string[] = [];

@@ -24,6 +24,7 @@ export const StyledChartContainer = styled.div`
      margin-bottom: 85px;
      flex-direction: column;
      gap: 20px;
+     justify-content: space-between;
 `;
 export const StyledDay = styled.span`
      font-family: inherit;
@@ -36,7 +37,7 @@ export const StyledColumnDiv = styled.div`
      display: flex;
      flex-direction: column;
      width: 100%;
-     /* gap: 10px; */
+     gap: 40px;
 `;
 export const StyledIconsRow = styled.div`
      width: 100%;
