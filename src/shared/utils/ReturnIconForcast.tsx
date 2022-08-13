@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import cssBreakPoints from "../cssBreakPoints/cssBreakPoints";
 const weatherIcons: string[] = [
      "sunny.png",
      "mostly-sunny.png",
@@ -56,20 +57,35 @@ type Props = {
      width?: string;
      height?: string;
      margin?: string;
+     renderLaptopAnDesktop?: boolean;
+     renderMobile?: boolean;
+     mobileWidth?: string;
+     mobileHeight?: string;
 };
 const StyledImgIcon = styled.img<StyledProps>`
      width: ${(props) => props.width || "32px"};
      height: ${(props) => props.height || "32px"};
      margin: ${(props) => props.margin};
      object-fit: contain;
+     @media ${cssBreakPoints.mobile} {
+          margin: 0 32px 0 0;
+     }
 `;
 const ReturnIconForcast: React.FC<Props> = (props) => {
      const index = iconsNumbers.findIndex((num) => num === props.WeatherIcon);
      return (
           <StyledImgIcon
                src={`/accuweatherImages/${weatherIcons[index]}`}
-               width={props.width}
-               height={props.height}
+               width={
+                    props.renderLaptopAnDesktop
+                         ? props.width
+                         : props.mobileWidth
+               }
+               height={
+                    props.renderLaptopAnDesktop
+                         ? props.height
+                         : props.mobileHeight
+               }
                margin={props.margin}
           />
      );

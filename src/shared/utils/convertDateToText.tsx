@@ -21,7 +21,7 @@ const months = [
      "Nov",
      "Dec",
 ];
-const returnTimeAmPm = (hours: number, minutes: number) => {
+const returnTimeAmPm = (hours: number, minutes: number | string) => {
      if (hours <= 12) return `${hours}:${minutes}am`;
      else {
           hours = hours - 12;
@@ -37,10 +37,10 @@ export const convertDateToText = () => {
      let date = now.getDate(); // date
      let year = now.getFullYear();
      let hours = now.getHours();
-     let minutes = now.getMinutes();
-     let minutes2Letters = Number(
-          minutes.toString().length === 1 ? "0" + minutes : minutes
-     );
-     let timeAmPm = returnTimeAmPm(hours, minutes2Letters);
+     let minutes: string | number = now.getMinutes();
+
+     if (minutes < 10) minutes = "0" + minutes;
+
+     let timeAmPm = returnTimeAmPm(hours, minutes);
      return `${dayString}, ${date}-${monthString}-${year}, ${timeAmPm}`;
 };

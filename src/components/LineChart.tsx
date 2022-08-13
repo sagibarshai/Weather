@@ -2,8 +2,7 @@ import {
      StyledChartBigContainer,
      StyledChartContainer,
      StyledTitle,
-     StyledColumnDiv,
-     StyledIconsRow,
+     StyledSelectedItem,
 } from "./styles/StyledLineChart";
 import {
      Chart as ChartJS,
@@ -17,16 +16,12 @@ import {
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Line } from "react-chartjs-2";
-import { ReactComponent as IconSunYellow } from "../shared/svg/sun-yellow.svg";
-import { StyledIcon } from "../shared/Icons/Icon";
+
 type Props = {
      forcast5daystemperatureDay: number[];
      forcast5daystemperatureNight: number[];
      forcast5daysLablesDays: string[];
      forcast5daysLablesDates: string[];
-     forcast5daysLablesIcons: JSX.Element[];
-     forcastNightIcon?: JSX.Element;
-     forcastDayIcon?: JSX.Element;
 };
 const LineChart: React.FC<Props> = (props) => {
      ChartJS.register(
@@ -49,6 +44,10 @@ const LineChart: React.FC<Props> = (props) => {
                     color: "white",
                     anchor: "top",
                     align: "end",
+                    padding: 15,
+                    formatter: (value: number) => {
+                         return `${value} °`;
+                    },
                     font: {
                          size: 18,
                     },
@@ -152,9 +151,13 @@ const LineChart: React.FC<Props> = (props) => {
                     color: "white",
                     anchor: "top",
                     align: "end",
+                    formatter: (value: number) => {
+                         return `${value} °`;
+                    },
                     font: {
                          size: 18,
                     },
+                    padding: 15,
                },
 
                legend: {
@@ -217,13 +220,13 @@ const LineChart: React.FC<Props> = (props) => {
                          },
                     },
                },
-               fourtXAxis: {
+               forthXAxis: {
                     axis: "x",
                     grid: {
                          display: false,
                          drawBorder: false,
                     },
-                    position: "bottom",
+                    position: "top",
                     labels: Array(5).fill(""),
                     ticks: {
                          color: "white",
@@ -232,7 +235,6 @@ const LineChart: React.FC<Props> = (props) => {
                          },
                     },
                },
-
                y: {
                     gridLines: {
                          display: false,
@@ -289,7 +291,6 @@ const LineChart: React.FC<Props> = (props) => {
                     xAxis.ticks.forEach((value: any, index: any) => {
                          let x = xAxis.getPixelForValue(index);
                          let y = yAxis.getPixelForValue(index);
-                         console.log(y);
                          let image = new Image();
                          (image.src = "/images/moon-flat.png"),
                               ctx.drawImage(image, x - 15, 120, 36, 36);
@@ -298,11 +299,11 @@ const LineChart: React.FC<Props> = (props) => {
                },
           },
      ];
-     console.log(props.forcast5daystemperatureNight);
      return (
           <StyledChartBigContainer>
                <StyledTitle>5-days forcast</StyledTitle>
                <StyledChartContainer>
+                    <StyledSelectedItem />
                     <Line
                          options={optionsDay}
                          data={dataDay}
@@ -312,7 +313,7 @@ const LineChart: React.FC<Props> = (props) => {
                     <Line
                          options={optionsNight}
                          data={dataNight}
-                         height="100px"
+                         height="93,5px"
                          plugins={pluginsBottom}
                     />
                </StyledChartContainer>

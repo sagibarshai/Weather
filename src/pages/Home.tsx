@@ -188,6 +188,8 @@ const Home: React.FC = () => {
                     openLogoutPopup={openLogoutPopup}
                >
                     <HomePageDisplayCity
+                         renderMobile={renderMobile}
+                         renderLaptopAnDesktop={renderLaptopAnDesktop}
                          searchResults={searchResults}
                          selectedCityKey={selectedCityKey}
                     />
@@ -196,6 +198,9 @@ const Home: React.FC = () => {
                <MobileMenuBottom />
                {openSearchBoxMobile && (
                     <SearchBoxMobile
+                         setSearchResults={setSearchResults}
+                         searchResults={searchResults}
+                         setSelectedCityKey={setSelectedCityKey}
                          searchInput={searchInput}
                          setSearchInput={setSearchInput}
                          setOpenSearchBoxMobile={setOpenSearchBoxMobile}

@@ -7,7 +7,8 @@ import { StyledButton } from "../shared/UIElements/Button/Button";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconFavroiteOutline } from "../shared/svg/fav-outline.svg";
 import { ReactComponent as IconArrowWind } from "../shared/svg/arrow-wind.svg";
-import { ReactComponent as IconSunYellow } from "../shared/svg/sun-yellow.svg";
+import { ReactComponent as IconArrowLeft } from "../shared/svg/arrow-square-left.svg";
+import { ReactComponent as IconFavWhite } from "../shared/svg/fav-outline-white.svg";
 import { returnShortDayFromDate } from "../shared/utils/returnShortDayFromDate";
 import DiscoverDescription from "../shared/utils/DiscoverDescription";
 import { getForcastFor12Hours } from "../shared/utils/getForcastFor12Hours";
@@ -24,10 +25,13 @@ import {
      StyledText,
      StyledDate,
      StyledColumnDiv,
+     StyledMobileAddToFavButton,
 } from "./styles/StyledHomePageDisplayCity";
 export type SelectedCityType = {
      searchResults?: Result[] | [];
      selectedCityKey?: number | string | null;
+     renderMobile?: boolean;
+     renderLaptopAnDesktop?: boolean;
 };
 export type DailyForecastsType = {
      Date: Date;
@@ -93,24 +97,32 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const forcast5daystemperatureNight: number[] = [];
      const forcast5daysLablesDays: string[] = [];
      const forcast5daysLablesDates: string[] = [];
-     const forcast5daysLablesIcons: JSX.Element[] = [
-          <IconSunYellow />,
-          <IconSunYellow />,
-          <IconSunYellow />,
-          <IconSunYellow />,
-          <IconSunYellow />,
-     ];
      return (
           <>
                {existingResult && forcasst5Days && forcast12Hours && selected && (
                     <StyledContainer>
+                         {props.renderMobile && (
+                              <StyledMobileAddToFavButton>
+                                   <IconFavWhite />
+                              </StyledMobileAddToFavButton>
+                         )}
                          <StyledCityName>
                               {existingResult.LocalizedName}
                          </StyledCityName>
-                         <StyledDivRow alignItems="flex-end" marginLeft="-35px">
+                         <StyledDivRow
+                              alignItems="flex-end"
+                              marginLeft="-35px"
+                              marginTopMobile="30px"
+                         >
                               <ReturnIconForcast
+                                   renderMobile={props.renderMobile}
+                                   renderLaptopAnDesktop={
+                                        props.renderLaptopAnDesktop
+                                   }
                                    height="200px"
                                    width="200px"
+                                   mobileHeight="80px"
+                                   mobileWidth="80px"
                                    margin="16px 32px 0 0"
                                    WeatherIcon={forcast12Hours[0].WeatherIcon}
                               />
@@ -139,17 +151,19 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                          />
                          <StyledDivRow justifayContent="space-between">
                               <StyledDate>{now}</StyledDate>
-                              <StyledButton
-                                   variant="white"
-                                   display="flex"
-                                   alignItem="revert"
-                                   fontWeight="bold"
-                              >
-                                   <StyledIcon marginRight="8px">
-                                        <IconFavroiteOutline />
-                                   </StyledIcon>
-                                   Add to favorite
-                              </StyledButton>
+                              {props.renderLaptopAnDesktop && (
+                                   <StyledButton
+                                        variant="white"
+                                        display="flex"
+                                        alignItem="revert"
+                                        fontWeight="bold"
+                                   >
+                                        <StyledIcon marginRight="8px">
+                                             <IconFavroiteOutline />
+                                        </StyledIcon>
+                                        Add to favorite
+                                   </StyledButton>
+                              )}
                          </StyledDivRow>
                          <StyledDivRow
                               justifayContent="space-around"
@@ -263,7 +277,10 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                             day.EpochDateTime
                                                        )}
                                                   </StyledText>
-                                                  <StyledText fontWeight="bold">
+                                                  <StyledText
+                                                       fontWeight="bold"
+                                                       fontSize="3.2rem"
+                                                  >
                                                        {day.Temperature.Value} °
                                                   </StyledText>
                                                   <ReturnIconForcast
@@ -286,9 +303,20 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         );
                                    })}
                          </StyledDivRow>
-                         {/* {forcast5daystemperatureDay.length === 5 && ( */}
+                         <StyledDivRow
+                              justifayContent="flex-end"
+                              gap="24px"
+                              padding="0 20px 0 0 "
+                         >
+                              <IconArrowLeft style={{ cursor: "pointer" }} />
+                              <IconArrowLeft
+                                   style={{
+                                        transform: "rotate(180deg)",
+                                        cursor: "pointer",
+                                   }}
+                              />
+                         </StyledDivRow>
                          <LineChart
-                              forcast5daysLablesIcons={forcast5daysLablesIcons}
                               forcast5daysLablesDates={forcast5daysLablesDates}
                               forcast5daysLablesDays={forcast5daysLablesDays}
                               forcast5daystemperatureNight={
@@ -298,7 +326,6 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    forcast5daystemperatureDay
                               }
                          />
-                         {/* )}    */}
                     </StyledContainer>
                )}
           </>

@@ -13,17 +13,16 @@ export const StyledTitle = styled.h3`
      color: ${themes.white};
 `;
 export const StyledChartContainer = styled.div`
+     position: relative;
      display: flex;
      height: 602px;
      padding: 16px 96px 16px 95px;
      border-radius: 20px;
-     /* -webkit-filter: blur(1px); */
-     /* filter: blur(1px); */
      background-color: rgba(255, 255, 255, 0.3);
      margin-top: 24px;
      margin-bottom: 85px;
      flex-direction: column;
-     gap: 20px;
+     gap: 70px;
      justify-content: space-between;
 `;
 export const StyledDay = styled.span`
@@ -44,4 +43,17 @@ export const StyledIconsRow = styled.div`
      display: flex;
      flex-direction: row;
      justify-content: space-between;
+`;
+export const StyledSelectedItem = styled.div`
+     position: absolute;
+     top: 50%;
+     left: 13%;
+     transform: translate(-50%, -50%);
+     /* padding: 0 50px 0 49px; */
+     width: 146px;
+     height: 95%;
+     border-radius: 20px;
+     -webkit-filter: blur(1px);
+     filter: blur(1px);
+     background-color: rgba(255, 255, 255, 0.3);
 `;

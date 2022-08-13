@@ -5,7 +5,7 @@ import {
      StyledText,
 } from "./styles/StyledFooterMobile";
 import { StyledIcon } from "../shared/Icons/Icon";
-import { ReactComponent as IconFavorite } from "../shared/svg/fav-outline.svg";
+import { ReactComponent as IconFavorite } from "../shared/svg/fav-outline-white.svg";
 import { ReactComponent as IconSearch } from "../shared/svg/search-white.svg";
 import { ReactComponent as IconHome } from "../shared/svg/home-outline.svg";
 

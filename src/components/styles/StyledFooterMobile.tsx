@@ -7,7 +7,7 @@ export const StyledFooterContainer = styled.footer`
      @media ${cssBreakPoints.mobile} {
           display: flex;
      }
-     position: absolute;
+     position: sticky;
      bottom: 0;
      width: 100vw;
      height: 80px;

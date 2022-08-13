@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import themes from "../../shared/themes/themes";
+import cssBreakPoints from "../../shared/cssBreakPoints/cssBreakPoints";
 type StyledProps = {
      fontSize?: string;
      fontWeight?: string;
@@ -13,6 +14,7 @@ type StyledProps = {
      marginLeft?: string;
      selected?: boolean;
      padding?: string;
+     marginTopMobile?: string;
 };
 
 export const StyledContainer = styled.div`
@@ -20,6 +22,10 @@ export const StyledContainer = styled.div`
      width: 1180px;
      margin: 120px auto 0 auto;
      flex-direction: column;
+     overflow: hidden;
+     @media ${cssBreakPoints.mobile} {
+          width: 100vw;
+     }
 `;
 export const StyledCityName = styled.h2`
      all: unset;
@@ -30,6 +36,10 @@ export const StyledCityName = styled.h2`
      font-size: 5rem;
      font-weight: 900;
      line-height: 1.2;
+     @media ${cssBreakPoints.mobile} {
+          text-align: center;
+          font-size: 3.2rem;
+     }
 `;
 export const StyledDivRow = styled.div<StyledProps>`
      display: flex;
@@ -41,18 +51,31 @@ export const StyledDivRow = styled.div<StyledProps>`
      border-radius: ${(props) => props.borderRadius};
      border: ${(props) => props.border};
      margin-left: ${(props) => props.marginLeft};
+     gap: ${(props) => props.gap};
+     padding: ${(props) => props.padding};
+     @media ${cssBreakPoints.mobile} {
+          align-items: center;
+          justify-content: center;
+          margin-left: 0;
+          margin-top: ${(props) => props.marginTopMobile};
+     } ;
 `;
 export const StyledMinTemperatureText = styled.span<StyledProps>`
      font-family: inherit;
      font-size: ${(props) => props.fontSize || "5rem"};
-
      color: ${themes.white};
+     @media ${cssBreakPoints.mobile} {
+          font-size: 3.6rem;
+     }
 `;
 export const StyledMaxTemperatureText = styled.span<StyledProps>`
      font-family: inherit;
      font-size: ${(props) => props.fontSize || "13rem"};
      line-height: 1;
      color: ${themes.white};
+     @media ${cssBreakPoints.mobile} {
+          font-size: 8rem;
+     }
 `;
 export const StyledDescription = styled.p<StyledProps>`
      all: unset;
@@ -64,6 +87,9 @@ export const StyledDescription = styled.p<StyledProps>`
      line-height: 1.25;
      color: ${themes.white};
      margin-top: 16px;
+     @media ${cssBreakPoints.mobile} {
+          text-align: center;
+     }
 `;
 export const StyledDate = styled.p`
      margin-top: 16px;
@@ -95,4 +121,12 @@ export const StyledColumnDiv = styled.div<StyledProps>`
           css`
                background-color: rgba(255, 255, 255, 0.2);
           `}
+`;
+export const StyledMobileAddToFavButton = styled.button`
+     border: none;
+     background-color: transparent;
+     position: absolute;
+     top: 59px;
+     left: 30px;
+     transform: translate(-50%, -50%);
 `;

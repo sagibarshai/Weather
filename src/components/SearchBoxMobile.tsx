@@ -77,9 +77,13 @@ type Props = {
      setOpenSearchBoxMobile: (x: boolean) => void;
      searchInput: string;
      setSearchInput: (x: string) => void;
+     setSelectedCityKey: (x: string) => void;
+     setSearchResults: (x: any) => void;
+     searchResults: Result[];
 };
+
 const SearchBoxMobile: React.FC<Props> = (props) => {
-     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
+     // const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
      const [noResults, setNoResults] = useState<boolean>(false);
      const client = useQueryClient();
 
@@ -99,7 +103,7 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
      );
      useEffect(() => {
           if (data === undefined || data === "") return;
-          setSearchResults(data);
+          props.setSearchResults(data);
           setNoResults(false);
      }, [props.searchInput, data, debounce]);
 
@@ -131,38 +135,53 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                          <IconSearch />
                     </StyledIcon>
                </Input>
-               <StyledResultDiv>
-                    {searchResults.length !== 0 && (
-                         <StyledResultList>
-                              {Array.isArray(searchResults) &&
-                                   searchResults.map((item, index) => (
-                                        <StyledResultItem
-                                             key={index}
-                                             onClick={() => console.log(item)}
-                                        >
-                                             {item.LocalizedName},
-                                             <StyledResultCountry>
-                                                  {" "}
-                                                  {item.Country.LocalizedName}
-                                             </StyledResultCountry>
-                                        </StyledResultItem>
-                                   ))}
-                         </StyledResultList>
-                    )}
-                    {!searchResults.length && (
-                         <StyledIcon margin="103px 0 0 0">
-                              <IconCity />
-                         </StyledIcon>
-                    )}
-                    {!searchResults.length && (
-                         <StyledText>
-                              {props.searchInput === "" && noResults === false
-                                   ? "Please search any city in the search button."
-                                   : `We couldn’t find any city named "${props.searchInput}",  
+               {Array.isArray(props.searchResults) && (
+                    <StyledResultDiv>
+                         {Array.isArray(props.searchResults) && (
+                              <StyledResultList>
+                                   {props.searchResults.map(
+                                        (item: any, index: number) => (
+                                             <StyledResultItem
+                                                  key={index}
+                                                  onClick={() => {
+                                                       props.setOpenSearchBoxMobile(
+                                                            false
+                                                       );
+                                                       props.setSelectedCityKey(
+                                                            item.Key
+                                                       );
+                                                       console.log(item);
+                                                  }}
+                                             >
+                                                  {item.LocalizedName},
+                                                  <StyledResultCountry>
+                                                       {" "}
+                                                       {
+                                                            item.Country
+                                                                 .LocalizedName
+                                                       }
+                                                  </StyledResultCountry>
+                                             </StyledResultItem>
+                                        )
+                                   )}
+                              </StyledResultList>
+                         )}
+                         {!props.searchResults.length && (
+                              <StyledIcon margin="103px 0 0 0">
+                                   <IconCity />
+                              </StyledIcon>
+                         )}
+                         {!props.searchResults.length && (
+                              <StyledText>
+                                   {props.searchInput === "" &&
+                                   noResults === false
+                                        ? "Please search any city in the search button."
+                                        : `We couldn’t find any city named "${props.searchInput}",  
 please try again.`}
-                         </StyledText>
-                    )}
-               </StyledResultDiv>
+                              </StyledText>
+                         )}
+                    </StyledResultDiv>
+               )}
           </StyledMobileSearchBoxContainer>
      );
 };
