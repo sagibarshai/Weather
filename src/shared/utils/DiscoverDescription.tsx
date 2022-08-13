@@ -2,9 +2,18 @@ import { StyledDescription } from "../../components/styles/StyledHomePageDisplay
 type Props = {
      IconPhrase: string;
      fontSize?: string;
+     fontSizeMobile?: string;
+     renderLaptopAnDesktop?: boolean;
+     flexOrderMobile?: number;
 };
 
-const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
+const DiscoverDescription: React.FC<Props> = ({
+     IconPhrase,
+     fontSize,
+     fontSizeMobile,
+     renderLaptopAnDesktop,
+     flexOrderMobile,
+}) => {
      if (
           IconPhrase === "Sunny" ||
           IconPhrase === "Mostly sunny" ||
@@ -12,7 +21,16 @@ const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
           IconPhrase === "Hot"
      ) {
           return (
-               <StyledDescription fontSize={fontSize}>Clear</StyledDescription>
+               <StyledDescription
+                    flexOrderMobile={flexOrderMobile}
+                    fontSize={
+                         renderLaptopAnDesktop === true
+                              ? fontSize
+                              : fontSizeMobile
+                    }
+               >
+                    Clear
+               </StyledDescription>
           );
      } else if (
           IconPhrase === "Hazy Sunshine" ||
@@ -22,7 +40,14 @@ const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
           IconPhrase === "Intermittent clouds"
      ) {
           return (
-               <StyledDescription fontSize={fontSize}>
+               <StyledDescription
+                    flexOrderMobile={flexOrderMobile}
+                    fontSize={
+                         renderLaptopAnDesktop === true
+                              ? fontSize
+                              : fontSizeMobile
+                    }
+               >
                     Sun & Cloudy
                </StyledDescription>
           );
@@ -32,7 +57,12 @@ const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
           IconPhrase === "Fog"
      ) {
           return (
-               <StyledDescription fontSize={fontSize}>Cloudy</StyledDescription>
+               <StyledDescription
+                    flexOrderMobile={flexOrderMobile}
+                    fontSize={renderLaptopAnDesktop ? fontSize : fontSizeMobile}
+               >
+                    Cloudy
+               </StyledDescription>
           );
      } else if (
           IconPhrase === "Showers" ||
@@ -44,7 +74,16 @@ const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
           IconPhrase === "Rain"
      ) {
           return (
-               <StyledDescription fontSize={fontSize}>Rainy</StyledDescription>
+               <StyledDescription
+                    flexOrderMobile={flexOrderMobile}
+                    fontSize={
+                         renderLaptopAnDesktop === true
+                              ? fontSize
+                              : fontSizeMobile
+                    }
+               >
+                    Rainy
+               </StyledDescription>
           );
      } else if (
           IconPhrase === "Snow" ||
@@ -52,7 +91,16 @@ const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
           IconPhrase === "Ice"
      ) {
           return (
-               <StyledDescription fontSize={fontSize}>Snowy</StyledDescription>
+               <StyledDescription
+                    flexOrderMobile={flexOrderMobile}
+                    fontSize={
+                         renderLaptopAnDesktop === true
+                              ? fontSize
+                              : fontSizeMobile
+                    }
+               >
+                    Snowy
+               </StyledDescription>
           );
      } else if (
           IconPhrase === "Flurries" ||
@@ -62,11 +110,29 @@ const DiscoverDescription: React.FC<Props> = ({ IconPhrase, fontSize }) => {
           IconPhrase === "Thunderstorms"
      ) {
           return (
-               <StyledDescription fontSize={fontSize}>Storm</StyledDescription>
+               <StyledDescription
+                    flexOrderMobile={flexOrderMobile}
+                    fontSize={
+                         renderLaptopAnDesktop === true
+                              ? fontSize
+                              : fontSizeMobile
+                    }
+               >
+                    Storm
+               </StyledDescription>
           );
      } else if (IconPhrase === "Windy") {
           return (
-               <StyledDescription fontSize={fontSize}>Windy</StyledDescription>
+               <StyledDescription
+                    flexOrderMobile={flexOrderMobile}
+                    fontSize={
+                         renderLaptopAnDesktop === true
+                              ? fontSize
+                              : fontSizeMobile
+                    }
+               >
+                    Windy
+               </StyledDescription>
           );
      }
      return <></>;

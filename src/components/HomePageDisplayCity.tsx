@@ -127,7 +127,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    WeatherIcon={forcast12Hours[0].WeatherIcon}
                               />
 
-                              <StyledMaxTemperatureText>
+                              <StyledMaxTemperatureText fontSizeMobile="8rem">
                                    {
                                         forcasst5Days.DailyForecasts[0]
                                              .Temperature.Maximum.Value
@@ -166,6 +166,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               )}
                          </StyledDivRow>
                          <StyledDivRow
+                              flexDeiractionMobile="column"
                               justifayContent="space-around"
                               marginTop="88px"
                               height="181px"
@@ -197,56 +198,132 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                              );
 
                                              if (index === 0) return;
-                                             return (
-                                                  <StyledColumnDiv
-                                                       key={index}
-                                                       gap="40px"
-                                                  >
-                                                       <StyledText>
-                                                            {returnShortDayFromDate(
-                                                                 day.Date
-                                                            )}
-                                                            -{" "}
-                                                            <DiscoverDescription
-                                                                 fontSize="2.4rem"
-                                                                 IconPhrase={
-                                                                      day.Day
-                                                                           .IconPhrase
-                                                                 }
-                                                            />
-                                                       </StyledText>
-                                                       <StyledDivRow>
-                                                            <ReturnIconForcast
-                                                                 height="40px"
-                                                                 width="40px"
-                                                                 margin="0 4px 0 0 "
-                                                                 WeatherIcon={
-                                                                      day.Day
-                                                                           .Icon
-                                                                 }
-                                                            />
-                                                            <StyledMaxTemperatureText fontSize="3.2rem">
-                                                                 {
-                                                                      day
-                                                                           .Temperature
-                                                                           .Maximum
-                                                                           .Value
-                                                                 }{" "}
-                                                                 °
-                                                            </StyledMaxTemperatureText>
-                                                            <StyledMinTemperatureText fontSize="1.6rem">
+                                             if (props.renderLaptopAnDesktop)
+                                                  return (
+                                                       <StyledColumnDiv
+                                                            flexDeiractionMobile="row"
+                                                            key={index}
+                                                            gap="40px"
+                                                       >
+                                                            <StyledText fontSizeMobile="1.8rem">
+                                                                 {returnShortDayFromDate(
+                                                                      day.Date
+                                                                 )}
                                                                  -{" "}
-                                                                 {
-                                                                      day
-                                                                           .Temperature
-                                                                           .Minimum
-                                                                           .Value
-                                                                 }{" "}
-                                                                 °
-                                                            </StyledMinTemperatureText>
-                                                       </StyledDivRow>
-                                                  </StyledColumnDiv>
-                                             );
+                                                                 <DiscoverDescription
+                                                                      renderLaptopAnDesktop={
+                                                                           props.renderLaptopAnDesktop
+                                                                      }
+                                                                      fontSize="2.4rem"
+                                                                      fontSizeMobile="1.8rem"
+                                                                      IconPhrase={
+                                                                           day
+                                                                                .Day
+                                                                                .IconPhrase
+                                                                      }
+                                                                 />
+                                                            </StyledText>
+                                                            <StyledDivRow>
+                                                                 <ReturnIconForcast
+                                                                      height="40px"
+                                                                      width="40px"
+                                                                      margin="0 4px 0 0 "
+                                                                      WeatherIcon={
+                                                                           day
+                                                                                .Day
+                                                                                .Icon
+                                                                      }
+                                                                 />
+                                                                 <StyledMaxTemperatureText fontSize="3.2rem">
+                                                                      {
+                                                                           day
+                                                                                .Temperature
+                                                                                .Maximum
+                                                                                .Value
+                                                                      }{" "}
+                                                                      °
+                                                                 </StyledMaxTemperatureText>
+                                                                 <StyledMinTemperatureText fontSize="1.6rem">
+                                                                      -{" "}
+                                                                      {
+                                                                           day
+                                                                                .Temperature
+                                                                                .Minimum
+                                                                                .Value
+                                                                      }{" "}
+                                                                      °
+                                                                 </StyledMinTemperatureText>
+                                                            </StyledDivRow>
+                                                       </StyledColumnDiv>
+                                                  );
+                                             else
+                                                  return (
+                                                       <StyledColumnDiv
+                                                            mobileWidth="85vw"
+                                                            flexDeiractionMobile="row"
+                                                            key={index}
+                                                            justifyContentMobile="space-between"
+                                                            alignItems="baseline"
+                                                       >
+                                                            <StyledDivRow gap="4px">
+                                                                 <ReturnIconForcast
+                                                                      height="40px"
+                                                                      width="40px"
+                                                                      margin="0 4px 0 0 "
+                                                                      WeatherIcon={
+                                                                           day
+                                                                                .Day
+                                                                                .Icon
+                                                                      }
+                                                                 />
+                                                                 <StyledText fontSizeMobile="1.8rem">
+                                                                      {returnShortDayFromDate(
+                                                                           day.Date
+                                                                      )}
+                                                                      -{" "}
+                                                                      <DiscoverDescription
+                                                                           renderLaptopAnDesktop={
+                                                                                props.renderLaptopAnDesktop
+                                                                           }
+                                                                           fontSize="2.4rem"
+                                                                           fontSizeMobile="1.8rem"
+                                                                           IconPhrase={
+                                                                                day
+                                                                                     .Day
+                                                                                     .IconPhrase
+                                                                           }
+                                                                      />
+                                                                 </StyledText>
+                                                            </StyledDivRow>
+                                                            <StyledDivRow alignItems="baseline">
+                                                                 <StyledMinTemperatureText
+                                                                      fontSize="1.6rem"
+                                                                      fontSizeMobile="1.8rem"
+                                                                      fontWeightMobile="bold"
+                                                                 >
+                                                                      {
+                                                                           day
+                                                                                .Temperature
+                                                                                .Minimum
+                                                                                .Value
+                                                                      }
+                                                                      ° -
+                                                                 </StyledMinTemperatureText>
+                                                                 <StyledMaxTemperatureText
+                                                                      fontSize="3.2rem"
+                                                                      fontSizeMobile="1.6rem"
+                                                                 >
+                                                                      {
+                                                                           day
+                                                                                .Temperature
+                                                                                .Maximum
+                                                                                .Value
+                                                                      }{" "}
+                                                                      °
+                                                                 </StyledMaxTemperatureText>
+                                                            </StyledDivRow>
+                                                       </StyledColumnDiv>
+                                                  );
                                         }
                                    )}
                          </StyledDivRow>

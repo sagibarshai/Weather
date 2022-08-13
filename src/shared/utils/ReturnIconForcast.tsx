@@ -51,6 +51,7 @@ type StyledProps = {
      width?: string;
      height?: string;
      margin?: string;
+     flexOrderMobile?: number;
 };
 type Props = {
      WeatherIcon: number;
@@ -61,6 +62,7 @@ type Props = {
      renderMobile?: boolean;
      mobileWidth?: string;
      mobileHeight?: string;
+     flexOrderMobile?: number;
 };
 const StyledImgIcon = styled.img<StyledProps>`
      width: ${(props) => props.width || "32px"};
@@ -68,7 +70,8 @@ const StyledImgIcon = styled.img<StyledProps>`
      margin: ${(props) => props.margin};
      object-fit: contain;
      @media ${cssBreakPoints.mobile} {
-          margin: 0 32px 0 0;
+          margin: 0 0 0 0;
+          order: ${(props) => props.flexOrderMobile};
      }
 `;
 const ReturnIconForcast: React.FC<Props> = (props) => {
@@ -87,6 +90,7 @@ const ReturnIconForcast: React.FC<Props> = (props) => {
                          : props.mobileHeight
                }
                margin={props.margin}
+               flexOrderMobile={props.flexOrderMobile}
           />
      );
 };

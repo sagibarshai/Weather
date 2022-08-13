@@ -15,6 +15,13 @@ type StyledProps = {
      selected?: boolean;
      padding?: string;
      marginTopMobile?: string;
+     flexDeiractionMobile?: string;
+     justifyContentMobile?: string;
+     fontSizeMobile?: string;
+     flexOrderMobile?: number;
+     mobileWidth?: string;
+     paddingMobile?: string;
+     fontWeightMobile?: string;
 };
 
 export const StyledContainer = styled.div`
@@ -58,6 +65,12 @@ export const StyledDivRow = styled.div<StyledProps>`
           justify-content: center;
           margin-left: 0;
           margin-top: ${(props) => props.marginTopMobile};
+          flex-direction: ${(props) => props.flexDeiractionMobile};
+          justify-content: ${(props) => props.justifyContentMobile};
+          height: auto;
+          width: auto;
+          border: none;
+          order: ${(props) => props.flexOrderMobile};
      } ;
 `;
 export const StyledMinTemperatureText = styled.span<StyledProps>`
@@ -66,6 +79,9 @@ export const StyledMinTemperatureText = styled.span<StyledProps>`
      color: ${themes.white};
      @media ${cssBreakPoints.mobile} {
           font-size: 3.6rem;
+          order: ${(props) => props.flexOrderMobile};
+          font-size: ${(props) => props.fontSizeMobile};
+          font-weight: ${(props) => props.fontWeightMobile};
      }
 `;
 export const StyledMaxTemperatureText = styled.span<StyledProps>`
@@ -74,7 +90,8 @@ export const StyledMaxTemperatureText = styled.span<StyledProps>`
      line-height: 1;
      color: ${themes.white};
      @media ${cssBreakPoints.mobile} {
-          font-size: 8rem;
+          font-size: ${(props) => props.fontSizeMobile};
+          order: ${(props) => props.flexOrderMobile};
      }
 `;
 export const StyledDescription = styled.p<StyledProps>`
@@ -89,9 +106,11 @@ export const StyledDescription = styled.p<StyledProps>`
      margin-top: 16px;
      @media ${cssBreakPoints.mobile} {
           text-align: center;
-     }
+          font-size: ${(props) => props.fontSizeMobile};
+          order: ${(props) => props.flexOrderMobile};
+     } ;
 `;
-export const StyledDate = styled.p`
+export const StyledDate = styled.p<StyledProps>`
      margin-top: 16px;
      text-shadow: -2px 3px 1px rgba(0, 0, 0, 0.1),
           -1px 1px 2px rgba(255, 255, 255, 0.25);
@@ -100,6 +119,11 @@ export const StyledDate = styled.p`
      font-weight: 500;
      line-height: 1.25;
      color: ${themes.white};
+     @media ${cssBreakPoints.mobile} {
+          text-align: center;
+          font-size: 1.4rem;
+          order: ${(props) => props.flexOrderMobile};
+     }
 `;
 export const StyledText = styled.span<StyledProps>`
      font-family: inherit;
@@ -108,6 +132,10 @@ export const StyledText = styled.span<StyledProps>`
      line-height: 1.25;
      text-align: center;
      color: ${themes.white};
+     @media ${cssBreakPoints.mobile} {
+          font-size: ${(props) => props.fontSizeMobile};
+          order: ${(props) => props.flexOrderMobile};
+     }
 `;
 export const StyledColumnDiv = styled.div<StyledProps>`
      display: flex;
@@ -120,7 +148,14 @@ export const StyledColumnDiv = styled.div<StyledProps>`
           props.selected === true &&
           css`
                background-color: rgba(255, 255, 255, 0.2);
-          `}
+          `};
+     @media ${cssBreakPoints.mobile} {
+          flex-direction: ${(props) => props.flexDeiractionMobile};
+          width: ${(props) => props.mobileWidth};
+          justify-content: ${(props) => props.justifyContentMobile};
+          padding: ${(props) => props.paddingMobile};
+          align-items: ${(props) => props.alignItems};
+     }
 `;
 export const StyledMobileAddToFavButton = styled.button`
      border: none;
