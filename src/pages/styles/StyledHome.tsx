@@ -13,10 +13,10 @@ export const StyledPageContainer = styled.div<StyledHome>`
           if (props.renderPraimaryBackground) return themes.backgroundPraimary;
           else return themes.darkBackground;
      }};
-     width: 100vw;
+     min-width: 100vw;
      margin: 0;
      overflow-x: hidden;
-     min-height: 200vh;
+     min-height: 100vh;
      ${(props) => {
           if (props.openMobileMenu || props.openLogoutPopup) {
                return css`

@@ -22,6 +22,13 @@ type StyledProps = {
      mobileWidth?: string;
      paddingMobile?: string;
      fontWeightMobile?: string;
+     alignItemsMobile?: string;
+     positionMobile?: string;
+     topMobile?: string;
+     leftMobile?: string;
+     transformMobile?: string;
+     marginRightMobile?: string;
+     minMobileWidth?: string;
 };
 
 export const StyledContainer = styled.div`
@@ -61,14 +68,14 @@ export const StyledDivRow = styled.div<StyledProps>`
      gap: ${(props) => props.gap};
      padding: ${(props) => props.padding};
      @media ${cssBreakPoints.mobile} {
-          align-items: center;
+          align-items: ${(props) => props.alignItemsMobile};
           justify-content: center;
           margin-left: 0;
           margin-top: ${(props) => props.marginTopMobile};
           flex-direction: ${(props) => props.flexDeiractionMobile};
           justify-content: ${(props) => props.justifyContentMobile};
           height: auto;
-          width: auto;
+          min-width: ${(props) => props.minMobileWidth};
           border: none;
           order: ${(props) => props.flexOrderMobile};
      } ;
@@ -82,6 +89,7 @@ export const StyledMinTemperatureText = styled.span<StyledProps>`
           order: ${(props) => props.flexOrderMobile};
           font-size: ${(props) => props.fontSizeMobile};
           font-weight: ${(props) => props.fontWeightMobile};
+          position: ${(props) => props.positionMobile};
      }
 `;
 export const StyledMaxTemperatureText = styled.span<StyledProps>`
@@ -92,6 +100,8 @@ export const StyledMaxTemperatureText = styled.span<StyledProps>`
      @media ${cssBreakPoints.mobile} {
           font-size: ${(props) => props.fontSizeMobile};
           order: ${(props) => props.flexOrderMobile};
+          position: ${(props) => props.positionMobile};
+          margin-right: ${(props) => props.marginRightMobile};
      }
 `;
 export const StyledDescription = styled.p<StyledProps>`
@@ -155,6 +165,7 @@ export const StyledColumnDiv = styled.div<StyledProps>`
           justify-content: ${(props) => props.justifyContentMobile};
           padding: ${(props) => props.paddingMobile};
           align-items: ${(props) => props.alignItems};
+          margin-top: ${(props) => props.marginTopMobile};
      }
 `;
 export const StyledMobileAddToFavButton = styled.button`
@@ -164,4 +175,15 @@ export const StyledMobileAddToFavButton = styled.button`
      top: 59px;
      left: 30px;
      transform: translate(-50%, -50%);
+`;
+export const StyledTempratureSpan = styled.span<StyledProps>`
+     font-size: ${(props) => props.fontSize};
+     vertical-align: top;
+     @media ${cssBreakPoints.mobile} {
+          font-size: ${(props) => props.fontSizeMobile};
+          position: ${(props) => props.positionMobile};
+          top: ${(props) => props.topMobile};
+          left: ${(props) => props.leftMobile};
+          transform: ${(props) => props.transformMobile};
+     }
 `;

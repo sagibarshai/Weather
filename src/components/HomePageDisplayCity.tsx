@@ -26,6 +26,7 @@ import {
      StyledDate,
      StyledColumnDiv,
      StyledMobileAddToFavButton,
+     StyledTempratureSpan,
 } from "./styles/StyledHomePageDisplayCity";
 export type SelectedCityType = {
      searchResults?: Result[] | [];
@@ -85,13 +86,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           { cacheTime: twelveHours / 6, staleTime: twelveHours / 6 }
      ) as forcast12HoursType;
      useEffect(() => {
-          if (forcast12Hours)
-               for (let day of forcast12Hours) {
-                    if (day.DateTime < currentDateTime) {
-                         setSelected(day.DateTime);
-                         break;
-                    }
-               }
+          forcast12Hours && setSelected(forcast12Hours[0].DateTime);
      }, [forcast12Hours]);
      const forcast5daystemperatureDay: number[] = [];
      const forcast5daystemperatureNight: number[] = [];
@@ -99,7 +94,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const forcast5daysLablesDates: string[] = [];
      return (
           <>
-               {existingResult && forcasst5Days && forcast12Hours && selected && (
+               {existingResult && forcasst5Days && forcast12Hours && (
                     <StyledContainer>
                          {props.renderMobile && (
                               <StyledMobileAddToFavButton>
@@ -126,22 +121,40 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    margin="16px 32px 0 0"
                                    WeatherIcon={forcast12Hours[0].WeatherIcon}
                               />
-
-                              <StyledMaxTemperatureText fontSizeMobile="8rem">
-                                   {
-                                        forcasst5Days.DailyForecasts[0]
-                                             .Temperature.Maximum.Value
-                                   }{" "}
-                                   °
-                              </StyledMaxTemperatureText>
-                              <StyledMinTemperatureText>
-                                   -{" "}
-                                   {
-                                        forcasst5Days.DailyForecasts[0]
-                                             .Temperature.Minimum.Value
-                                   }
-                                   °
-                              </StyledMinTemperatureText>
+                              <StyledDivRow alignItemsMobile="baseline">
+                                   <StyledMaxTemperatureText
+                                        marginRightMobile="10px"
+                                        fontSizeMobile="8rem"
+                                        positionMobile="relative"
+                                   >
+                                        {
+                                             forcasst5Days.DailyForecasts[0]
+                                                  .Temperature.Maximum.Value
+                                        }{" "}
+                                        <StyledTempratureSpan
+                                             fontSizeMobile="5rem"
+                                             positionMobile="absolute"
+                                             topMobile="0"
+                                             leftMobile="100%"
+                                        >
+                                             °
+                                        </StyledTempratureSpan>
+                                   </StyledMaxTemperatureText>
+                                   <StyledMinTemperatureText positionMobile="relative">
+                                        -{" "}
+                                        {
+                                             forcasst5Days.DailyForecasts[0]
+                                                  .Temperature.Minimum.Value
+                                        }
+                                        <StyledTempratureSpan
+                                             positionMobile="absolute"
+                                             topMobile="0"
+                                             leftMobile="100%"
+                                        >
+                                             °
+                                        </StyledTempratureSpan>
+                                   </StyledMinTemperatureText>
+                              </StyledDivRow>
                          </StyledDivRow>
                          <DiscoverDescription
                               IconPhrase={
@@ -172,6 +185,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               height="181px"
                               border="solid 1px white"
                               borderRadius="20px"
+                              marginTopMobile="50px"
                          >
                               {forcasst5Days &&
                                    forcasst5Days.DailyForecasts.map(
@@ -259,13 +273,18 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                              else
                                                   return (
                                                        <StyledColumnDiv
-                                                            mobileWidth="85vw"
+                                                            mobileWidth="90vw"
                                                             flexDeiractionMobile="row"
                                                             key={index}
                                                             justifyContentMobile="space-between"
-                                                            alignItems="baseline"
+                                                            alignItems="center"
+                                                            gap="11px"
                                                        >
-                                                            <StyledDivRow gap="4px">
+                                                            <StyledDivRow
+                                                                 gap="4px"
+                                                                 minMobileWidth="40vw"
+                                                                 justifyContentMobile="flex-start"
+                                                            >
                                                                  <ReturnIconForcast
                                                                       height="40px"
                                                                       width="40px"
@@ -295,7 +314,10 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                                       />
                                                                  </StyledText>
                                                             </StyledDivRow>
-                                                            <StyledDivRow alignItems="baseline">
+                                                            <StyledDivRow
+                                                                 minMobileWidth="20vw"
+                                                                 justifyContentMobile="flex-start"
+                                                            >
                                                                  <StyledMinTemperatureText
                                                                       fontSize="1.6rem"
                                                                       fontSizeMobile="1.8rem"
@@ -327,6 +349,16 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         }
                                    )}
                          </StyledDivRow>
+                         {props.renderMobile && (
+                              <StyledButton
+                                   variant="ghost"
+                                   margin="50px auto 0 auto"
+                                   width="264px"
+                                   height="54px"
+                              >
+                                   5 Days Forecast
+                              </StyledButton>
+                         )}
                          <StyledDivRow
                               marginTop="88px"
                               height="293px"
@@ -335,6 +367,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               {forcast12Hours &&
                                    forcast12Hours.map((day, index) => {
                                         if (index % 2 !== 0) return;
+
                                         return (
                                              <StyledColumnDiv
                                                   padding="40px 17px 39.9px 16px"
@@ -393,16 +426,22 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    }}
                               />
                          </StyledDivRow>
-                         <LineChart
-                              forcast5daysLablesDates={forcast5daysLablesDates}
-                              forcast5daysLablesDays={forcast5daysLablesDays}
-                              forcast5daystemperatureNight={
-                                   forcast5daystemperatureNight
-                              }
-                              forcast5daystemperatureDay={
-                                   forcast5daystemperatureDay
-                              }
-                         />
+                         {props.renderLaptopAnDesktop && (
+                              <LineChart
+                                   forcast5daysLablesDates={
+                                        forcast5daysLablesDates
+                                   }
+                                   forcast5daysLablesDays={
+                                        forcast5daysLablesDays
+                                   }
+                                   forcast5daystemperatureNight={
+                                        forcast5daystemperatureNight
+                                   }
+                                   forcast5daystemperatureDay={
+                                        forcast5daystemperatureDay
+                                   }
+                              />
+                         )}
                     </StyledContainer>
                )}
           </>
