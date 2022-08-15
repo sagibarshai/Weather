@@ -16,7 +16,7 @@ export const StyledPageContainer = styled.div<StyledHome>`
      min-width: 100vw;
      margin: 0;
      overflow-x: hidden;
-     min-height: 150vh;
+     min-height: 100vh;
      ${(props) => {
           if (props.openMobileMenu || props.openLogoutPopup) {
                return css`

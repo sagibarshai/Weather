@@ -34,6 +34,7 @@ type StyledProps = {
      mobileGap?: string;
      overFlowXMobile?: string;
      marginMobile?: string;
+     blurScreen?: boolean;
 };
 
 export const StyledContainer = styled.div`
@@ -42,9 +43,10 @@ export const StyledContainer = styled.div`
      margin: 120px auto 0 auto;
      flex-direction: column;
      overflow: hidden;
-
+     align-items: center;
      @media ${cssBreakPoints.mobile} {
           width: 100vw;
+          margin-bottom: 150px;
      }
 `;
 export const StyledCityName = styled.h2`
@@ -82,6 +84,7 @@ export const StyledDivRow = styled.div<StyledProps>`
           justify-content: ${(props) => props.justifyContentMobile};
           height: ${(props) => props.mobileHeight};
           min-width: ${(props) => props.minMobileWidth};
+          width: ${(props) => props.mobileWidth};
           border: none;
           order: ${(props) => props.flexOrderMobile};
           overflow-x: ${(props) => props.overFlowXMobile};

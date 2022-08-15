@@ -307,13 +307,13 @@ const LineChart: React.FC<Props> = (props) => {
                     <Line
                          options={optionsDay}
                          data={dataDay}
-                         height="100px"
+                         height="90px"
                          plugins={pluginsTop}
                     />
                     <Line
                          options={optionsNight}
                          data={dataNight}
-                         height="93,5px"
+                         height="100px"
                          plugins={pluginsBottom}
                     />
                </StyledChartContainer>

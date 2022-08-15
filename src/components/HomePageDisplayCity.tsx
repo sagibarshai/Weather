@@ -29,6 +29,7 @@ import {
      StyledMobileAddToFavButton,
      StyledTempratureSpan,
 } from "./styles/StyledHomePageDisplayCity";
+import LineChartMobile from "./LineChartMobile";
 export type SelectedCityType = {
      searchResults?: Result[] | [];
      selectedCityKey?: number | string | null;
@@ -71,6 +72,8 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const existingResult = props.searchResults?.find(
           (result) => result.Key === props.selectedCityKey
      );
+     const [open5daysForcastMobile, setOpen5daysForcastMobile] =
+          useState<boolean>(false);
      const { data: forcasst5Days } = useQuery(
           ["5daysForcast", existingResult && existingResult.Key],
           () => selectCity(existingResult && existingResult.Key),
@@ -86,6 +89,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           () => getForcastFor12Hours(existingResult && existingResult.Key),
           { cacheTime: twelveHours / 6, staleTime: twelveHours / 6 }
      ) as forcast12HoursType;
+     console.log(open5daysForcastMobile);
      useEffect(() => {
           forcast12Hours && setSelected(forcast12Hours[0].DateTime);
      }, [forcast12Hours]);
@@ -96,7 +100,12 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      return (
           <>
                {existingResult && forcasst5Days && forcast12Hours && (
-                    <StyledContainer>
+                    <StyledContainer
+                         onClick={() =>
+                              open5daysForcastMobile &&
+                              setOpen5daysForcastMobile(false)
+                         }
+                    >
                          {props.renderMobile && (
                               <StyledMobileAddToFavButton>
                                    <IconFavWhite />
@@ -355,6 +364,9 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                          </StyledDivRow>
                          {props.renderMobile && (
                               <StyledButton
+                                   onClick={() =>
+                                        setOpen5daysForcastMobile(true)
+                                   }
                                    boxShadow="none"
                                    variant="ghost"
                                    margin="25px auto 0 auto"
@@ -369,9 +381,11 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               justifayContent="space-between"
                               mobileHeight="auto"
                               overFlowXMobile="scroll"
+                              mobileWidth="90vw"
                               justifyContentMobile="flex-start"
                               mobileGap="10px"
                               marginMobile="48px 25px 0 25px"
+                              marginTop="140px"
                          >
                               {forcast12Hours &&
                                    forcast12Hours.map((day, index) => {
@@ -387,13 +401,13 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                   mobileHeight="120px"
                                                   minMobileWidth="80px"
                                                   alignItemsMobile="center"
+                                                  borderRadius="20px"
                                                   selected={
                                                        day.DateTime.toLocaleString() ==
                                                        selected
                                                             ? true
                                                             : false
                                                   }
-                                                  borderRadius="20px"
                                              >
                                                   <StyledText fontSizeMobile="1.4rem">
                                                        {epochConverter(
@@ -489,8 +503,8 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                          )}
                     </StyledContainer>
                )}
+               {open5daysForcastMobile && <LineChartMobile />}
           </>
      );
 };
-
 export default HomePageDisplayCity;

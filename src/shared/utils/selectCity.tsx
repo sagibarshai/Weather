@@ -1,5 +1,5 @@
 import axios from "axios";
-const key = "t5iZJfiNzeAhpdgU5KiCqMgXTDvgUxBs";
+const key = "VFmE2ja8gR3ZUl0oxPe5BqOVrA2iZhfb";
 export const selectCity = async (cityKey: string | number | undefined) => {
      if (!cityKey) return;
      try {
