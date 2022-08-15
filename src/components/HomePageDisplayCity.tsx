@@ -9,6 +9,7 @@ import { ReactComponent as IconFavroiteOutline } from "../shared/svg/fav-outline
 import { ReactComponent as IconArrowWind } from "../shared/svg/arrow-wind.svg";
 import { ReactComponent as IconArrowLeft } from "../shared/svg/arrow-square-left.svg";
 import { ReactComponent as IconFavWhite } from "../shared/svg/fav-outline-white.svg";
+import { ReactComponent as IconMapBlack } from "../shared/svg/map-black.svg";
 import { returnShortDayFromDate } from "../shared/utils/returnShortDayFromDate";
 import DiscoverDescription from "../shared/utils/DiscoverDescription";
 import { getForcastFor12Hours } from "../shared/utils/getForcastFor12Hours";
@@ -157,6 +158,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               </StyledDivRow>
                          </StyledDivRow>
                          <DiscoverDescription
+                              fontWeightMobile="normal"
                               IconPhrase={
                                    forcasst5Days.DailyForecasts[0].Day
                                         .IconPhrase
@@ -185,7 +187,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               height="181px"
                               border="solid 1px white"
                               borderRadius="20px"
-                              marginTopMobile="50px"
+                              marginTopMobile="20px"
                          >
                               {forcasst5Days &&
                                    forcasst5Days.DailyForecasts.map(
@@ -228,6 +230,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                                       renderLaptopAnDesktop={
                                                                            props.renderLaptopAnDesktop
                                                                       }
+                                                                      fontWeightMobile="normal"
                                                                       fontSize="2.4rem"
                                                                       fontSizeMobile="1.8rem"
                                                                       IconPhrase={
@@ -301,6 +304,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                                       )}
                                                                       -{" "}
                                                                       <DiscoverDescription
+                                                                           fontWeightMobile="normal"
                                                                            renderLaptopAnDesktop={
                                                                                 props.renderLaptopAnDesktop
                                                                            }
@@ -351,8 +355,9 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                          </StyledDivRow>
                          {props.renderMobile && (
                               <StyledButton
+                                   boxShadow="none"
                                    variant="ghost"
-                                   margin="50px auto 0 auto"
+                                   margin="25px auto 0 auto"
                                    width="264px"
                                    height="54px"
                               >
@@ -360,20 +365,28 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               </StyledButton>
                          )}
                          <StyledDivRow
-                              marginTop="88px"
                               height="293px"
                               justifayContent="space-between"
+                              mobileHeight="auto"
+                              overFlowXMobile="scroll"
+                              justifyContentMobile="flex-start"
+                              mobileGap="10px"
+                              marginMobile="48px 25px 0 25px"
                          >
                               {forcast12Hours &&
                                    forcast12Hours.map((day, index) => {
                                         if (index % 2 !== 0) return;
-
                                         return (
                                              <StyledColumnDiv
+                                                  key={index}
+                                                  mobilePadding="16px 4px"
                                                   padding="40px 17px 39.9px 16px"
                                                   gap="24px"
-                                                  key={index}
+                                                  mobileGap="4px"
                                                   height="293px"
+                                                  mobileHeight="120px"
+                                                  minMobileWidth="80px"
+                                                  alignItemsMobile="center"
                                                   selected={
                                                        day.DateTime.toLocaleString() ==
                                                        selected
@@ -382,7 +395,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                   }
                                                   borderRadius="20px"
                                              >
-                                                  <StyledText>
+                                                  <StyledText fontSizeMobile="1.4rem">
                                                        {epochConverter(
                                                             day.EpochDateTime
                                                        )}
@@ -390,8 +403,13 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                   <StyledText
                                                        fontWeight="bold"
                                                        fontSize="3.2rem"
+                                                       fontSizeMobile="1.8rem"
                                                   >
-                                                       {day.Temperature.Value} °
+                                                       {Math.round(
+                                                            day.Temperature
+                                                                 .Value
+                                                       )}
+                                                       °
                                                   </StyledText>
                                                   <ReturnIconForcast
                                                        height="40px"
@@ -400,12 +418,22 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                             day.WeatherIcon
                                                        }
                                                   />
-                                                  <StyledText>
-                                                       <IconArrowWind
-                                                            style={{
-                                                                 transform: `rotate(${day.Wind.Direction.Degrees}deg)`,
-                                                            }}
-                                                       />{" "}
+                                                  <StyledText
+                                                       fontSizeMobile="1.2rem"
+                                                       marginTopMobile="25.7px"
+                                                  >
+                                                       <StyledIcon
+                                                            mobileWidth="16px"
+                                                            mobileHeight="16px"
+                                                       >
+                                                            <IconArrowWind
+                                                                 style={{
+                                                                      transform: `rotate(${day.Wind.Direction.Degrees}deg)`,
+                                                                      width: 16.5,
+                                                                      height: 16.5,
+                                                                 }}
+                                                            />{" "}
+                                                       </StyledIcon>
                                                        {day.Wind.Speed.Value}{" "}
                                                        {day.Wind.Speed.Unit}
                                                   </StyledText>
@@ -413,19 +441,23 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         );
                                    })}
                          </StyledDivRow>
-                         <StyledDivRow
-                              justifayContent="flex-end"
-                              gap="24px"
-                              padding="0 20px 0 0 "
-                         >
-                              <IconArrowLeft style={{ cursor: "pointer" }} />
-                              <IconArrowLeft
-                                   style={{
-                                        transform: "rotate(180deg)",
-                                        cursor: "pointer",
-                                   }}
-                              />
-                         </StyledDivRow>
+                         {props.renderLaptopAnDesktop && (
+                              <StyledDivRow
+                                   justifayContent="flex-end"
+                                   gap="24px"
+                                   padding="0 20px 0 0 "
+                              >
+                                   <IconArrowLeft
+                                        style={{ cursor: "pointer" }}
+                                   />
+                                   <IconArrowLeft
+                                        style={{
+                                             transform: "rotate(180deg)",
+                                             cursor: "pointer",
+                                        }}
+                                   />
+                              </StyledDivRow>
+                         )}
                          {props.renderLaptopAnDesktop && (
                               <LineChart
                                    forcast5daysLablesDates={
@@ -441,6 +473,19 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         forcast5daystemperatureDay
                                    }
                               />
+                         )}
+                         {props.renderMobile && (
+                              <StyledButton
+                                   variant="white"
+                                   width="114px"
+                                   margin="60px auto 0 auto"
+                                   fontWeight="bold"
+                              >
+                                   <StyledIcon marginRight="8px">
+                                        <IconMapBlack />
+                                   </StyledIcon>
+                                   Map
+                              </StyledButton>
                          )}
                     </StyledContainer>
                )}

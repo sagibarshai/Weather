@@ -5,6 +5,7 @@ type Props = {
      fontSizeMobile?: string;
      renderLaptopAnDesktop?: boolean;
      flexOrderMobile?: number;
+     fontWeightMobile?: string;
 };
 
 const DiscoverDescription: React.FC<Props> = ({
@@ -13,6 +14,7 @@ const DiscoverDescription: React.FC<Props> = ({
      fontSizeMobile,
      renderLaptopAnDesktop,
      flexOrderMobile,
+     fontWeightMobile,
 }) => {
      if (
           IconPhrase === "Sunny" ||
@@ -28,6 +30,7 @@ const DiscoverDescription: React.FC<Props> = ({
                               ? fontSize
                               : fontSizeMobile
                     }
+                    fontWeightMobile={fontWeightMobile}
                >
                     Clear
                </StyledDescription>
@@ -47,6 +50,7 @@ const DiscoverDescription: React.FC<Props> = ({
                               ? fontSize
                               : fontSizeMobile
                     }
+                    fontWeightMobile={fontWeightMobile}
                >
                     Sun & Cloudy
                </StyledDescription>
@@ -60,6 +64,7 @@ const DiscoverDescription: React.FC<Props> = ({
                <StyledDescription
                     flexOrderMobile={flexOrderMobile}
                     fontSize={renderLaptopAnDesktop ? fontSize : fontSizeMobile}
+                    fontWeightMobile={fontWeightMobile}
                >
                     Cloudy
                </StyledDescription>
@@ -81,6 +86,7 @@ const DiscoverDescription: React.FC<Props> = ({
                               ? fontSize
                               : fontSizeMobile
                     }
+                    fontWeightMobile={fontWeightMobile}
                >
                     Rainy
                </StyledDescription>
@@ -98,6 +104,7 @@ const DiscoverDescription: React.FC<Props> = ({
                               ? fontSize
                               : fontSizeMobile
                     }
+                    fontWeightMobile={fontWeightMobile}
                >
                     Snowy
                </StyledDescription>
@@ -117,6 +124,7 @@ const DiscoverDescription: React.FC<Props> = ({
                               ? fontSize
                               : fontSizeMobile
                     }
+                    fontWeightMobile={fontWeightMobile}
                >
                     Storm
                </StyledDescription>
@@ -130,6 +138,7 @@ const DiscoverDescription: React.FC<Props> = ({
                               ? fontSize
                               : fontSizeMobile
                     }
+                    fontWeightMobile={fontWeightMobile}
                >
                     Windy
                </StyledDescription>

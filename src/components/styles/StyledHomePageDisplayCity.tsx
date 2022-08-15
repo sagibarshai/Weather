@@ -29,6 +29,11 @@ type StyledProps = {
      transformMobile?: string;
      marginRightMobile?: string;
      minMobileWidth?: string;
+     mobileHeight?: string;
+     mobilePadding?: string;
+     mobileGap?: string;
+     overFlowXMobile?: string;
+     marginMobile?: string;
 };
 
 export const StyledContainer = styled.div`
@@ -37,6 +42,7 @@ export const StyledContainer = styled.div`
      margin: 120px auto 0 auto;
      flex-direction: column;
      overflow: hidden;
+
      @media ${cssBreakPoints.mobile} {
           width: 100vw;
      }
@@ -74,10 +80,13 @@ export const StyledDivRow = styled.div<StyledProps>`
           margin-top: ${(props) => props.marginTopMobile};
           flex-direction: ${(props) => props.flexDeiractionMobile};
           justify-content: ${(props) => props.justifyContentMobile};
-          height: auto;
+          height: ${(props) => props.mobileHeight};
           min-width: ${(props) => props.minMobileWidth};
           border: none;
           order: ${(props) => props.flexOrderMobile};
+          overflow-x: ${(props) => props.overFlowXMobile};
+          gap: ${(props) => props.mobileGap};
+          margin: ${(props) => props.marginMobile};
      } ;
 `;
 export const StyledMinTemperatureText = styled.span<StyledProps>`
@@ -118,6 +127,7 @@ export const StyledDescription = styled.p<StyledProps>`
           text-align: center;
           font-size: ${(props) => props.fontSizeMobile};
           order: ${(props) => props.flexOrderMobile};
+          font-weight: ${(props) => props.fontWeightMobile};
      } ;
 `;
 export const StyledDate = styled.p<StyledProps>`
@@ -162,10 +172,14 @@ export const StyledColumnDiv = styled.div<StyledProps>`
      @media ${cssBreakPoints.mobile} {
           flex-direction: ${(props) => props.flexDeiractionMobile};
           width: ${(props) => props.mobileWidth};
+          min-width: ${(props) => props.minMobileWidth};
           justify-content: ${(props) => props.justifyContentMobile};
           padding: ${(props) => props.paddingMobile};
-          align-items: ${(props) => props.alignItems};
+          align-items: ${(props) => props.alignItemsMobile};
           margin-top: ${(props) => props.marginTopMobile};
+          padding: ${(props) => props.mobilePadding};
+          height: ${(props) => props.mobileHeight};
+          gap: ${(props) => props.mobileGap};
      }
 `;
 export const StyledMobileAddToFavButton = styled.button`

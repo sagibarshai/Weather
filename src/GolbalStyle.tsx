@@ -6,6 +6,8 @@ html, body {
     padding:0 ;
     font-family: 'Overpass', sans-serif;
     width: 100vw;
+    min-height: 100vh;
+
     }    
 `;
 export default GlobalStyle;

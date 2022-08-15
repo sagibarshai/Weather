@@ -27,6 +27,7 @@ interface StyledButtonProps {
      displayOnlyOnMobile?: boolean;
      border?: string;
      alignItem?: string;
+     boxShadow?: string;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -99,6 +100,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
      font-weight: ${(props) => props.fontWeight};
      color: ${(props) => props.color};
      border: ${(props) => props.border};
+     box-shadow: ${(props) => props.boxShadow};
      @media ${cssBreakPoints.bigDesktop} {
           ${(props) => props.displayOnlyOnMobile === true && "display:none"}
      }
