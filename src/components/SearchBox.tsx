@@ -3,9 +3,9 @@ import themes from "../shared/themes/themes";
 import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { StyledIcon } from "../shared/Icons/Icon";
 export type Result = {
-     LocalizedName: string;
-     Country: { LocalizedName: string };
-     Key: string | number;
+     LocalizedName: string | null;
+     Country: { LocalizedName: string } | null;
+     Key: string | number | null;
 };
 
 type Props = {

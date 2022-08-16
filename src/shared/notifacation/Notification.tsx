@@ -17,7 +17,7 @@ const StyledNotificationContainer = styled.div<Props>`
      padding: 24px;
      border-radius: 10px;
      background-color: ${(props) =>
-          props.backgroundColor || `${themes.notification}`};
+          props.backgroundColor || `${themes.notificationError}`};
      display: flex;
      gap: 16px;
      @media ${cssBreakPoints.mobile} {

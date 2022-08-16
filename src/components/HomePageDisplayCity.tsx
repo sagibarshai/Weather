@@ -107,7 +107,16 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                          }
                     >
                          {props.renderMobile && (
-                              <StyledMobileAddToFavButton>
+                              <StyledMobileAddToFavButton
+                                   onClick={() => {
+                                        console.log(
+                                             existingResult.Key,
+                                             existingResult.LocalizedName,
+                                             existingResult.Country
+                                                  .LocalizedName
+                                        );
+                                   }}
+                              >
                                    <IconFavWhite />
                               </StyledMobileAddToFavButton>
                          )}
@@ -181,6 +190,14 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               <StyledDate>{now}</StyledDate>
                               {props.renderLaptopAnDesktop && (
                                    <StyledButton
+                                        onClick={() => {
+                                             console.log(
+                                                  existingResult.Key,
+                                                  existingResult.LocalizedName,
+                                                  existingResult.Country
+                                                       .LocalizedName
+                                             );
+                                        }}
                                         variant="white"
                                         display="flex"
                                         alignItem="revert"
