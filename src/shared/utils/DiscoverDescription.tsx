@@ -6,6 +6,8 @@ type Props = {
      renderLaptopAnDesktop?: boolean;
      flexOrderMobile?: number;
      fontWeightMobile?: string;
+     alignSelf?: string;
+     alignSelfMobile?: string;
 };
 
 const DiscoverDescription: React.FC<Props> = ({
@@ -15,6 +17,8 @@ const DiscoverDescription: React.FC<Props> = ({
      renderLaptopAnDesktop,
      flexOrderMobile,
      fontWeightMobile,
+     alignSelf,
+     alignSelfMobile,
 }) => {
      if (
           IconPhrase === "Sunny" ||
@@ -31,6 +35,8 @@ const DiscoverDescription: React.FC<Props> = ({
                               : fontSizeMobile
                     }
                     fontWeightMobile={fontWeightMobile}
+                    alignSelf={alignSelf}
+                    alignSelfMobile={alignSelfMobile}
                >
                     Clear
                </StyledDescription>
@@ -51,6 +57,8 @@ const DiscoverDescription: React.FC<Props> = ({
                               : fontSizeMobile
                     }
                     fontWeightMobile={fontWeightMobile}
+                    alignSelf={alignSelf}
+                    alignSelfMobile={alignSelfMobile}
                >
                     Sun & Cloudy
                </StyledDescription>
@@ -65,6 +73,8 @@ const DiscoverDescription: React.FC<Props> = ({
                     flexOrderMobile={flexOrderMobile}
                     fontSize={renderLaptopAnDesktop ? fontSize : fontSizeMobile}
                     fontWeightMobile={fontWeightMobile}
+                    alignSelf={alignSelf}
+                    alignSelfMobile={alignSelfMobile}
                >
                     Cloudy
                </StyledDescription>
@@ -87,6 +97,8 @@ const DiscoverDescription: React.FC<Props> = ({
                               : fontSizeMobile
                     }
                     fontWeightMobile={fontWeightMobile}
+                    alignSelf={alignSelf}
+                    alignSelfMobile={alignSelfMobile}
                >
                     Rainy
                </StyledDescription>
@@ -105,6 +117,8 @@ const DiscoverDescription: React.FC<Props> = ({
                               : fontSizeMobile
                     }
                     fontWeightMobile={fontWeightMobile}
+                    alignSelf={alignSelf}
+                    alignSelfMobile={alignSelfMobile}
                >
                     Snowy
                </StyledDescription>
@@ -125,6 +139,8 @@ const DiscoverDescription: React.FC<Props> = ({
                               : fontSizeMobile
                     }
                     fontWeightMobile={fontWeightMobile}
+                    alignSelf={alignSelf}
+                    alignSelfMobile={alignSelfMobile}
                >
                     Storm
                </StyledDescription>
@@ -139,6 +155,8 @@ const DiscoverDescription: React.FC<Props> = ({
                               : fontSizeMobile
                     }
                     fontWeightMobile={fontWeightMobile}
+                    alignSelf={alignSelf}
+                    alignSelfMobile={alignSelfMobile}
                >
                     Windy
                </StyledDescription>

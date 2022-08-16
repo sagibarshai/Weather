@@ -35,6 +35,9 @@ type StyledProps = {
      overFlowXMobile?: string;
      marginMobile?: string;
      blurScreen?: boolean;
+     width?: string;
+     alignSelf?: string;
+     alignSelfMobile?: string;
 };
 
 export const StyledContainer = styled.div`
@@ -49,7 +52,7 @@ export const StyledContainer = styled.div`
           margin-bottom: 150px;
      }
 `;
-export const StyledCityName = styled.h2`
+export const StyledCityName = styled.h2<StyledProps>`
      all: unset;
      color: ${themes.white};
      text-shadow: -2px 3px 1px rgba(0, 0, 0, 0.1),
@@ -58,6 +61,7 @@ export const StyledCityName = styled.h2`
      font-size: 5rem;
      font-weight: 900;
      line-height: 1.2;
+     width: ${(props) => props.width};
      @media ${cssBreakPoints.mobile} {
           text-align: center;
           font-size: 3.2rem;
@@ -75,8 +79,10 @@ export const StyledDivRow = styled.div<StyledProps>`
      margin-left: ${(props) => props.marginLeft};
      gap: ${(props) => props.gap};
      padding: ${(props) => props.padding};
+     width: 100%;
+     align-items: ${(props) => props.alignItems};
+     box-sizing: border-box;
      @media ${cssBreakPoints.mobile} {
-          align-items: ${(props) => props.alignItemsMobile};
           justify-content: center;
           margin-left: 0;
           margin-top: ${(props) => props.marginTopMobile};
@@ -126,7 +132,9 @@ export const StyledDescription = styled.p<StyledProps>`
      line-height: 1.25;
      color: ${themes.white};
      margin-top: 16px;
+     align-self: ${(props) => props.alignSelf};
      @media ${cssBreakPoints.mobile} {
+          align-self: ${(props) => props.alignSelfMobile};
           text-align: center;
           font-size: ${(props) => props.fontSizeMobile};
           order: ${(props) => props.flexOrderMobile};
@@ -158,6 +166,7 @@ export const StyledText = styled.span<StyledProps>`
      @media ${cssBreakPoints.mobile} {
           font-size: ${(props) => props.fontSizeMobile};
           order: ${(props) => props.flexOrderMobile};
+          align-self: ${(props) => props.alignSelfMobile};
      }
 `;
 export const StyledColumnDiv = styled.div<StyledProps>`

@@ -6,6 +6,7 @@ import { ReactComponent as IconForcastStorm } from "../svg/storm.svg";
 import { ReactComponent as IconForcastSnow } from "../svg/snow.svg";
 import { ReactComponent as IconForcastWind } from "../svg/wind.svg";
 import { StyledIcon } from "../Icons/Icon";
+import ReturnIconForcast from "./ReturnIconForcast";
 type Props = {
      IconPhrase: string;
      margin?: string;
@@ -13,6 +14,12 @@ type Props = {
      width?: string;
      height?: string;
      description?: string;
+     Icon: number;
+     display?: string;
+     renderMobile?: boolean;
+     renderLaptopAnDesktop?: boolean;
+     mobileWidth?: string;
+     mobileHeight?: string;
 };
 
 const DiscoverIcon: React.FC<Props> = ({
@@ -21,6 +28,12 @@ const DiscoverIcon: React.FC<Props> = ({
      setDescription,
      width,
      height,
+     Icon,
+     display,
+     renderLaptopAnDesktop,
+     renderMobile,
+     mobileWidth,
+     mobileHeight,
 }) => {
      if (
           IconPhrase === "Sunny" ||
@@ -30,9 +43,16 @@ const DiscoverIcon: React.FC<Props> = ({
      ) {
           setDescription && setDescription("Clear");
           return (
-               <StyledIcon margin={margin}>
-                    {" "}
-                    <IconForcastSun style={{ width, height }} />
+               <StyledIcon
+                    width={width}
+                    height={height}
+                    mobileWidth={mobileWidth}
+                    mobileHeight={mobileHeight}
+               >
+                    <IconForcastSun
+                         width={renderLaptopAnDesktop ? width : mobileWidth}
+                         height={renderLaptopAnDesktop ? height : mobileHeight}
+                    />
                </StyledIcon>
           );
      } else if (
@@ -45,8 +65,16 @@ const DiscoverIcon: React.FC<Props> = ({
           setDescription && setDescription("Sun & Cloudy");
 
           return (
-               <StyledIcon margin={margin} width="32px" height="32px">
-                    <IconForcastSunAndCloudy style={{ width, height }} />
+               <StyledIcon
+                    width={width}
+                    height={height}
+                    mobileWidth={mobileWidth}
+                    mobileHeight={mobileHeight}
+               >
+                    <IconForcastSunAndCloudy
+                         width={renderLaptopAnDesktop ? width : mobileWidth}
+                         height={renderLaptopAnDesktop ? height : mobileHeight}
+                    />
                </StyledIcon>
           );
      } else if (
@@ -57,8 +85,16 @@ const DiscoverIcon: React.FC<Props> = ({
           setDescription && setDescription("Cloudy");
 
           return (
-               <StyledIcon margin={margin}>
-                    <IconForcastCloudy style={{ width, height }} />
+               <StyledIcon
+                    width={width}
+                    height={height}
+                    mobileWidth={mobileWidth}
+                    mobileHeight={mobileHeight}
+               >
+                    <IconForcastCloudy
+                         width={renderLaptopAnDesktop ? width : mobileWidth}
+                         height={renderLaptopAnDesktop ? height : mobileHeight}
+                    />
                </StyledIcon>
           );
      } else if (
@@ -73,8 +109,16 @@ const DiscoverIcon: React.FC<Props> = ({
           setDescription && setDescription("Rainy");
 
           return (
-               <StyledIcon margin={margin}>
-                    <IconForcastRain style={{ width, height }} />
+               <StyledIcon
+                    width={width}
+                    height={height}
+                    mobileWidth={mobileWidth}
+                    mobileHeight={mobileHeight}
+               >
+                    <IconForcastRain
+                         width={renderLaptopAnDesktop ? width : mobileWidth}
+                         height={renderLaptopAnDesktop ? height : mobileHeight}
+                    />
                </StyledIcon>
           );
      } else if (
@@ -85,8 +129,16 @@ const DiscoverIcon: React.FC<Props> = ({
           setDescription && setDescription("Snowy");
 
           return (
-               <StyledIcon margin={margin}>
-                    <IconForcastSnow style={{ width, height }} />
+               <StyledIcon
+                    width={width}
+                    height={height}
+                    mobileWidth={mobileWidth}
+                    mobileHeight={mobileHeight}
+               >
+                    <IconForcastSnow
+                         width={renderLaptopAnDesktop ? width : mobileWidth}
+                         height={renderLaptopAnDesktop ? height : mobileHeight}
+                    />
                </StyledIcon>
           );
      } else if (
@@ -99,19 +151,45 @@ const DiscoverIcon: React.FC<Props> = ({
           setDescription && setDescription("Storm");
 
           return (
-               <StyledIcon margin={margin}>
-                    <IconForcastStorm style={{ width, height }} />
+               <StyledIcon
+                    width={width}
+                    height={height}
+                    mobileWidth={mobileWidth}
+                    mobileHeight={mobileHeight}
+               >
+                    <IconForcastStorm
+                         width={renderLaptopAnDesktop ? width : mobileWidth}
+                         height={renderLaptopAnDesktop ? height : mobileHeight}
+                    />
                </StyledIcon>
           );
      } else if (IconPhrase === "Windy") {
           setDescription && setDescription("Windy");
 
           return (
-               <StyledIcon margin={margin}>
-                    <IconForcastWind style={{ width, height }} />
+               <StyledIcon
+                    width={width}
+                    height={height}
+                    mobileWidth={mobileWidth}
+                    mobileHeight={mobileHeight}
+               >
+                    <IconForcastWind
+                         width={renderLaptopAnDesktop ? width : mobileWidth}
+                         height={renderLaptopAnDesktop ? height : mobileHeight}
+                    />
                </StyledIcon>
           );
-     }
-     return <h1>no icon</h1>;
+     } else
+          return (
+               <ReturnIconForcast
+                    WeatherIcon={Icon}
+                    renderMobile={renderMobile}
+                    renderLaptopAnDesktop={renderLaptopAnDesktop}
+                    mobileHeight={mobileHeight}
+                    mobileWidth={mobileWidth}
+                    width={width}
+                    height={height}
+               />
+          );
 };
 export default DiscoverIcon;

@@ -30,6 +30,7 @@ import {
      StyledTempratureSpan,
 } from "./styles/StyledHomePageDisplayCity";
 import LineChartMobile from "./LineChartMobile";
+import DiscoverIcon from "../shared/utils/DiscoverIcon";
 export type SelectedCityType = {
      searchResults?: Result[] | [];
      selectedCityKey?: number | string | null;
@@ -89,7 +90,6 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           () => getForcastFor12Hours(existingResult && existingResult.Key),
           { cacheTime: twelveHours / 6, staleTime: twelveHours / 6 }
      ) as forcast12HoursType;
-     console.log(open5daysForcastMobile);
      useEffect(() => {
           forcast12Hours && setSelected(forcast12Hours[0].DateTime);
      }, [forcast12Hours]);
@@ -111,27 +111,29 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    <IconFavWhite />
                               </StyledMobileAddToFavButton>
                          )}
-                         <StyledCityName>
+                         <StyledCityName width="100%">
                               {existingResult.LocalizedName}
                          </StyledCityName>
                          <StyledDivRow
-                              alignItems="flex-end"
-                              marginLeft="-35px"
+                              alignItems="center"
                               marginTopMobile="30px"
+                              mobileWidth="auto"
+                              marginLeft="-40px"
                          >
-                              <ReturnIconForcast
+                              <DiscoverIcon
                                    renderMobile={props.renderMobile}
                                    renderLaptopAnDesktop={
                                         props.renderLaptopAnDesktop
                                    }
-                                   height="200px"
-                                   width="200px"
                                    mobileHeight="80px"
                                    mobileWidth="80px"
+                                   height="180px"
+                                   width="180px"
                                    margin="16px 32px 0 0"
-                                   WeatherIcon={forcast12Hours[0].WeatherIcon}
+                                   Icon={forcast12Hours[0].WeatherIcon}
+                                   IconPhrase={forcast12Hours[0].IconPhrase}
                               />
-                              <StyledDivRow alignItemsMobile="baseline">
+                              <StyledDivRow alignItems="baseline">
                                    <StyledMaxTemperatureText
                                         marginRightMobile="10px"
                                         fontSizeMobile="8rem"
@@ -140,12 +142,12 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         {
                                              forcasst5Days.DailyForecasts[0]
                                                   .Temperature.Maximum.Value
-                                        }{" "}
+                                        }
                                         <StyledTempratureSpan
                                              fontSizeMobile="5rem"
                                              positionMobile="absolute"
                                              topMobile="0"
-                                             leftMobile="100%"
+                                             leftMobile="125%"
                                         >
                                              °
                                         </StyledTempratureSpan>
@@ -159,7 +161,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         <StyledTempratureSpan
                                              positionMobile="absolute"
                                              topMobile="0"
-                                             leftMobile="100%"
+                                             leftMobile="125%"
                                         >
                                              °
                                         </StyledTempratureSpan>
@@ -167,6 +169,8 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               </StyledDivRow>
                          </StyledDivRow>
                          <DiscoverDescription
+                              alignSelf="flex-start"
+                              alignSelfMobile="center"
                               fontWeightMobile="normal"
                               IconPhrase={
                                    forcasst5Days.DailyForecasts[0].Day
@@ -250,14 +254,19 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                                  />
                                                             </StyledText>
                                                             <StyledDivRow>
-                                                                 <ReturnIconForcast
+                                                                 <DiscoverIcon
                                                                       height="40px"
                                                                       width="40px"
                                                                       margin="0 4px 0 0 "
-                                                                      WeatherIcon={
+                                                                      Icon={
                                                                            day
                                                                                 .Day
                                                                                 .Icon
+                                                                      }
+                                                                      IconPhrase={
+                                                                           day
+                                                                                .Day
+                                                                                .IconPhrase
                                                                       }
                                                                  />
                                                                  <StyledMaxTemperatureText fontSize="3.2rem">
@@ -294,17 +303,22 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                        >
                                                             <StyledDivRow
                                                                  gap="4px"
-                                                                 minMobileWidth="40vw"
+                                                                 minMobileWidth="70vw"
                                                                  justifyContentMobile="flex-start"
                                                             >
-                                                                 <ReturnIconForcast
+                                                                 <DiscoverIcon
                                                                       height="40px"
                                                                       width="40px"
                                                                       margin="0 4px 0 0 "
-                                                                      WeatherIcon={
+                                                                      Icon={
                                                                            day
                                                                                 .Day
                                                                                 .Icon
+                                                                      }
+                                                                      IconPhrase={
+                                                                           day
+                                                                                .Day
+                                                                                .IconPhrase
                                                                       }
                                                                  />
                                                                  <StyledText fontSizeMobile="1.8rem">
@@ -425,11 +439,12 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                        )}
                                                        °
                                                   </StyledText>
-                                                  <ReturnIconForcast
+                                                  <DiscoverIcon
                                                        height="40px"
                                                        width="40px"
-                                                       WeatherIcon={
-                                                            day.WeatherIcon
+                                                       Icon={day.WeatherIcon}
+                                                       IconPhrase={
+                                                            day.IconPhrase
                                                        }
                                                   />
                                                   <StyledText
@@ -503,7 +518,16 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                          )}
                     </StyledContainer>
                )}
-               {open5daysForcastMobile && <LineChartMobile />}
+               {open5daysForcastMobile && props.renderMobile && (
+                    <LineChartMobile
+                         forcast5daysLablesDates={forcast5daysLablesDates}
+                         forcast5daysLablesDays={forcast5daysLablesDays}
+                         forcast5daystemperatureNight={
+                              forcast5daystemperatureNight
+                         }
+                         forcast5daystemperatureDay={forcast5daystemperatureDay}
+                    />
+               )}
           </>
      );
 };

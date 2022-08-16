@@ -22,7 +22,9 @@ const StyledLabel = styled.label<StyleProps>`
      border-radius: 100px;
      display: inline-block;
      cursor: pointer;
-     background-color: blue;
+     /* background-color: blue; */
+     border: 1px solid #444e72;
+
      ${(props) =>
           props.rotate === true &&
           css`
@@ -51,6 +53,7 @@ const StyledDivToggle = styled.div<StyleProps>`
 `;
 const StyledInput = styled.input<StyleProps>`
      display: none;
+
      &:checked + ${StyledDivToggle}::after {
           transform: translate(35px, -50%);
      }
@@ -61,6 +64,7 @@ const StyledIconState = styled.div<StyleProps>`
      font-size: 2.2rem;
      vertical-align: middle;
      position: absolute;
+
      top: ${(props) => props.top || "50%"};
      ${(props) =>
           props.rotate === true

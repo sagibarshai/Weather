@@ -22,6 +22,7 @@ type Props = {
      forcast5daystemperatureNight: number[];
      forcast5daysLablesDays: string[];
      forcast5daysLablesDates: string[];
+     mobile?: boolean;
 };
 const LineChart: React.FC<Props> = (props) => {
      ChartJS.register(

@@ -49,7 +49,6 @@ export const StyledSelectedItem = styled.div`
      top: 50%;
      left: 13%;
      transform: translate(-50%, -50%);
-     /* padding: 0 50px 0 49px; */
      width: 146px;
      height: 95%;
      border-radius: 20px;

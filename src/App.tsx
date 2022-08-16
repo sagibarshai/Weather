@@ -15,7 +15,7 @@ const App: React.FC = () => {
                     <Route element={<Home />} path="/favorite" />
                     <Route element={<Login />} path="/login" />
                </Routes>
-               <ReactQueryDevtools initialIsOpen={false} />
+               {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           </>
      );
 };

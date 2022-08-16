@@ -17,7 +17,7 @@ const StyledMobileSearchBoxContainer = styled.div`
      height: 90vh;
      width: 100vw;
      background-color: #fcfcfc;
-     position: absolute;
+     position: fixed;
      z-index: 2;
      bottom: 0;
      border-radius: 30px 30px 0 0;
@@ -150,7 +150,6 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                                                        props.setSelectedCityKey(
                                                             item.Key
                                                        );
-                                                       console.log(item);
                                                   }}
                                              >
                                                   {item.LocalizedName},

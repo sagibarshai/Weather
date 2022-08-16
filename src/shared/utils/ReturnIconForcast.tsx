@@ -65,8 +65,8 @@ type Props = {
      flexOrderMobile?: number;
 };
 const StyledImgIcon = styled.img<StyledProps>`
-     width: ${(props) => props.width || "32px"};
-     height: ${(props) => props.height || "32px"};
+     width: ${(props) => props.width};
+     height: ${(props) => props.height};
      margin: ${(props) => props.margin};
      object-fit: contain;
      @media ${cssBreakPoints.mobile} {
