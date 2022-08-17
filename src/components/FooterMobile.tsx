@@ -17,7 +17,7 @@ const FooterMobile: React.FC<Props> = (props) => {
      return (
           <StyledFooterContainer>
                <StyledButtonFooter>
-                    <StyledLink to="/favorite">
+                    <StyledLink to="/favorites">
                          <StyledIcon>
                               <IconFavorite />
                          </StyledIcon>

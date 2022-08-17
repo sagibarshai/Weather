@@ -290,7 +290,9 @@ const Header: React.FC<Props> = (props) => {
                          marginRightLaptop="50px"
                     >
                          <StyledButton
-                              onClick={() => dispatch(toggleLogoutPopup())}
+                              onClick={() => {
+                                   dispatch(toggleLogoutPopup());
+                              }}
                               variant="linkWithImg"
                               color={themes.white}
                          >

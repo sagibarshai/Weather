@@ -12,6 +12,7 @@ type Props = {
      height?: string;
      marginTop?: string;
      gap?: string;
+     setIsLogin?: (x: boolean) => void;
 };
 
 const StyledPopupContainer = styled.div<Props>`
@@ -73,6 +74,7 @@ const StyledFlexDiv = styled.div<Props>`
 `;
 
 const Popup: React.FC<Props> = (props) => {
+     console.log(props);
      const openLogoutPopup = useSelector(
           (state: RootState) => state.headerSlice.openLogoutPopup
      );
@@ -96,7 +98,16 @@ const Popup: React.FC<Props> = (props) => {
                     >
                          I want to stay
                     </StyledButton>
-                    <StyledButton variant="default" width="145px" height="54px">
+                    <StyledButton
+                         variant="default"
+                         width="145px"
+                         height="54px"
+                         onClick={() => {
+                              localStorage.removeItem("token");
+                              props.setIsLogin && props.setIsLogin(false);
+                              dispatch(toggleLogoutPopup());
+                         }}
+                    >
                          Yes log out
                     </StyledButton>
                </StyledFlexDiv>

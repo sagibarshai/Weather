@@ -1,9 +1,9 @@
-import { useState, ChangeEvent, useEffect } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeMobileMenu } from "../redux/headerSlice";
 import Notification from "../shared/notifacation/Notification";
 import Input from "../shared/UIElements/Inputs/Input";
-
+import { loginService } from "../shared/utils/Services/Abra-Server/LoginService";
 import { RootState } from "../redux/store";
 import { InputProps } from "../shared/UIElements/Inputs/Input";
 import { StyledButton } from "../shared/UIElements/Button/Button";
@@ -22,7 +22,10 @@ import {
      StyledSpan,
      StyledLogoContainer,
 } from "./styles/StyledLogin";
-const Login = () => {
+type Props = {
+     setIsLogin: any;
+};
+const Login: React.FC<Props> = (props) => {
      const [email, setEmail] = useState<string>("");
      const [password, setPassword] = useState<string>("");
      const [passwordErrorMessage, setPasswordErrorMessage] =
@@ -36,13 +39,29 @@ const Login = () => {
           useState<InputProps>("inactive");
      const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
      const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
-     const [serverError, setServerError] = useState<string | null>(
-          "we having some issues with our server , please try again later."
-     );
+     const [serverError, setServerError] = useState<string | null>(null);
 
-     const onSubmitHandler = (e: ChangeEvent<HTMLInputElement>) => {
+     const onSubmitHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+          setServerError(null);
           e.preventDefault();
-          console.log(email, password);
+          try {
+               const res = await loginService(email, password);
+               localStorage.setItem("token", res.data.access_token);
+               props.setIsLogin(true);
+               return res;
+          } catch (err: any) {
+               let errorMessage = "";
+               const errorsObj = err.request.response;
+               const parsesErrorsObj = JSON.parse(errorsObj);
+               for (let error in parsesErrorsObj) {
+                    if (Array.isArray(parsesErrorsObj[error])) {
+                         for (let element of parsesErrorsObj[error]) {
+                              errorMessage += element;
+                         }
+                    } else console.log(error);
+               }
+               setServerError(errorMessage);
+          }
      };
 
      useEffect(() => {
@@ -99,6 +118,7 @@ const Login = () => {
                               placeHolder="example@example.com..."
                               onChange={(e: any) => {
                                    setEmail(e.target.value);
+                                   setServerError(null);
                               }}
                               onBlur={() => {
                                    setEmailIsFocus(false);
@@ -135,6 +155,7 @@ const Login = () => {
                               errorMessage={passwordErrorMessage}
                               onChange={(e: any) => {
                                    setPassword(e.target.value);
+                                   setServerError(null);
                               }}
                               onBlur={() => {
                                    setPasswordIsFocus(false);

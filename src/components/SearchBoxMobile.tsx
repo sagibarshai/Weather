@@ -83,7 +83,6 @@ type Props = {
 };
 
 const SearchBoxMobile: React.FC<Props> = (props) => {
-     // const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
      const [noResults, setNoResults] = useState<boolean>(false);
      const client = useQueryClient();
 
@@ -102,11 +101,9 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
           }
      );
      useEffect(() => {
-          if (data === undefined || data === "") return;
           props.setSearchResults(data);
           setNoResults(false);
      }, [props.searchInput, data, debounce]);
-
      return (
           <StyledMobileSearchBoxContainer>
                <StyledButton
@@ -181,6 +178,7 @@ please try again.`}
                          )}
                     </StyledResultDiv>
                )}
+               {!props.searchResults && <StyledResultDiv />}
           </StyledMobileSearchBoxContainer>
      );
 };

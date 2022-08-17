@@ -17,7 +17,7 @@ const links: LinksType[] = [
           defaultIcon: <IconHomeOutline />,
      },
      {
-          to: "/favorite",
+          to: "/favorites",
           name: "Favorite",
           activeIcon: <IconFavoriteFull />,
           defaultIcon: <IconFavoriteOutlineWhite />,

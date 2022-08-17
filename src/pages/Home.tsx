@@ -25,8 +25,10 @@ import SearchBoxMobile from "../components/SearchBoxMobile";
 import { useScreenWidth } from "../shared/utils/getScreenWidth";
 import HomePageDisplayCity from "../components/HomePageDisplayCity";
 import { Result } from "../components/SearchBox";
-
-const Home: React.FC = () => {
+type Props = {
+     setIsLogin: (x: boolean) => void;
+};
+const Home: React.FC<Props> = (props) => {
      const deviceValue = useScreenWidth()[0];
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
 
@@ -194,7 +196,7 @@ const Home: React.FC = () => {
                          selectedCityKey={selectedCityKey}
                     />
                </StyledPageContainer>
-               {openLogoutPopup && <Popup />}
+               {openLogoutPopup && <Popup setIsLogin={props.setIsLogin} />}
                <MobileMenuBottom />
                {openSearchBoxMobile && (
                     <SearchBoxMobile
