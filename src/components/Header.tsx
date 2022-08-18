@@ -86,6 +86,10 @@ const Header: React.FC<Props> = (props) => {
      const renderPraimaryBg = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
      );
+     const modeCelsius = useSelector(
+          (state: RootState) => state.headerSlice.modeCelsius
+     );
+
      const openLogoutPopup = useSelector(
           (state: RootState) => state.headerSlice.openLogoutPopup
      );
@@ -268,6 +272,7 @@ const Header: React.FC<Props> = (props) => {
                               LeftIcon="F°"
                               rightIcon="C°"
                               top="55%"
+                              checked={modeCelsius}
                          />
                          <Checkbox
                               onClick={() => {
@@ -280,6 +285,7 @@ const Header: React.FC<Props> = (props) => {
                               rightIcon={<IconSunDark />}
                               top="37.5%"
                               rotate={true}
+                              checked={!renderPraimaryBg}
                          />
                     </StyledDiv>
                     <StyledDiv

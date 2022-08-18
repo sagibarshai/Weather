@@ -1,12 +1,15 @@
 import { ReactEventHandler } from "react";
 import styled, { css } from "styled-components";
 import themes from "../../themes/themes";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
 type StyleProps = {
      top?: string;
      rotate?: boolean;
 };
 
 type Props = {
+     checked?: boolean;
      variant: "checkbox";
      LeftIcon: string | JSX.Element;
      rightIcon: string | JSX.Element;
@@ -22,7 +25,6 @@ const StyledLabel = styled.label<StyleProps>`
      border-radius: 100px;
      display: inline-block;
      cursor: pointer;
-     /* background-color: blue; */
      border: 1px solid #444e72;
 
      ${(props) =>
@@ -86,6 +88,7 @@ const Checkbox: React.FC<Props> = (props) => {
                     onClick={props.onClick}
                     type="checkbox"
                     id={props.id}
+                    checked={props.checked}
                />
                <StyledDivToggle>
                     <StyledIconState

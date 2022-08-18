@@ -22,7 +22,7 @@ const StyledPopupContainer = styled.div<Props>`
      box-shadow: 0 4px 80px 0 rgba(0, 0, 0, 0.16);
      background-color: ${themes.white};
      font-family: inherit;
-     position: absolute;
+     position: fixed;
      top: 50%;
      left: 50%;
      transform: translate(-50%, -50%);

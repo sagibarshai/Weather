@@ -58,7 +58,7 @@ export const StyledDiv = styled.div<StyledDivProps>`
 export const StyledDecloration = styled.span`
      position: absolute;
      top: 150%;
-     left: -15%;
+     left: -10%;
      width: 116px;
      height: 5.1px;
      background-color: white;

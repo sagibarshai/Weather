@@ -30,6 +30,7 @@ import {
 } from "./styles/StyledHomePageDisplayCity";
 import LineChartMobile from "./LineChartMobile";
 import DiscoverIcon from "../shared/utils/DiscoverIcon";
+import { addToFavorites } from "../shared/utils/Services/Abra-Server/addToFavorites";
 export type SelectedCityType = {
      searchResults?: Result[] | [];
      selectedCityKey?: number | string | null;
@@ -108,12 +109,12 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                          {props.renderMobile && (
                               <StyledMobileAddToFavButton
                                    onClick={() => {
-                                        console.log(
-                                             existingResult.Key,
-                                             existingResult.LocalizedName,
-                                             existingResult.Country
-                                                  .LocalizedName
-                                        );
+                                        addToFavorites({
+                                             key: Number(existingResult.Key),
+                                             city: existingResult.LocalizedName,
+                                             country: existingResult.Country
+                                                  .LocalizedName,
+                                        });
                                    }}
                               >
                                    <IconFavWhite />
