@@ -1,5 +1,7 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMutation } from "react-query";
+import { login } from "../redux/authSlice";
 import { closeMobileMenu } from "../redux/headerSlice";
 import Notification from "../shared/notifacation/Notification";
 import Input from "../shared/UIElements/Inputs/Input";
@@ -22,10 +24,7 @@ import {
      StyledSpan,
      StyledLogoContainer,
 } from "./styles/StyledLogin";
-type Props = {
-     setIsLogin: any;
-};
-const Login: React.FC<Props> = (props) => {
+const Login = () => {
      const [email, setEmail] = useState<string>("");
      const [password, setPassword] = useState<string>("");
      const [passwordErrorMessage, setPasswordErrorMessage] =
@@ -40,14 +39,12 @@ const Login: React.FC<Props> = (props) => {
      const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
      const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
      const [serverError, setServerError] = useState<string | null>(null);
-
      const onSubmitHandler = async (e: ChangeEvent<HTMLInputElement>) => {
           setServerError(null);
           e.preventDefault();
           try {
                const res = await loginService(email, password);
-               localStorage.setItem("token", res.data.access_token);
-               props.setIsLogin(true);
+               dispatch(login(res.data.token));
                return res;
           } catch (err: any) {
                let errorMessage = "";
@@ -84,6 +81,7 @@ const Login: React.FC<Props> = (props) => {
      const openMobileMenu = useSelector(
           (state: RootState) => state.headerSlice.openMobileMenu
      );
+
      return (
           <StyledLoginPageContainer
                renderPraimaryBackground={renderPraimaryBackground}

@@ -14,7 +14,6 @@ import { returnShortDayFromDate } from "../shared/utils/returnShortDayFromDate";
 import DiscoverDescription from "../shared/utils/DiscoverDescription";
 import { getForcastFor12Hours } from "../shared/utils/getForcastFor12Hours";
 import { epochConverter } from "../shared/utils/epochConverter";
-import ReturnIconForcast from "../shared/utils/ReturnIconForcast";
 import LineChart from "./LineChart";
 import { getDayNumber } from "../shared/utils/getDateNumber";
 import {

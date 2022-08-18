@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import headerSlice from "./headerSlice";
-import favoritesSlice from "./favoritesSlice";
+import authSlice from "./authSlice";
 
 const store = configureStore({
-     reducer: { headerSlice, favoritesSlice },
+     reducer: { headerSlice, authSlice },
 });
 export type RootState = ReturnType<typeof store.getState>;
 

@@ -7,12 +7,12 @@ import { toggleLogoutPopup } from "../redux/headerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
+import { logout } from "../redux/authSlice";
 type Props = {
      width?: string;
      height?: string;
      marginTop?: string;
      gap?: string;
-     setIsLogin?: (x: boolean) => void;
 };
 
 const StyledPopupContainer = styled.div<Props>`
@@ -74,7 +74,6 @@ const StyledFlexDiv = styled.div<Props>`
 `;
 
 const Popup: React.FC<Props> = (props) => {
-     console.log(props);
      const openLogoutPopup = useSelector(
           (state: RootState) => state.headerSlice.openLogoutPopup
      );
@@ -103,8 +102,7 @@ const Popup: React.FC<Props> = (props) => {
                          width="145px"
                          height="54px"
                          onClick={() => {
-                              localStorage.removeItem("token");
-                              props.setIsLogin && props.setIsLogin(false);
+                              dispatch(logout());
                               dispatch(toggleLogoutPopup());
                          }}
                     >
