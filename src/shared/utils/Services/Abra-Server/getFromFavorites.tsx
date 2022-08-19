@@ -1,5 +1,4 @@
 import { axiosAbraInstence } from "./axiosAbraInstence";
-import { checkToken } from "./checkToken";
 
 export const getFromFavorites = async () => {
      const token = localStorage.getItem("token");
@@ -9,7 +8,7 @@ export const getFromFavorites = async () => {
                     Authorization: `Bearer ${token}`,
                },
           });
-          console.log(res);
+          return res;
      } catch (err) {
           console.log(err);
      }

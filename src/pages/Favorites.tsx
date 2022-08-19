@@ -6,6 +6,7 @@ import { Result } from "../components/SearchBox";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconSearchWhite } from "../shared/svg/search-white.svg";
 import { ReactComponent as IconStars } from "../shared/svg/stars.svg";
+import { ReactComponent as IconFavoriteFull } from "../shared/svg/fav-full.svg";
 import {
      StyledFavoritePageContainer,
      StyledCenteredDiv,
@@ -14,14 +15,17 @@ import {
      StyledSearchInput,
      StyledInputContainer,
      StyledSubtitle,
+     StyledItemsContainer,
+     StyledFavoriteItem,
+     StyledHr,
 } from "./styles/StyledFavorites";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { getFromFavorites } from "../shared/utils/Services/Abra-Server/getFromFavorites";
 type FavoriteType = {
-     Key: string;
-     cityName: string;
-     countryName: string;
+     key: string;
+     city: string;
+     country: string;
 };
 const Favorites = () => {
      const deviceValue = useScreenWidth()[0];
@@ -34,13 +38,16 @@ const Favorites = () => {
      const [selectedCityKey, setSelectedCityKey] = useState<
           string | number | null
      >(null);
-     const [favoritesList, setFavoritesList] = useState<[] | FavoriteType[]>([
-          { Key: "f", cityName: "f,n", countryName: "sknf" },
-     ]);
+     const [favoritesList, setFavoritesList] = useState<[] | FavoriteType[]>(
+          []
+     );
+     const [favoritesSearch, setFavoritesSearch] = useState<string>("");
+     const [filteredSearch, setFilteredSearch] = useState<FavoriteType[] | []>(
+          favoritesList
+     );
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
      );
-     const [favoritesSearch, setFavoritesSearch] = useState<string>("");
      useEffect(() => {
           if (deviceValue === "bigDesktop" || deviceValue === "laptop") {
                setRenderLaptopAnDesktop(true);
@@ -50,12 +57,35 @@ const Favorites = () => {
                setRenderMobile(true);
           }
      }, [deviceValue]);
+     console.log(filteredSearch);
      useEffect(() => {
           getFromFavorites()
-               .then((res) => console.log(res))
+               .then((res) => {
+                    setFavoritesList(res?.data.results);
+                    setFilteredSearch(res?.data.results);
+               })
                .catch((err) => console.log(err));
      }, []);
-     if (!favoritesList.length)
+     useEffect(() => {
+          const filteredArr: FavoriteType[] | [] = [];
+          if (favoritesSearch === "") {
+               setFilteredSearch(favoritesList);
+               return;
+          }
+          for (let item of favoritesList) {
+               if (
+                    item.city
+                         .toLocaleLowerCase()
+                         .includes(favoritesSearch.toLocaleLowerCase()) ||
+                    item.country
+                         .toLocaleLowerCase()
+                         .includes(favoritesSearch.toLocaleLowerCase())
+               )
+                    filteredArr.push(item);
+          }
+          setFilteredSearch(filteredArr);
+     }, [favoritesSearch]);
+     if (!favoritesList.length && favoritesSearch === "")
           return (
                <>
                     {renderLaptopAnDesktop && (
@@ -129,6 +159,36 @@ const Favorites = () => {
                                    <IconSearchWhite />
                               </StyledIcon>
                          </StyledInputContainer>
+                         <StyledItemsContainer>
+                              {filteredSearch.map((fav) => {
+                                   return (
+                                        <StyledFavoriteItem key={fav.key}>
+                                             <StyledSubtitle
+                                                  fontSize="3.2rem"
+                                                  fontWeight="bold"
+                                             >
+                                                  {fav.city}
+                                             </StyledSubtitle>
+                                             <StyledSubtitle
+                                                  fontSize="2.4rem"
+                                                  fontWeight="500"
+                                                  marginTop="4px"
+                                             >
+                                                  {fav.country}
+                                             </StyledSubtitle>
+                                             <StyledHr />
+                                             <StyledIcon
+                                                  position="absolute"
+                                                  top="50%"
+                                                  right="10px"
+                                                  transform="translateY(-50%)"
+                                             >
+                                                  <IconFavoriteFull />
+                                             </StyledIcon>
+                                        </StyledFavoriteItem>
+                                   );
+                              })}
+                         </StyledItemsContainer>
                     </StyledContentContainer>
                </StyledFavoritePageContainer>
           </>

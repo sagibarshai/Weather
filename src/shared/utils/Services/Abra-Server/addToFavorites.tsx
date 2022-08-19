@@ -1,5 +1,4 @@
 import { axiosAbraInstence } from "./axiosAbraInstence";
-import { checkToken } from "./checkToken";
 type DataType = {
      key: number;
      city: string;
@@ -13,7 +12,7 @@ export const addToFavorites = async (data: DataType) => {
                     Authorization: `Bearer ${token}`,
                },
           });
-          console.log(res);
+          return res;
      } catch (err) {
           console.log(err);
      }

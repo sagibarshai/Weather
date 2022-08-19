@@ -102,6 +102,7 @@ const Login = () => {
                     <StyledInputsContainer>
                          {serverError && (
                               <Notification
+                                   variant="error"
                                    icon={<IconNotification />}
                                    message={serverError}
                                    mobileWidth="90vw"

@@ -31,6 +31,9 @@ import {
 import LineChartMobile from "./LineChartMobile";
 import DiscoverIcon from "../shared/utils/DiscoverIcon";
 import { addToFavorites } from "../shared/utils/Services/Abra-Server/addToFavorites";
+import Notification from "../shared/notifacation/Notification";
+import { ReactComponent as IconSuccses } from "../shared/svg/check-v.svg";
+import themes from "../shared/themes/themes";
 export type SelectedCityType = {
      searchResults?: Result[] | [];
      selectedCityKey?: number | string | null;
@@ -69,6 +72,8 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const [currentDateTime, setCurrentDateTime] = useState(
           new Date().toLocaleString()
      );
+     const [showAddToFavoritesNotification, setShowAddToFavoritesNotification] =
+          useState<boolean>(false);
      const [selected, setSelected] = useState<null | string>(null);
      const existingResult = props.searchResults?.find(
           (result) => result.Key === props.selectedCityKey
@@ -97,6 +102,19 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const forcast5daystemperatureNight: number[] = [];
      const forcast5daysLablesDays: string[] = [];
      const forcast5daysLablesDates: string[] = [];
+     const addToFavoriteHandler = async (item: Result) => {
+          try {
+               addToFavorites({
+                    key: Number(item.Key),
+                    city: item.LocalizedName,
+                    country: item.Country.LocalizedName,
+               });
+               setShowAddToFavoritesNotification(true);
+               setTimeout(() => setShowAddToFavoritesNotification(false), 4000);
+          } catch (err) {
+               console.log(err);
+          }
+     };
      return (
           <>
                {existingResult && forcasst5Days && forcast12Hours && (
@@ -108,18 +126,14 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                     >
                          {props.renderMobile && (
                               <StyledMobileAddToFavButton
-                                   onClick={() => {
-                                        addToFavorites({
-                                             key: Number(existingResult.Key),
-                                             city: existingResult.LocalizedName,
-                                             country: existingResult.Country
-                                                  .LocalizedName,
-                                        });
-                                   }}
+                                   onClick={() =>
+                                        addToFavoriteHandler(existingResult)
+                                   }
                               >
                                    <IconFavWhite />
                               </StyledMobileAddToFavButton>
                          )}
+
                          <StyledCityName width="100%">
                               {existingResult.LocalizedName}
                          </StyledCityName>
@@ -190,14 +204,11 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               <StyledDate>{now}</StyledDate>
                               {props.renderLaptopAnDesktop && (
                                    <StyledButton
-                                        onClick={() => {
-                                             console.log(
-                                                  existingResult.Key,
-                                                  existingResult.LocalizedName,
-                                                  existingResult.Country
-                                                       .LocalizedName
-                                             );
-                                        }}
+                                        onClick={() =>
+                                             addToFavoriteHandler(
+                                                  existingResult
+                                             )
+                                        }
                                         variant="white"
                                         display="flex"
                                         alignItem="revert"
@@ -208,6 +219,28 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         </StyledIcon>
                                         Add to favorite
                                    </StyledButton>
+                              )}
+                              {showAddToFavoritesNotification && (
+                                   <Notification
+                                        animation={true}
+                                        mobileWidth="327px"
+                                        mobileHeigt="68px"
+                                        message={`${existingResult.LocalizedName} has added to favorites `}
+                                        icon={<IconSuccses />}
+                                        variant="success"
+                                        width="493px"
+                                        height="86px"
+                                        backgroundColor="rgba(0,0,0,0.8)"
+                                        position="fixed"
+                                        bottom="54px"
+                                        mobileBottom="128px"
+                                        left="50%"
+                                        transform="translate(-50% , 0%)"
+                                        color={themes.white}
+                                        fontSize="2rem"
+                                        fontWeight="300"
+                                        gap="5px"
+                                   />
                               )}
                          </StyledDivRow>
                          <StyledDivRow
