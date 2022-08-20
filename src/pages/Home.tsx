@@ -82,9 +82,9 @@ const Home = () => {
                     )}
                     {renderMobile && <MobileHeader />}
                     <StyledPageContainer
+                         onClick={onClickHandler}
                          openMobileMenu={openMobileMenu}
                          renderPraimaryBackground={renderPraimaryBackground}
-                         onClick={onClickHandler}
                          openLogoutPopup={openLogoutPopup}
                     >
                          <StyledLocationDiv>
@@ -123,7 +123,9 @@ const Home = () => {
                               </StyledButton>
                          </StyledLocationDiv>
                     </StyledPageContainer>
-                    <SearchBox display={openLogoutPopup} />
+                    <SearchBox
+                    // display={openLogoutPopup}
+                    />
                     <MobileMenuBottom />
                     <FooterMobile
                          setOpenSearchBoxMobile={setOpenSearchBoxMobile}

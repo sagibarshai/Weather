@@ -25,21 +25,37 @@ type Props = {
 };
 
 const StyledNotificationContainer = styled.div<Props>`
-     width: ${(props) => props.width || "360px"};
-     height: ${(props) => props.height || "36px"};
-     z-index: 3;
-     padding: 24px;
-     border-radius: 10px;
-     background-color: ${(props) =>
-          props.backgroundColor || `${themes.notificationError}`};
      display: flex;
-     gap: 16px;
-     position: ${(props) => props.position};
-     bottom: ${(props) => props.bottom};
-     left: ${(props) => props.left};
-     transform: ${(props) => props.transform};
      align-items: center;
      justify-content: center;
+     border-radius: 10px;
+     ${(props) =>
+          props.variant === "success" &&
+          css`
+               width: 493px;
+               height: 86px;
+               background-color: rgba(0, 0, 0, 0.8);
+               position: fixed;
+               bottom: 54px;
+               mobile-bottom: 128px;
+               left: 50%;
+               transform: translate(-50%, 0%);
+               gap: 5px;
+          `};
+     z-index: 3;
+     ${(props) =>
+          props.variant === "error" &&
+          css`
+               width:360px
+               height:36px;
+               padding: 24px;
+               border-radius: 10px;
+               background-color:${themes.notificationError};
+               display: flex;
+               gap: 16px;
+               align-items: center;
+               justify-content: center;
+          `};
      gap: ${(props) => props.gap};
      transition: all 4s;
      animation: ${(props) => props.animation && `lowerOpacity 4s infinite`};
@@ -66,12 +82,17 @@ const StyledNotificationContainer = styled.div<Props>`
      }
 `;
 export const StyledSpan = styled.span<Props>`
-     width: auto;
+     ${(props) =>
+          props.variant === "success" &&
+          css`
+               color: ${themes.white};
+               font-size: 2rem;
+               font-weight: 300;
+               text-align: center;
+          `};
      flex-grow: 0;
      font-family: inherit;
-     font-size: ${(props) => props.fontSize || "1.4rem"};
-     font-weight: ${(props) => props.fontWeight};
-     color: ${(props) => props.color || themes.notificationText};
+     /* color: ${(props) => props.color || themes.notificationText}; */
 `;
 const Notification: React.FC<Props> = (props) => {
      return (

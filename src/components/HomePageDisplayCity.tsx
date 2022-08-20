@@ -222,24 +222,12 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               )}
                               {showAddToFavoritesNotification && (
                                    <Notification
+                                        variant="success"
                                         animation={true}
                                         mobileWidth="327px"
                                         mobileHeigt="68px"
                                         message={`${existingResult.LocalizedName} has added to favorites `}
                                         icon={<IconSuccses />}
-                                        variant="success"
-                                        width="493px"
-                                        height="86px"
-                                        backgroundColor="rgba(0,0,0,0.8)"
-                                        position="fixed"
-                                        bottom="54px"
-                                        mobileBottom="128px"
-                                        left="50%"
-                                        transform="translate(-50% , 0%)"
-                                        color={themes.white}
-                                        fontSize="2rem"
-                                        fontWeight="300"
-                                        gap="5px"
                                    />
                               )}
                          </StyledDivRow>

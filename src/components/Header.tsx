@@ -36,6 +36,8 @@ import { ReactComponent as IconMap } from "../shared/svg/map.svg";
 import { ReactComponent as IconMoonDark } from "../shared/svg/moon-dark.svg";
 import { ReactComponent as IconSunDark } from "../shared/svg/sun-dark.svg";
 import { ReactComponent as IconLogout } from "../shared/svg/log-out.svg";
+import { ReactComponent as IconC } from "../shared/svg/c_.svg";
+import { ReactComponent as IconF } from "../shared/svg/f_.svg";
 import { Result } from "./SearchBox";
 import useDebounce from "../shared/utils/useDebouncedSearch";
 type Props = {
@@ -269,8 +271,8 @@ const Header: React.FC<Props> = (props) => {
                               htmlFor="degrees"
                               id="degrees"
                               variant="checkbox"
-                              LeftIcon="F°"
-                              rightIcon="C°"
+                              LeftIcon={<IconF />}
+                              rightIcon={<IconC />}
                               top="55%"
                               checked={modeCelsius}
                          />

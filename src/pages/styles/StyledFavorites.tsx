@@ -1,13 +1,20 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import themes from "../../shared/themes/themes";
 import cssBreakPoints from "../../shared/cssBreakPoints/cssBreakPoints";
 type StyleProps = {
+     openMobileMenu?: boolean;
+     openLogoutPopup?: boolean;
      renderPraimaryBackground?: boolean;
      marginTop?: string;
      flexDeirection?: string;
      gap?: string;
      fontSize?: string;
      fontWeight?: string;
+     position?: string;
+     top?: string;
+     left?: string;
+     transform?: string;
+     width?: string;
 };
 export const StyledFavoritePageContainer = styled.div<StyleProps>`
      width: 100vw;
@@ -16,6 +23,13 @@ export const StyledFavoritePageContainer = styled.div<StyleProps>`
      background-image: ${(props) => {
           if (props.renderPraimaryBackground) return themes.backgroundPraimary;
           else return themes.darkBackground;
+     }};
+     ${(props) => {
+          if (props.openMobileMenu || props.openLogoutPopup) {
+               return css`
+                    filter: blur(10px);
+               `;
+          }
      }};
 `;
 export const StyledCenteredDiv = styled.div<StyleProps>`
@@ -27,6 +41,12 @@ export const StyledCenteredDiv = styled.div<StyleProps>`
      gap: ${(props) => props.gap};
      justify-content: center;
      align-items: center;
+     position: ${(props) => props.position};
+     top: ${(props) => props.top};
+     left: ${(props) => props.left};
+     transform: ${(props) => props.transform};
+     width: ${(props) => props.width};
+     text-align: center;
 `;
 export const StyledContentContainer = styled.div`
      width: 1257px;
@@ -105,4 +125,8 @@ export const StyledHr = styled.hr`
      opacity: 0.6;
      background-color: ${themes.white};
      margin-top: 13.5px;
+`;
+export const StyledRemoveFromFavButton = styled.button`
+     all: unset;
+     cursor: pointer;
 `;
