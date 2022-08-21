@@ -17,7 +17,7 @@ import { LinksType } from "../shared/links/links";
 import {
      toggleBackground,
      toggleDegress,
-     toggleLogoutPopup,
+     togglePopup,
 } from "../redux/headerSlice";
 import { RootState } from "../redux/store";
 
@@ -93,7 +93,7 @@ const Header: React.FC<Props> = (props) => {
      );
 
      const openLogoutPopup = useSelector(
-          (state: RootState) => state.headerSlice.openLogoutPopup
+          (state: RootState) => state.headerSlice.openPopup
      );
      useEffect(() => {
           scrollBarHandler(
@@ -299,7 +299,7 @@ const Header: React.FC<Props> = (props) => {
                     >
                          <StyledButton
                               onClick={() => {
-                                   dispatch(toggleLogoutPopup());
+                                   dispatch(togglePopup());
                               }}
                               variant="linkWithImg"
                               color={themes.white}

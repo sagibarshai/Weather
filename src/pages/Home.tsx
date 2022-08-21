@@ -11,7 +11,7 @@ import {
      StyledTextNotFoundCity,
 } from "./styles/StyledHome";
 import { RootState } from "../redux/store";
-import { closeMobileMenu, toggleLogoutPopup } from "../redux/headerSlice";
+import { closeMobileMenu, togglePopup } from "../redux/headerSlice";
 import Header from "../components/Header";
 import Popup from "../components/Popup";
 import { StyledIcon } from "../shared/Icons/Icon";
@@ -25,6 +25,7 @@ import SearchBoxMobile from "../components/SearchBoxMobile";
 import { useScreenWidth } from "../shared/utils/getScreenWidth";
 import HomePageDisplayCity from "../components/HomePageDisplayCity";
 import { Result } from "../components/SearchBox";
+import { logout } from "../redux/authSlice";
 
 const Home = () => {
      const deviceValue = useScreenWidth()[0];
@@ -48,8 +49,8 @@ const Home = () => {
      const openMobileMenu = useSelector(
           (state: RootState) => state.headerSlice.openMobileMenu
      );
-     const openLogoutPopup = useSelector(
-          (state: RootState) => state.headerSlice.openLogoutPopup
+     const openPopup = useSelector(
+          (state: RootState) => state.headerSlice.openPopup
      );
      useEffect(() => {
           if (deviceValue === "bigDesktop" || deviceValue === "laptop") {
@@ -61,7 +62,7 @@ const Home = () => {
           }
      }, [deviceValue]);
      const onClickHandler = () => {
-          if (openLogoutPopup) dispatch(toggleLogoutPopup());
+          if (openPopup) dispatch(togglePopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
           if (noResultAndEnter) setNoResultAndEnter(false);
           if (openSearchBoxMobile) setOpenSearchBoxMobile(false);
@@ -85,7 +86,7 @@ const Home = () => {
                          onClick={onClickHandler}
                          openMobileMenu={openMobileMenu}
                          renderPraimaryBackground={renderPraimaryBackground}
-                         openLogoutPopup={openLogoutPopup}
+                         openPopup={openPopup}
                     >
                          <StyledLocationDiv>
                               <StyledIcon displayOnlyOnMobile={true}>
@@ -124,7 +125,7 @@ const Home = () => {
                          </StyledLocationDiv>
                     </StyledPageContainer>
                     <SearchBox
-                    // display={openLogoutPopup}
+                    // display={openPopup}
                     />
                     <MobileMenuBottom />
                     <FooterMobile
@@ -152,7 +153,7 @@ const Home = () => {
                          openMobileMenu={openMobileMenu}
                          renderPraimaryBackground={renderPraimaryBackground}
                          onClick={onClickHandler}
-                         openLogoutPopup={openLogoutPopup}
+                         openPopup={openPopup}
                     >
                          <StyledNotFoundCityDiv>
                               <StyledIcon>
@@ -187,7 +188,7 @@ const Home = () => {
                     openMobileMenu={openMobileMenu}
                     renderPraimaryBackground={renderPraimaryBackground}
                     onClick={onClickHandler}
-                    openLogoutPopup={openLogoutPopup}
+                    openPopup={openPopup}
                >
                     <HomePageDisplayCity
                          renderMobile={renderMobile}
@@ -196,7 +197,16 @@ const Home = () => {
                          selectedCityKey={selectedCityKey}
                     />
                </StyledPageContainer>
-               {openLogoutPopup && <Popup />}
+               {openPopup && (
+                    <Popup
+                         message="You about to log out from WeatherApp.
+Are you sure you want to log out?"
+                         cancelMessage="I want to stay"
+                         continueButtonText="Yes, log out"
+                         title="Log Out"
+                         callback={() => dispatch(logout())}
+                    />
+               )}
                <MobileMenuBottom />
                {openSearchBoxMobile && (
                     <SearchBoxMobile

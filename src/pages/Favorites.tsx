@@ -8,10 +8,11 @@ import { ReactComponent as IconSearchWhite } from "../shared/svg/search-white.sv
 import { ReactComponent as IconStars } from "../shared/svg/stars.svg";
 import { ReactComponent as IconFavoriteFull } from "../shared/svg/fav-full.svg";
 import { ReactComponent as IconSuccses } from "../shared/svg/check-v.svg";
-import { toggleLogoutPopup } from "../redux/headerSlice";
+import { togglePopup } from "../redux/headerSlice";
 import { useDispatch } from "react-redux";
 import Notification from "../shared/notifacation/Notification";
 import Popup from "../components/Popup";
+import { logout } from "../redux/authSlice";
 import {
      StyledFavoritePageContainer,
      StyledCenteredDiv,
@@ -28,6 +29,8 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { getFromFavorites } from "../shared/utils/Services/Abra-Server/getFromFavorites";
+import { addToFavorites } from "../shared/utils/Services/Abra-Server/addToFavorites";
+import { useMutation, useQuery } from "react-query";
 type FavoriteType = {
      key: string;
      city: string;
@@ -55,13 +58,15 @@ const Favorites = () => {
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
      );
-     const openLogoutPopup = useSelector(
-          (state: RootState) => state.headerSlice.openLogoutPopup
+     const openPopup = useSelector(
+          (state: RootState) => state.headerSlice.openPopup
      );
      const [openNotification, setOpenNotification] = useState<boolean>(false);
      const [exsistingItem, setExsistingItem] = useState<null | FavoriteType>(
           null
      );
+     const [openPopupRemoveFavorites, setOpenPopupRemoveFavorites] =
+          useState<boolean>(false);
      useEffect(() => {
           if (deviceValue === "bigDesktop" || deviceValue === "laptop") {
                setRenderLaptopAnDesktop(true);
@@ -75,16 +80,37 @@ const Favorites = () => {
      const removeFromFavoritesHandler = async () => {
           setOpenNotification(true);
           setTimeout(() => setOpenNotification(false), 4000);
+          setOpenPopupRemoveFavorites(false);
+          if (exsistingItem) {
+               exsistingItem.title = "deleted item";
+               let favObj = {
+                    key: exsistingItem.key,
+                    city: exsistingItem.city,
+                    country: exsistingItem.country,
+                    title: exsistingItem.title,
+               };
+               addToFavorites(favObj)
+                    .then((res) => console.log(res))
+                    .catch((err) => console.log(err));
+          }
+          console.log(exsistingItem);
      };
-
+     const { data } = useQuery("favorites", getFromFavorites, {
+          // cacheTime: Infinity,
+          // staleTime: Infinity,
+     });
      useEffect(() => {
-          getFromFavorites()
-               .then((res) => {
-                    setFavoritesList(res?.data.results);
-                    setFilteredSearch(res?.data.results);
-               })
-               .catch((err) => console.log(err));
-     }, []);
+          const updatedList: FavoriteType[] | [] | any = [];
+          if (data.data.results) {
+               const list = data.data.results;
+               for (let item of list) {
+                    if (item.title === "deleted item") continue;
+                    else updatedList.push(item);
+               }
+          }
+          setFavoritesList(updatedList);
+          setFilteredSearch(updatedList);
+     }, [data]);
      useEffect(() => {
           const filteredArr: FavoriteType[] | [] | any = [];
           if (favoritesSearch === "") {
@@ -105,8 +131,10 @@ const Favorites = () => {
           setFilteredSearch(filteredArr);
      }, [favoritesSearch]);
      const onClickHandler = () => {
-          if (openLogoutPopup) dispatch(toggleLogoutPopup());
+          if (openPopup) dispatch(togglePopup());
+          if (openPopupRemoveFavorites) setOpenPopupRemoveFavorites(false);
      };
+
      if (!favoritesList.length && favoritesSearch === "")
           return (
                <>
@@ -123,7 +151,7 @@ const Favorites = () => {
                     )}
                     {renderMobile && <MobileHeader />}
                     <StyledFavoritePageContainer
-                         openLogoutPopup={openLogoutPopup}
+                         openPopup={openPopup}
                          onClick={onClickHandler}
                          renderPraimaryBackground={renderPraimaryBackground}
                     >
@@ -145,7 +173,14 @@ const Favorites = () => {
                               </StyledSubtitle>
                          </StyledCenteredDiv>
                     </StyledFavoritePageContainer>
-                    {openLogoutPopup && <Popup />}
+                    {openPopup && (
+                         <Popup
+                              message="You about to log out from WeatherApp.
+                        Are you sure you want to log out?"
+                              cancelMessage="I want to stay"
+                              callback={() => logout()}
+                         />
+                    )}
                </>
           );
      return (
@@ -165,7 +200,7 @@ const Favorites = () => {
                <StyledFavoritePageContainer
                     onClick={onClickHandler}
                     renderPraimaryBackground={renderPraimaryBackground}
-                    openLogoutPopup={openLogoutPopup}
+                    openPopup={openPopup}
                >
                     <StyledContentContainer>
                          <StyledPageTitle>Favorites</StyledPageTitle>
@@ -194,6 +229,11 @@ const Favorites = () => {
                                                   <StyledSubtitle
                                                        fontSize="3.2rem"
                                                        fontWeight="bold"
+                                                       onClick={() =>
+                                                            setSearchInput(
+                                                                 fav.city
+                                                            )
+                                                       }
                                                   >
                                                        {fav.city}
                                                   </StyledSubtitle>
@@ -207,9 +247,14 @@ const Favorites = () => {
                                                   <StyledHr />
                                                   <StyledRemoveFromFavButton
                                                        onClick={() => {
-                                                            removeFromFavoritesHandler();
                                                             setExsistingItem(
                                                                  fav
+                                                            );
+                                                            setOpenPopupRemoveFavorites(
+                                                                 true
+                                                            );
+                                                            dispatch(
+                                                                 togglePopup()
                                                             );
                                                        }}
                                                   >
@@ -257,7 +302,30 @@ const Favorites = () => {
                          />
                     )}
                </StyledFavoritePageContainer>
-               {openLogoutPopup && <Popup />}
+               {openPopup && (
+                    <Popup
+                         title="Log out"
+                         message="You about to log out from WeatherApp.
+                                  Are you sure you want to log out?"
+                         cancelMessage="I want to stay"
+                         callback={() => dispatch(logout())}
+                         continueButtonText="Yes, log out"
+                    />
+               )}
+               {openPopupRemoveFavorites && openPopup && (
+                    <Popup
+                         message={`Are you sure you want to remove ${exsistingItem?.city} from favorites list?`}
+                         cancelMessage="Keep it"
+                         title="Remove from favorites"
+                         continueButtonText="Yes, remove"
+                         callback={() => {
+                              removeFromFavoritesHandler();
+                         }}
+                         cancelFunction={() => {
+                              setOpenPopupRemoveFavorites(false);
+                         }}
+                    />
+               )}
           </>
      );
 };

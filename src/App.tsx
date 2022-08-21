@@ -47,7 +47,7 @@ const App: React.FC = () => {
                     <Route element={<Navigate to="/login" />} path="/*" />
                     <Route element={<Login />} path="/login" />
                </Routes>
-               {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+               <ReactQueryDevtools initialIsOpen={false} />
           </>
      );
 };

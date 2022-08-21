@@ -1,5 +1,5 @@
 import axios from "axios";
-const key = "uN5zxscqBzeIGbEdAVMPtBTP4lXb3HUe";
+const key = "PxWAPXVKUhdCrXS08p9Aez4K3fSddRUA";
 export const getForcastFor12Hours = async (
      cityKey: number | string | undefined
 ) => {

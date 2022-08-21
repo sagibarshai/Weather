@@ -3,12 +3,17 @@ import { StyledIcon } from "../shared/Icons/Icon";
 import themes from "../shared/themes/themes";
 import { ReactComponent as IconXButton } from "../shared/svg/close-circle.svg";
 import { StyledButton } from "../shared/UIElements/Button/Button";
-import { toggleLogoutPopup } from "../redux/headerSlice";
+import { togglePopup } from "../redux/headerSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import cssBreakPoints from "../shared/cssBreakPoints/cssBreakPoints";
-import { logout } from "../redux/authSlice";
 type Props = {
+     cancelFunction?: () => any;
+     callback?: () => any;
+     title?: string;
+     message?: string;
+     cancelMessage?: string;
+     continueButtonText?: string;
      width?: string;
      height?: string;
      marginTop?: string;
@@ -74,39 +79,43 @@ const StyledFlexDiv = styled.div<Props>`
 `;
 
 const Popup: React.FC<Props> = (props) => {
-     const openLogoutPopup = useSelector(
-          (state: RootState) => state.headerSlice.openLogoutPopup
-     );
      const dispatch = useDispatch();
      return (
           <StyledPopupContainer>
-               <StyledTitle>Log Out</StyledTitle>
-               <StyledXButton onClick={() => dispatch(toggleLogoutPopup())}>
+               <StyledTitle>{props.title}</StyledTitle>
+               <StyledXButton
+                    onClick={() => {
+                         dispatch(togglePopup());
+                         props.cancelFunction && props.cancelFunction();
+                    }}
+               >
                     <StyledIcon>
                          <IconXButton />
                     </StyledIcon>
                </StyledXButton>
-               <StyledParagraph>
-                    You about to log out from WeatherApp. Are you sure you want
-                    to log out?
-               </StyledParagraph>
+               <StyledParagraph>{props.message}</StyledParagraph>
                <StyledFlexDiv>
                     <StyledButton
                          variant="linkWithImg"
-                         onClick={() => dispatch(toggleLogoutPopup())}
+                         onClick={() => {
+                              dispatch(togglePopup());
+                              props.cancelFunction && props.cancelFunction();
+                         }}
                     >
-                         I want to stay
+                         {props.cancelMessage}
                     </StyledButton>
                     <StyledButton
                          variant="default"
                          width="145px"
                          height="54px"
                          onClick={() => {
-                              dispatch(logout());
-                              dispatch(toggleLogoutPopup());
+                              dispatch(togglePopup());
+                              {
+                                   props.callback && props.callback();
+                              }
                          }}
                     >
-                         Yes log out
+                         {props.continueButtonText}
                     </StyledButton>
                </StyledFlexDiv>
           </StyledPopupContainer>

@@ -21,7 +21,7 @@ import {
      toggleBackground,
      toggleDegress,
      toggleMobileMenu,
-     toggleLogoutPopup,
+     togglePopup,
 } from "../redux/headerSlice";
 import themes from "../shared/themes/themes";
 
@@ -84,7 +84,7 @@ export const MobileMenuBottom = () => {
                     variant="linkWithImg"
                     color={themes.secondary}
                     onClick={() => {
-                         dispatch(toggleLogoutPopup());
+                         dispatch(togglePopup());
                          dispatch(toggleMobileMenu());
                     }}
                >

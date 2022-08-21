@@ -3,14 +3,14 @@ export type HeaderSliceState = {
      renderPraimaryBackground: boolean;
      modeCelsius: boolean;
      openMobileMenu: boolean;
-     openLogoutPopup: boolean;
+     openPopup: boolean;
 };
 
 let initialState: HeaderSliceState = {
      renderPraimaryBackground: true,
      modeCelsius: false,
      openMobileMenu: false,
-     openLogoutPopup: false,
+     openPopup: false,
 };
 const headerSlice = createSlice({
      name: "headerSlice",
@@ -29,8 +29,8 @@ const headerSlice = createSlice({
           closeMobileMenu(state) {
                state.openMobileMenu = false;
           },
-          toggleLogoutPopup(state) {
-               state.openLogoutPopup = !state.openLogoutPopup;
+          togglePopup(state) {
+               state.openPopup = !state.openPopup;
           },
      },
 });
@@ -40,5 +40,5 @@ export const {
      toggleDegress,
      toggleMobileMenu,
      closeMobileMenu,
-     toggleLogoutPopup,
+     togglePopup,
 } = headerSlice.actions;

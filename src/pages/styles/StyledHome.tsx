@@ -4,7 +4,7 @@ import themes from "../../shared/themes/themes";
 type StyledHome = {
      renderPraimaryBackground: boolean;
      openMobileMenu: boolean;
-     openLogoutPopup?: boolean;
+     openPopup?: boolean;
 };
 
 export const StyledPageContainer = styled.div<StyledHome>`
@@ -18,7 +18,7 @@ export const StyledPageContainer = styled.div<StyledHome>`
      overflow-x: hidden;
      min-height: 100vh;
      ${(props) => {
-          if (props.openMobileMenu || props.openLogoutPopup) {
+          if (props.openMobileMenu || props.openPopup) {
                return css`
                     filter: blur(10px);
                `;

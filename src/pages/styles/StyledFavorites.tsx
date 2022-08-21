@@ -3,7 +3,7 @@ import themes from "../../shared/themes/themes";
 import cssBreakPoints from "../../shared/cssBreakPoints/cssBreakPoints";
 type StyleProps = {
      openMobileMenu?: boolean;
-     openLogoutPopup?: boolean;
+     openPopup?: boolean;
      renderPraimaryBackground?: boolean;
      marginTop?: string;
      flexDeirection?: string;
@@ -25,7 +25,7 @@ export const StyledFavoritePageContainer = styled.div<StyleProps>`
           else return themes.darkBackground;
      }};
      ${(props) => {
-          if (props.openMobileMenu || props.openLogoutPopup) {
+          if (props.openMobileMenu || props.openPopup) {
                return css`
                     filter: blur(10px);
                `;
@@ -129,4 +129,5 @@ export const StyledHr = styled.hr`
 export const StyledRemoveFromFavButton = styled.button`
      all: unset;
      cursor: pointer;
+     z-index: 3;
 `;
