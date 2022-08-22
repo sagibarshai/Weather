@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Result } from "../../components/SearchBox";
 // const key = process.env.REACT_APP_ACCUWEATHER_API_KEY;
-const key = "PxWAPXVKUhdCrXS08p9Aez4K3fSddRUA";
+const key = "KKv26VA4AOQ3mn6FW1hpdRztJPAjfZ7o";
 export const search = async (value: string) => {
      try {
           const response = await axios.get(

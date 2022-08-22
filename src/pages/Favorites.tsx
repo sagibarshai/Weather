@@ -31,13 +31,16 @@ import { RootState } from "../redux/store";
 import { getFromFavorites } from "../shared/utils/Services/Abra-Server/getFromFavorites";
 import { addToFavorites } from "../shared/utils/Services/Abra-Server/addToFavorites";
 import { useMutation, useQuery } from "react-query";
-type FavoriteType = {
-     key: string;
+import { useNavigate } from "react-router-dom";
+export type FavoriteType = {
+     key: number;
      city: string;
      country: string;
+     title?: string;
 };
 const Favorites = () => {
      const dispatch = useDispatch();
+     const navigate = useNavigate();
      const deviceValue = useScreenWidth()[0];
      const [renderMobile, setRenderMobile] = useState<boolean>(true);
      const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
@@ -67,6 +70,7 @@ const Favorites = () => {
      );
      const [openPopupRemoveFavorites, setOpenPopupRemoveFavorites] =
           useState<boolean>(false);
+
      useEffect(() => {
           if (deviceValue === "bigDesktop" || deviceValue === "laptop") {
                setRenderLaptopAnDesktop(true);
@@ -76,6 +80,21 @@ const Favorites = () => {
                setRenderMobile(true);
           }
      }, [deviceValue]);
+     const { data, isLoading } = useQuery("favorites", getFromFavorites, {
+          cacheTime: Infinity,
+          staleTime: Infinity,
+          refetchOnMount: true,
+          refetchOnReconnect: true,
+     });
+     const { mutate } = useMutation(addToFavorites, {
+          onSuccess: () => {
+               setTimeout(() => {
+                    setFavoritesList(updatedListFunction());
+                    setFilteredSearch(updatedListFunction());
+               }, 500);
+          },
+          onError: (e: any) => console.log(e),
+     });
 
      const removeFromFavoritesHandler = async () => {
           setOpenNotification(true);
@@ -89,28 +108,27 @@ const Favorites = () => {
                     country: exsistingItem.country,
                     title: exsistingItem.title,
                };
-               addToFavorites(favObj)
-                    .then((res) => console.log(res))
-                    .catch((err) => console.log(err));
+               mutate(favObj);
           }
-          console.log(exsistingItem);
      };
-     const { data } = useQuery("favorites", getFromFavorites, {
-          // cacheTime: Infinity,
-          // staleTime: Infinity,
-     });
-     useEffect(() => {
+
+     const updatedListFunction = () => {
           const updatedList: FavoriteType[] | [] | any = [];
-          if (data.data.results) {
+          if (data) {
                const list = data.data.results;
                for (let item of list) {
                     if (item.title === "deleted item") continue;
                     else updatedList.push(item);
                }
           }
-          setFavoritesList(updatedList);
-          setFilteredSearch(updatedList);
+          return updatedList;
+     };
+     useEffect(() => setFilteredSearch(favoritesList), [favoritesList]);
+     useEffect(() => {
+          setFavoritesList(updatedListFunction());
+          setFilteredSearch(updatedListFunction());
      }, [data]);
+
      useEffect(() => {
           const filteredArr: FavoriteType[] | [] | any = [];
           if (favoritesSearch === "") {
@@ -128,6 +146,7 @@ const Favorites = () => {
                )
                     filteredArr.push(item);
           }
+          console.log(filteredArr, filteredSearch);
           setFilteredSearch(filteredArr);
      }, [favoritesSearch]);
      const onClickHandler = () => {
@@ -229,11 +248,22 @@ const Favorites = () => {
                                                   <StyledSubtitle
                                                        fontSize="3.2rem"
                                                        fontWeight="bold"
-                                                       onClick={() =>
-                                                            setSearchInput(
-                                                                 fav.city
-                                                            )
-                                                       }
+                                                       onClick={() => {
+                                                            navigate("/home", {
+                                                                 state: {
+                                                                      selectedCityData:
+                                                                           {
+                                                                                key: fav.key,
+                                                                                LocalizedName:
+                                                                                     fav.city,
+                                                                                Country: {
+                                                                                     LocalizedName:
+                                                                                          fav.country,
+                                                                                },
+                                                                           },
+                                                                 },
+                                                            });
+                                                       }}
                                                   >
                                                        {fav.city}
                                                   </StyledSubtitle>
@@ -247,15 +277,19 @@ const Favorites = () => {
                                                   <StyledHr />
                                                   <StyledRemoveFromFavButton
                                                        onClick={() => {
-                                                            setExsistingItem(
-                                                                 fav
-                                                            );
-                                                            setOpenPopupRemoveFavorites(
-                                                                 true
-                                                            );
-                                                            dispatch(
-                                                                 togglePopup()
-                                                            );
+                                                            if (
+                                                                 !openPopupRemoveFavorites
+                                                            ) {
+                                                                 setExsistingItem(
+                                                                      fav
+                                                                 );
+                                                                 setOpenPopupRemoveFavorites(
+                                                                      true
+                                                                 );
+                                                                 dispatch(
+                                                                      togglePopup()
+                                                                 );
+                                                            }
                                                        }}
                                                   >
                                                        <StyledIcon

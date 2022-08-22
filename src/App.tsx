@@ -38,6 +38,7 @@ const App: React.FC = () => {
                          <Route element={<Home />} path="/home" />
                          <Route element={<Favorites />} path="/favorites" />
                     </Routes>
+                    <ReactQueryDevtools initialIsOpen={false} />
                </>
           );
      return (
@@ -47,7 +48,6 @@ const App: React.FC = () => {
                     <Route element={<Navigate to="/login" />} path="/*" />
                     <Route element={<Login />} path="/login" />
                </Routes>
-               <ReactQueryDevtools initialIsOpen={false} />
           </>
      );
 };

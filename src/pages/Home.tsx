@@ -26,14 +26,18 @@ import { useScreenWidth } from "../shared/utils/getScreenWidth";
 import HomePageDisplayCity from "../components/HomePageDisplayCity";
 import { Result } from "../components/SearchBox";
 import { logout } from "../redux/authSlice";
+import { useLocation } from "react-router-dom";
 
 const Home = () => {
+     const location = useLocation();
      const deviceValue = useScreenWidth()[0];
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
 
      const [selectedCityKey, setSelectedCityKey] = useState<
           string | number | null
      >(null);
+     const [selectedCityDataFromFavorites, setSelectedCityDataFromFavorites] =
+          useState<Result | null>(null);
      const [renderMobile, setRenderMobile] = useState<boolean>(true);
      const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
           useState<boolean>(true);
@@ -61,6 +65,15 @@ const Home = () => {
                setRenderMobile(true);
           }
      }, [deviceValue]);
+     useEffect(() => {
+          if (location.state) {
+               console.log(location.state);
+               setSelectedCityKey(location.state.selectedCityData.key);
+               setSelectedCityDataFromFavorites(
+                    location.state.selectedCityData
+               );
+          }
+     }, [location]);
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
@@ -195,6 +208,9 @@ const Home = () => {
                          renderLaptopAnDesktop={renderLaptopAnDesktop}
                          searchResults={searchResults}
                          selectedCityKey={selectedCityKey}
+                         selectedCityDataFromFavorites={
+                              selectedCityDataFromFavorites
+                         }
                     />
                </StyledPageContainer>
                {openPopup && (

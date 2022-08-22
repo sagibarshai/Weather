@@ -118,6 +118,7 @@ export const StyledFavoriteItem = styled.div`
      min-height: 88px;
      display: flex;
      flex-direction: column;
+     cursor: pointer;
 `;
 export const StyledHr = styled.hr`
      width: 100%;
