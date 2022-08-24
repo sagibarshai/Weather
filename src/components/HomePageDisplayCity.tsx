@@ -89,7 +89,6 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           (result) => result.Key === props.selectedCityKey
      );
 
-     console.log(props.selectedCityDataFromFavorites);
      const returnKeyFunction = () => {
           if (existingResult) return existingResult.Key;
           else if (props.selectedCityKey)
@@ -120,7 +119,8 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const forcast5daystemperatureNight: number[] = [];
      const forcast5daysLablesDays: string[] = [];
      const forcast5daysLablesDates: string[] = [];
-     const addToFavoriteHandler = async (item: Result) => {
+     const addToFavoriteHandler = async (item: Result | undefined | null) => {
+          if (!item) return;
           mutate({
                key: Number(item.Key),
                city: item.LocalizedName,

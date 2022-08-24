@@ -27,9 +27,8 @@ import HomePageDisplayCity from "../components/HomePageDisplayCity";
 import { Result } from "../components/SearchBox";
 import { logout } from "../redux/authSlice";
 import { useLocation } from "react-router-dom";
-
 const Home = () => {
-     const location = useLocation();
+     const location = useLocation() as any;
      const deviceValue = useScreenWidth()[0];
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
 
@@ -67,7 +66,6 @@ const Home = () => {
      }, [deviceValue]);
      useEffect(() => {
           if (location.state) {
-               console.log(location.state);
                setSelectedCityKey(location.state.selectedCityData.key);
                setSelectedCityDataFromFavorites(
                     location.state.selectedCityData
@@ -80,6 +78,7 @@ const Home = () => {
           if (noResultAndEnter) setNoResultAndEnter(false);
           if (openSearchBoxMobile) setOpenSearchBoxMobile(false);
      };
+
      if (locationIsOpen)
           return (
                <>
@@ -137,9 +136,7 @@ const Home = () => {
                               </StyledButton>
                          </StyledLocationDiv>
                     </StyledPageContainer>
-                    <SearchBox
-                    // display={openPopup}
-                    />
+                    <SearchBox />
                     <MobileMenuBottom />
                     <FooterMobile
                          setOpenSearchBoxMobile={setOpenSearchBoxMobile}
@@ -216,7 +213,7 @@ const Home = () => {
                {openPopup && (
                     <Popup
                          message="You about to log out from WeatherApp.
-Are you sure you want to log out?"
+                                   Are you sure you want to log out?"
                          cancelMessage="I want to stay"
                          continueButtonText="Yes, log out"
                          title="Log Out"

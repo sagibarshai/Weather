@@ -146,7 +146,6 @@ const Favorites = () => {
                )
                     filteredArr.push(item);
           }
-          console.log(filteredArr, filteredSearch);
           setFilteredSearch(filteredArr);
      }, [favoritesSearch]);
      const onClickHandler = () => {

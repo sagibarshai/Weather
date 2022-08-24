@@ -30,6 +30,7 @@ const App: React.FC = () => {
      setInterval(() => {
           checkIfTokenIsValid();
      }, 1000 * 60 * 30);
+
      if (isLogin)
           return (
                <>

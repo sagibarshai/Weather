@@ -18,6 +18,10 @@ const headerSlice = createSlice({
      reducers: {
           toggleBackground(state) {
                state.renderPraimaryBackground = !state.renderPraimaryBackground;
+               localStorage.setItem(
+                    "praimaryTheme",
+                    state.renderPraimaryBackground
+               );
           },
           toggleDegress(state) {
                if (state.modeCelsius === true) state.modeCelsius = false;
