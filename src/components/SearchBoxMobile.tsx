@@ -75,24 +75,25 @@ const StyledResultCountry = styled.span`
 `;
 type Props = {
      setOpenSearchBoxMobile: (x: boolean) => void;
-     searchInput: string;
-     setSearchInput: (x: string) => void;
      setSelectedCityKey: (x: string) => void;
-     setSearchResults: (x: any) => void;
-     searchResults: Result[];
+     setExistingCity?: (x: Result) => void;
+     existingCity?: Result | null;
 };
 
 const SearchBoxMobile: React.FC<Props> = (props) => {
+     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
+     const [searchInput, setSearchInput] = useState<string>("");
+
      const [noResults, setNoResults] = useState<boolean>(false);
      const client = useQueryClient();
 
-     const isCached = client.getQueryData(["autocomplete", props.searchInput], {
+     const isCached = client.getQueryData(["autocomplete", searchInput], {
           exact: true,
      });
-     const debounce = useDebounce(props.searchInput, 300);
+     const debounce = useDebounce(searchInput, 300);
      const { data } = useQuery(
-          ["autocomplete", isCached ? props.searchInput : debounce],
-          () => search(isCached ? props.searchInput : debounce),
+          ["autocomplete", isCached ? searchInput : debounce],
+          () => search(isCached ? searchInput : debounce),
           {
                refetchOnmount: false,
                refetchOnReconnect: false,
@@ -101,9 +102,9 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
           }
      );
      useEffect(() => {
-          props.setSearchResults(data);
+          setSearchResults(data);
           setNoResults(false);
-     }, [props.searchInput, data, debounce]);
+     }, [searchInput, data, debounce]);
      return (
           <StyledMobileSearchBoxContainer>
                <StyledButton
@@ -114,8 +115,8 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                     </StyledIcon>
                </StyledButton>
                <Input
-                    value={props.searchInput}
-                    onChange={(e: any) => props.setSearchInput(e.target.value)}
+                    value={searchInput}
+                    onChange={(e: any) => setSearchInput(e.target.value)}
                     variant="inactive"
                     mobileWidth="75vw"
                     height="54px"
@@ -132,11 +133,11 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                          <IconSearch />
                     </StyledIcon>
                </Input>
-               {Array.isArray(props.searchResults) && (
+               {Array.isArray(searchResults) && (
                     <StyledResultDiv>
-                         {Array.isArray(props.searchResults) && (
+                         {Array.isArray(searchResults) && (
                               <StyledResultList>
-                                   {props.searchResults.map(
+                                   {searchResults.map(
                                         (item: any, index: number) => (
                                              <StyledResultItem
                                                   key={index}
@@ -147,6 +148,10 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                                                        props.setSelectedCityKey(
                                                             item.Key
                                                        );
+                                                       props.setExistingCity &&
+                                                            props.setExistingCity(
+                                                                 item
+                                                            );
                                                   }}
                                              >
                                                   {item.LocalizedName},
@@ -162,23 +167,22 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                                    )}
                               </StyledResultList>
                          )}
-                         {!props.searchResults.length && (
+                         {!searchResults.length && (
                               <StyledIcon margin="103px 0 0 0">
                                    <IconCity />
                               </StyledIcon>
                          )}
-                         {!props.searchResults.length && (
+                         {!searchResults.length && (
                               <StyledText>
-                                   {props.searchInput === "" &&
-                                   noResults === false
+                                   {searchInput === "" && noResults === false
                                         ? "Please search any city in the search button."
-                                        : `We couldn’t find any city named "${props.searchInput}",  
-please try again.`}
+                                        : `We couldn’t find any city named "${searchInput}",  
+                                             please try again.`}
                               </StyledText>
                          )}
                     </StyledResultDiv>
                )}
-               {!props.searchResults && <StyledResultDiv />}
+               {!searchResults && <StyledResultDiv />}
           </StyledMobileSearchBoxContainer>
      );
 };

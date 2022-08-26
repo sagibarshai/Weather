@@ -23,8 +23,9 @@ type Props = {
      overflow?: string;
      boxShadow?: string;
      color?: string;
-     setSelectedCity?: (x: Result) => void;
      setSelectedCityKey?: (x: number | string) => void;
+     setExistingCity?: (x: Result) => void;
+     existingCity?: Result;
 };
 const StyledBigContainer = styled.div<Props>`
      display: ${(props) => (props.display === true ? "inline-block" : "none")};
@@ -144,6 +145,10 @@ const SearchBox: React.FC<Props> = (props) => {
                                                        props.setSelectedCityKey &&
                                                             props.setSelectedCityKey(
                                                                  item.Key
+                                                            );
+                                                       props.setExistingCity &&
+                                                            props.setExistingCity(
+                                                                 item
                                                             );
                                                   }}
                                              >

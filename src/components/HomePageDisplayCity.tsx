@@ -33,7 +33,11 @@ import DiscoverIcon from "../shared/utils/DiscoverIcon";
 import { addToFavorites } from "../shared/utils/Services/Abra-Server/addToFavorites";
 import Notification from "../shared/notifacation/Notification";
 import { ReactComponent as IconSuccses } from "../shared/svg/check-v.svg";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { DeggresType, toggleDeggres } from "../shared/utils/toggleDeggres";
 export type SelectedCityType = {
+     existingCity: any;
      selectedCityDataFromFavorites?: Result | null;
      searchResults?: Result[] | [];
      selectedCityKey?: number | string | null;
@@ -43,8 +47,8 @@ export type SelectedCityType = {
 export type DailyForecastsType = {
      Date: Date;
      Temperature: {
-          Minimum: { Value: number };
-          Maximum: { Value: number };
+          Minimum: { Value: number; Unit: DeggresType };
+          Maximum: { Value: number; Unit: DeggresType };
      };
      Day: { IconPhrase: string; Icon: number };
 };
@@ -57,7 +61,7 @@ type forcast12HoursType = {
      data: {
           EpochDateTime: number;
           DateTime: string;
-          Temperature: { Value: number };
+          Temperature: { Value: number; Unit: DeggresType };
           IconPhrase: string;
           WeatherIcon: number;
           Wind: {
@@ -88,7 +92,9 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const existingResult = props.searchResults?.find(
           (result) => result.Key === props.selectedCityKey
      );
-
+     const degressType: DeggresType = useSelector(
+          (state: RootState) => state.headerSlice.degressType
+     );
      const returnKeyFunction = () => {
           if (existingResult) return existingResult.Key;
           else if (props.selectedCityKey)
@@ -129,7 +135,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      };
      return (
           <>
-               {(existingResult || props.selectedCityDataFromFavorites) &&
+               {(props.existingCity || props.selectedCityDataFromFavorites) &&
                     forcasst5Days &&
                     forcast12Hours && (
                          <StyledContainer
@@ -142,7 +148,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    <StyledMobileAddToFavButton
                                         onClick={() =>
                                              addToFavoriteHandler(
-                                                  existingResult ||
+                                                  props.existingCity ||
                                                        props.selectedCityDataFromFavorites
                                              )
                                         }
@@ -152,8 +158,8 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               )}
 
                               <StyledCityName width="100%">
-                                   {existingResult
-                                        ? existingResult.LocalizedName
+                                   {props.existingCity
+                                        ? props.existingCity.LocalizedName
                                         : props.selectedCityDataFromFavorites
                                                ?.LocalizedName}
                               </StyledCityName>
@@ -184,12 +190,16 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                              fontSizeMobile="8rem"
                                              positionMobile="relative"
                                         >
-                                             {
+                                             {toggleDeggres(
+                                                  degressType,
                                                   forcasst5Days
                                                        .DailyForecasts[0]
                                                        .Temperature.Maximum
-                                                       .Value
-                                             }
+                                                       .Value,
+                                                  forcasst5Days
+                                                       .DailyForecasts[0]
+                                                       .Temperature.Maximum.Unit
+                                             )}
                                              <StyledTempratureSpan
                                                   fontSizeMobile="5rem"
                                                   positionMobile="absolute"
@@ -201,12 +211,16 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         </StyledMaxTemperatureText>
                                         <StyledMinTemperatureText positionMobile="relative">
                                              -{" "}
-                                             {
+                                             {toggleDeggres(
+                                                  degressType,
                                                   forcasst5Days
                                                        .DailyForecasts[0]
                                                        .Temperature.Minimum
-                                                       .Value
-                                             }
+                                                       .Value,
+                                                  forcasst5Days
+                                                       .DailyForecasts[0]
+                                                       .Temperature.Minimum.Unit
+                                             )}
                                              <StyledTempratureSpan
                                                   positionMobile="absolute"
                                                   topMobile="0"
@@ -232,7 +246,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         <StyledButton
                                              onClick={() =>
                                                   addToFavoriteHandler(
-                                                       existingResult ||
+                                                       props.existingCity ||
                                                             props.selectedCityDataFromFavorites
                                                   )
                                              }
@@ -254,8 +268,9 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                              mobileWidth="327px"
                                              mobileHeigt="68px"
                                              message={`${
-                                                  existingResult
-                                                       ? existingResult.LocalizedName
+                                                  props.existingCity
+                                                       ? props.existingCity
+                                                              .LocalizedName
                                                        : props
                                                               .selectedCityDataFromFavorites
                                                               ?.LocalizedName
@@ -280,12 +295,22 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                   index: number
                                              ) => {
                                                   forcast5daystemperatureDay.push(
-                                                       day.Temperature.Maximum
-                                                            .Value
+                                                       toggleDeggres(
+                                                            degressType,
+                                                            day.Temperature
+                                                                 .Maximum.Value,
+                                                            day.Temperature
+                                                                 .Maximum.Unit
+                                                       )
                                                   );
                                                   forcast5daystemperatureNight.push(
-                                                       day.Temperature.Minimum
-                                                            .Value
+                                                       toggleDeggres(
+                                                            degressType,
+                                                            day.Temperature
+                                                                 .Minimum.Value,
+                                                            day.Temperature
+                                                                 .Minimum.Unit
+                                                       )
                                                   );
 
                                                   forcast5daysLablesDays.push(
@@ -347,22 +372,32 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                                            }
                                                                       />
                                                                       <StyledMaxTemperatureText fontSize="3.2rem">
-                                                                           {
+                                                                           {toggleDeggres(
+                                                                                degressType,
                                                                                 day
                                                                                      .Temperature
                                                                                      .Maximum
-                                                                                     .Value
-                                                                           }{" "}
+                                                                                     .Value,
+                                                                                day
+                                                                                     .Temperature
+                                                                                     .Maximum
+                                                                                     .Unit
+                                                                           )}{" "}
                                                                            °
                                                                       </StyledMaxTemperatureText>
                                                                       <StyledMinTemperatureText fontSize="1.6rem">
                                                                            -{" "}
-                                                                           {
+                                                                           {toggleDeggres(
+                                                                                degressType,
                                                                                 day
                                                                                      .Temperature
                                                                                      .Minimum
-                                                                                     .Value
-                                                                           }{" "}
+                                                                                     .Value,
+                                                                                day
+                                                                                     .Temperature
+                                                                                     .Minimum
+                                                                                     .Unit
+                                                                           )}{" "}
                                                                            °
                                                                       </StyledMinTemperatureText>
                                                                  </StyledDivRow>
@@ -427,24 +462,34 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                                            fontSizeMobile="1.8rem"
                                                                            fontWeightMobile="bold"
                                                                       >
-                                                                           {
+                                                                           {toggleDeggres(
+                                                                                degressType,
                                                                                 day
                                                                                      .Temperature
                                                                                      .Minimum
-                                                                                     .Value
-                                                                           }
+                                                                                     .Value,
+                                                                                day
+                                                                                     .Temperature
+                                                                                     .Minimum
+                                                                                     .Unit
+                                                                           )}
                                                                            ° -
                                                                       </StyledMinTemperatureText>
                                                                       <StyledMaxTemperatureText
                                                                            fontSize="3.2rem"
                                                                            fontSizeMobile="1.6rem"
                                                                       >
-                                                                           {
+                                                                           {toggleDeggres(
+                                                                                degressType,
                                                                                 day
                                                                                      .Temperature
                                                                                      .Maximum
-                                                                                     .Value
-                                                                           }{" "}
+                                                                                     .Value,
+                                                                                day
+                                                                                     .Temperature
+                                                                                     .Maximum
+                                                                                     .Unit
+                                                                           )}{" "}
                                                                            °
                                                                       </StyledMaxTemperatureText>
                                                                  </StyledDivRow>
@@ -480,6 +525,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               >
                                    {forcast12Hours &&
                                         forcast12Hours.map((day, index) => {
+                                             console.log(day);
                                              if (index % 2 !== 0) return;
                                              return (
                                                   <StyledColumnDiv
@@ -510,9 +556,12 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                             fontSize="3.2rem"
                                                             fontSizeMobile="1.8rem"
                                                        >
-                                                            {Math.round(
+                                                            {toggleDeggres(
+                                                                 degressType,
                                                                  day.Temperature
-                                                                      .Value
+                                                                      .Value,
+                                                                 day.Temperature
+                                                                      .Unit
                                                             )}
                                                             °
                                                        </StyledText>
@@ -542,10 +591,13 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                                       }}
                                                                  />{" "}
                                                             </StyledIcon>
-                                                            {
+                                                            {toggleDeggres(
+                                                                 degressType,
                                                                  day.Wind.Speed
-                                                                      .Value
-                                                            }{" "}
+                                                                      .Value,
+                                                                 day.Temperature
+                                                                      .Unit
+                                                            )}{" "}
                                                             {
                                                                  day.Wind.Speed
                                                                       .Unit

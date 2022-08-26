@@ -20,7 +20,6 @@ import {
      togglePopup,
 } from "../redux/headerSlice";
 import { RootState } from "../redux/store";
-
 import {
      StyledHeader,
      StyledDiv,
@@ -40,20 +39,22 @@ import { ReactComponent as IconC } from "../shared/svg/c_.svg";
 import { ReactComponent as IconF } from "../shared/svg/f_.svg";
 import { Result } from "./SearchBox";
 import useDebounce from "../shared/utils/useDebouncedSearch";
+import HomePageDisplayCity from "./HomePageDisplayCity";
 type Props = {
      setNoResultAndEnter: (x: boolean) => void;
      noResultAndEnter: boolean;
-     searchInput: string;
-     setSearchInput: (e: React.ChangeEvent | any) => void;
      setSelectedCityKey: (x: number | string) => void;
-     searchResults: [] | Result[];
-     setSearchResults: (x: Result[]) => void;
+     setExistingCity: (x: any) => any;
+     existingCity: any;
+     setNotFoundCityName: (x: string) => void;
 };
 const Header: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      const [activeIconId, setActiveIconId] = useState<string>(
           window.location.pathname
      );
+     const [searchInput, setSearchInput] = useState<string>("");
+     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
      const [searchIsFocus, setSearchIsFocus] = useState<boolean>(false);
      const [hoverIndexResult, setHoverIndexResult] = useState<number>(-1);
      const currentIcon: LinksType | undefined = links.find((link) => {
@@ -63,22 +64,22 @@ const Header: React.FC<Props> = (props) => {
           currentIcon ? currentIcon.activeIcon : undefined
      );
      const client = useQueryClient();
-     const isCached = client.getQueryData(["autocomplete", props.searchInput], {
+     const isCached = client.getQueryData(["autocomplete", searchInput], {
           exact: true,
      });
-     const debounce = useDebounce(props.searchInput, 300);
+     const debounce = useDebounce(searchInput, 300);
      const { data } = useQuery(
-          ["autoComplete", isCached ? props.searchInput : debounce],
-          () => search(isCached ? props.searchInput : debounce),
+          ["autoComplete", isCached ? searchInput : debounce],
+          () => search(isCached ? searchInput : debounce),
           {
                cacheTime: Infinity,
                staleTime: Infinity,
           }
      );
      useEffect(() => {
-          props.setSearchResults(data);
+          setSearchResults(data);
           props.setNoResultAndEnter(false);
-     }, [props.searchInput, data]);
+     }, [searchInput, data]);
      const NavLinkStyleHandler = (isActive: boolean, link: LinksType) => {
           if (isActive) {
                return NavLinkActiveStyle;
@@ -88,8 +89,8 @@ const Header: React.FC<Props> = (props) => {
      const renderPraimaryBg = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
      );
-     const modeCelsius = useSelector(
-          (state: RootState) => state.headerSlice.modeCelsius
+     const degressType = useSelector(
+          (state: RootState) => state.headerSlice.degressType
      );
 
      const openLogoutPopup = useSelector(
@@ -98,7 +99,7 @@ const Header: React.FC<Props> = (props) => {
      useEffect(() => {
           scrollBarHandler(
                "scroll",
-               props.searchResults,
+               searchResults,
                hoverIndexResult,
                setHoverIndexResult
           );
@@ -166,12 +167,11 @@ const Header: React.FC<Props> = (props) => {
                          orderLaptop={3}
                     >
                          <Input
-                              value={props.searchInput}
+                              value={searchInput}
                               onKeyDown={(e) => {
                                    if (
                                         e.keyCode === 40 && //arrow-donw
-                                        hoverIndexResult <
-                                             props.searchResults.length
+                                        hoverIndexResult < searchResults.length
                                    ) {
                                         setHoverIndexResult((prev) => prev + 1);
                                    } else if (
@@ -181,24 +181,27 @@ const Header: React.FC<Props> = (props) => {
                                         setHoverIndexResult((prev) => prev - 1);
                                    else if (e.keyCode === 13) {
                                         // enter
-                                        if (!props.searchResults.length) {
+                                        if (!searchResults.length) {
                                              props.setNoResultAndEnter(true);
                                              setSearchIsFocus(false);
+                                             props.setNotFoundCityName(
+                                                  searchInput
+                                             );
                                              return;
                                         }
-
+                                        props.setExistingCity(
+                                             searchResults[hoverIndexResult]
+                                        );
                                         props.setNoResultAndEnter(false);
                                         props.setSelectedCityKey(
-                                             props.searchResults[
-                                                  hoverIndexResult
-                                             ].Key
+                                             searchResults[hoverIndexResult].Key
                                         );
 
                                         setSearchIsFocus(false);
                                    }
                               }}
                               onChange={(e: any) => {
-                                   props.setSearchInput(e.target.value);
+                                   setSearchInput(e.target.value);
                                    setSearchIsFocus(true);
                               }}
                               onFocus={() => setSearchIsFocus(true)}
@@ -225,13 +228,12 @@ const Header: React.FC<Props> = (props) => {
                                    <IconSearchDark />
                               </StyledIcon>
                               <SearchBox
+                                   setExistingCity={props.setExistingCity}
+                                   existingCity={props.existingCity}
                                    noResultAndEnter={props.noResultAndEnter}
-                                   searchInput={props.searchInput}
-                                   display={
-                                        searchIsFocus &&
-                                        props.searchInput !== ""
-                                   }
-                                   results={props.searchResults}
+                                   searchInput={searchInput}
+                                   display={searchIsFocus && searchInput !== ""}
+                                   results={searchResults}
                                    hoverIndexResult={hoverIndexResult}
                                    setSelectedCityKey={props.setSelectedCityKey}
                               />
@@ -274,7 +276,7 @@ const Header: React.FC<Props> = (props) => {
                               LeftIcon={<IconF />}
                               rightIcon={<IconC />}
                               top="55%"
-                              checked={modeCelsius}
+                              checked={degressType === "F"}
                          />
                          <Checkbox
                               onClick={() => {

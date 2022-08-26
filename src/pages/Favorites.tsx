@@ -42,12 +42,13 @@ const Favorites = () => {
      const dispatch = useDispatch();
      const navigate = useNavigate();
      const deviceValue = useScreenWidth()[0];
+     const [existingCity, setExistingCity] = useState<null | Result>(null);
+     const [notFoundCityName, setNotFoundCityName] = useState<string>("");
      const [renderMobile, setRenderMobile] = useState<boolean>(true);
      const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
           useState<boolean>(true);
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
-     const [searchInput, setSearchInput] = useState<string>("");
-     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
+
      const [selectedCityKey, setSelectedCityKey] = useState<
           string | number | null
      >(null);
@@ -158,10 +159,9 @@ const Favorites = () => {
                <>
                     {renderLaptopAnDesktop && (
                          <Header
-                              searchResults={searchResults}
-                              setSearchResults={setSearchResults}
-                              searchInput={searchInput}
-                              setSearchInput={setSearchInput}
+                              setNotFoundCityName={setNotFoundCityName}
+                              existingCity={existingCity}
+                              setExistingCity={setExistingCity}
                               setNoResultAndEnter={setNoResultAndEnter}
                               noResultAndEnter={noResultAndEnter}
                               setSelectedCityKey={setSelectedCityKey}
@@ -205,10 +205,9 @@ const Favorites = () => {
           <>
                {renderLaptopAnDesktop && (
                     <Header
-                         searchResults={searchResults}
-                         setSearchResults={setSearchResults}
-                         searchInput={searchInput}
-                         setSearchInput={setSearchInput}
+                         setNotFoundCityName={setNotFoundCityName}
+                         existingCity={existingCity}
+                         setExistingCity={setExistingCity}
                          setNoResultAndEnter={setNoResultAndEnter}
                          noResultAndEnter={noResultAndEnter}
                          setSelectedCityKey={setSelectedCityKey}

@@ -1,14 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { DeggresType } from "../shared/utils/toggleDeggres";
 export type HeaderSliceState = {
      renderPraimaryBackground: boolean;
-     modeCelsius: boolean;
+     degressType: DeggresType;
      openMobileMenu: boolean;
      openPopup: boolean;
 };
 
 let initialState: HeaderSliceState = {
      renderPraimaryBackground: true,
-     modeCelsius: false,
+     degressType: "C",
      openMobileMenu: false,
      openPopup: false,
 };
@@ -18,14 +19,11 @@ const headerSlice = createSlice({
      reducers: {
           toggleBackground(state) {
                state.renderPraimaryBackground = !state.renderPraimaryBackground;
-               localStorage.setItem(
-                    "praimaryTheme",
-                    state.renderPraimaryBackground
-               );
           },
           toggleDegress(state) {
-               if (state.modeCelsius === true) state.modeCelsius = false;
-               else state.modeCelsius = true;
+               if (state.degressType === "C") state.degressType = "F";
+               else state.degressType = "C";
+               localStorage.setItem("degressType", state.degressType);
           },
           toggleMobileMenu(state) {
                state.openMobileMenu = !state.openMobileMenu;

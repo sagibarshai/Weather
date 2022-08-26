@@ -55,6 +55,7 @@ const StyledNotificationContainer = styled.div<Props>`
                gap: 16px;
                align-items: center;
                justify-content: center;
+               font-size:1.4rem;
           `};
      gap: ${(props) => props.gap};
      transition: all 4s;

@@ -105,7 +105,7 @@ const Login = () => {
                                    variant="error"
                                    icon={<IconNotification />}
                                    message={serverError}
-                                   mobileWidth="90vw"
+                                   mobileHeigt="63px"
                               />
                          )}
                          <Input

@@ -30,21 +30,20 @@ import { useLocation } from "react-router-dom";
 const Home = () => {
      const location = useLocation() as any;
      const deviceValue = useScreenWidth()[0];
-     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
-
+     const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
      const [selectedCityKey, setSelectedCityKey] = useState<
           string | number | null
      >(null);
+     const [existingCity, setExistingCity] = useState<null | Result>(null);
+     const [notFoundCityName, setNotFoundCityName] = useState<string>("");
+     const [openSearchBoxMobile, setOpenSearchBoxMobile] =
+          useState<boolean>(false);
      const [selectedCityDataFromFavorites, setSelectedCityDataFromFavorites] =
           useState<Result | null>(null);
      const [renderMobile, setRenderMobile] = useState<boolean>(true);
      const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
           useState<boolean>(true);
-     const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
-     const [searchInput, setSearchInput] = useState<string>("");
      const [locationIsOpen, setLocationIsOpen] = useState<boolean>(false);
-     const [openSearchBoxMobile, setOpenSearchBoxMobile] =
-          useState<boolean>(false);
      const dispatch = useDispatch();
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
@@ -78,16 +77,14 @@ const Home = () => {
           if (noResultAndEnter) setNoResultAndEnter(false);
           if (openSearchBoxMobile) setOpenSearchBoxMobile(false);
      };
-
      if (locationIsOpen)
           return (
                <>
                     {renderLaptopAnDesktop && (
                          <Header
-                              searchResults={searchResults}
-                              setSearchResults={setSearchResults}
-                              searchInput={searchInput}
-                              setSearchInput={setSearchInput}
+                              setNotFoundCityName={setNotFoundCityName}
+                              existingCity={existingCity}
+                              setExistingCity={setExistingCity}
                               setNoResultAndEnter={setNoResultAndEnter}
                               noResultAndEnter={noResultAndEnter}
                               setSelectedCityKey={setSelectedCityKey}
@@ -136,7 +133,6 @@ const Home = () => {
                               </StyledButton>
                          </StyledLocationDiv>
                     </StyledPageContainer>
-                    <SearchBox />
                     <MobileMenuBottom />
                     <FooterMobile
                          setOpenSearchBoxMobile={setOpenSearchBoxMobile}
@@ -149,11 +145,10 @@ const Home = () => {
                <>
                     {renderLaptopAnDesktop && (
                          <Header
-                              searchResults={searchResults}
-                              setSearchResults={setSearchResults}
+                              setNotFoundCityName={setNotFoundCityName}
+                              existingCity={existingCity}
+                              setExistingCity={setExistingCity}
                               setSelectedCityKey={setSelectedCityKey}
-                              searchInput={searchInput}
-                              setSearchInput={setSearchInput}
                               setNoResultAndEnter={setNoResultAndEnter}
                               noResultAndEnter={noResultAndEnter}
                          />
@@ -171,7 +166,7 @@ const Home = () => {
                               </StyledIcon>
                               <StyledTextNotFoundCity>
                                    We couldn’t find any city named "
-                                   {searchInput}", <br />
+                                   {notFoundCityName}", <br />
                                    please try again.
                               </StyledTextNotFoundCity>
                          </StyledNotFoundCityDiv>
@@ -183,11 +178,10 @@ const Home = () => {
           <>
                {renderLaptopAnDesktop && (
                     <Header
-                         searchResults={searchResults}
-                         setSearchResults={setSearchResults}
+                         setNotFoundCityName={setNotFoundCityName}
+                         existingCity={existingCity}
+                         setExistingCity={setExistingCity}
                          setSelectedCityKey={setSelectedCityKey}
-                         searchInput={searchInput}
-                         setSearchInput={setSearchInput}
                          setNoResultAndEnter={setNoResultAndEnter}
                          noResultAndEnter={noResultAndEnter}
                     />
@@ -201,9 +195,9 @@ const Home = () => {
                     openPopup={openPopup}
                >
                     <HomePageDisplayCity
+                         existingCity={existingCity}
                          renderMobile={renderMobile}
                          renderLaptopAnDesktop={renderLaptopAnDesktop}
-                         searchResults={searchResults}
                          selectedCityKey={selectedCityKey}
                          selectedCityDataFromFavorites={
                               selectedCityDataFromFavorites
@@ -223,11 +217,9 @@ const Home = () => {
                <MobileMenuBottom />
                {openSearchBoxMobile && (
                     <SearchBoxMobile
-                         setSearchResults={setSearchResults}
-                         searchResults={searchResults}
+                         setExistingCity={setExistingCity}
+                         existingCity={existingCity}
                          setSelectedCityKey={setSelectedCityKey}
-                         searchInput={searchInput}
-                         setSearchInput={setSearchInput}
                          setOpenSearchBoxMobile={setOpenSearchBoxMobile}
                     />
                )}
