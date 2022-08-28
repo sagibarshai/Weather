@@ -11,6 +11,7 @@ import { search } from "../shared/utils/search";
 import { Result } from "./SearchBox";
 import { useQuery, useQueryClient } from "react-query";
 import useDebounce from "../shared/utils/useDebouncedSearch";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const StyledMobileSearchBoxContainer = styled.div`
      display: none;
@@ -81,6 +82,8 @@ type Props = {
 };
 
 const SearchBoxMobile: React.FC<Props> = (props) => {
+     const location = useLocation();
+     const navigate = useNavigate();
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
      const [searchInput, setSearchInput] = useState<string>("");
 
@@ -152,6 +155,29 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                                                             props.setExistingCity(
                                                                  item
                                                             );
+                                                       {
+                                                            location.pathname !==
+                                                                 "/home" &&
+                                                                 navigate(
+                                                                      "/home",
+                                                                      {
+                                                                           state: {
+                                                                                selectedCityData:
+                                                                                     {
+                                                                                          key: item.Key,
+                                                                                          LocalizedName:
+                                                                                               item.LocalizedName,
+                                                                                          Country: {
+                                                                                               LocalizedName:
+                                                                                                    item
+                                                                                                         .Country
+                                                                                                         .LocalizedName,
+                                                                                          },
+                                                                                     },
+                                                                           },
+                                                                      }
+                                                                 );
+                                                       }
                                                   }}
                                              >
                                                   {item.LocalizedName},

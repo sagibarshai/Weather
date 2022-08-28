@@ -15,6 +15,8 @@ type StyleProps = {
      left?: string;
      transform?: string;
      width?: string;
+     fontSizeMobile?: string;
+     mobileWidth?: string;
 };
 export const StyledFavoritePageContainer = styled.div<StyleProps>`
      width: 100vw;
@@ -31,6 +33,7 @@ export const StyledFavoritePageContainer = styled.div<StyleProps>`
                `;
           }
      }};
+     padding-bottom: 100px;
 `;
 export const StyledCenteredDiv = styled.div<StyleProps>`
      display: flex;
@@ -55,6 +58,10 @@ export const StyledContentContainer = styled.div`
           width: calc(100vw - 50px - 50px);
           margin: 80px 50px auto 50px;
      }
+     @media ${cssBreakPoints.mobile} {
+          width: 100vw;
+          margin: 40px 28px 0 28px;
+     } ;
 `;
 export const StyledPageTitle = styled.h2<StyleProps>`
      all: unset;
@@ -66,6 +73,9 @@ export const StyledPageTitle = styled.h2<StyleProps>`
      line-height: 1.2;
      color: ${themes.white};
      margin-top: ${(props) => props.marginTop};
+     @media ${cssBreakPoints.mobile} {
+          font-size: ${(props) => props.fontSizeMobile || "3.2rem"};
+     } ;
 `;
 export const StyledSubtitle = styled.h5<StyleProps>`
      all: unset;
@@ -75,6 +85,10 @@ export const StyledSubtitle = styled.h5<StyleProps>`
      line-height: 1.5;
      color: ${themes.white};
      margin-top: ${(props) => props.marginTop};
+     @media ${cssBreakPoints.mobile} {
+          font-size: ${(props) => props.fontSizeMobile || "2.4rem"};
+          width: ${(props) => props.mobileWidth};
+     } ;
 `;
 export const StyledInputContainer = styled.div`
      position: relative;
@@ -111,6 +125,9 @@ export const StyledItemsContainer = styled.div`
      flex-direction: column;
      gap: 23.5px;
      margin-top: 65px;
+     @media ${cssBreakPoints.mobile} {
+          margin-top: 36px;
+     }
 `;
 export const StyledFavoriteItem = styled.div`
      position: relative;

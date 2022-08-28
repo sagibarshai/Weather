@@ -525,7 +525,6 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               >
                                    {forcast12Hours &&
                                         forcast12Hours.map((day, index) => {
-                                             console.log(day);
                                              if (index % 2 !== 0) return;
                                              return (
                                                   <StyledColumnDiv

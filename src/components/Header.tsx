@@ -18,6 +18,7 @@ import {
      toggleBackground,
      toggleDegress,
      togglePopup,
+     toggleMap,
 } from "../redux/headerSlice";
 import { RootState } from "../redux/store";
 import {
@@ -27,6 +28,7 @@ import {
      StyledSpan,
      StyledTooltip,
      StyledTooltipText,
+     StyledWrapperButton,
 } from "./styles/StyledHeader";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconSearchDark } from "../shared/svg/search-dark.svg";
@@ -40,6 +42,7 @@ import { ReactComponent as IconF } from "../shared/svg/f_.svg";
 import { Result } from "./SearchBox";
 import useDebounce from "../shared/utils/useDebouncedSearch";
 import HomePageDisplayCity from "./HomePageDisplayCity";
+import { useLocation, useNavigate } from "react-router-dom";
 type Props = {
      setNoResultAndEnter: (x: boolean) => void;
      noResultAndEnter: boolean;
@@ -47,11 +50,14 @@ type Props = {
      setExistingCity: (x: any) => any;
      existingCity: any;
      setNotFoundCityName: (x: string) => void;
+     currentPage: string;
 };
 const Header: React.FC<Props> = (props) => {
+     const navigate = useNavigate();
+     const location = useLocation();
      const dispatch = useDispatch();
      const [activeIconId, setActiveIconId] = useState<string>(
-          window.location.pathname
+          props.currentPage
      );
      const [searchInput, setSearchInput] = useState<string>("");
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
@@ -60,6 +66,8 @@ const Header: React.FC<Props> = (props) => {
      const currentIcon: LinksType | undefined = links.find((link) => {
           if (link.to === activeIconId) return link;
      }) as LinksType;
+     console.log(activeIconId);
+
      const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
           currentIcon ? currentIcon.activeIcon : undefined
      );
@@ -198,6 +206,31 @@ const Header: React.FC<Props> = (props) => {
                                         );
 
                                         setSearchIsFocus(false);
+                                        {
+                                             location.pathname !== "/home" &&
+                                                  navigate("/home", {
+                                                       state: {
+                                                            selectedCityData: {
+                                                                 key: searchResults[
+                                                                      hoverIndexResult
+                                                                 ].Key,
+                                                                 LocalizedName:
+                                                                      searchResults[
+                                                                           hoverIndexResult
+                                                                      ]
+                                                                           .LocalizedName,
+                                                                 Country: {
+                                                                      LocalizedName:
+                                                                           searchResults[
+                                                                                hoverIndexResult
+                                                                           ]
+                                                                                .Country
+                                                                                .LocalizedName,
+                                                                 },
+                                                            },
+                                                       },
+                                                  });
+                                        }
                                    }
                               }}
                               onChange={(e: any) => {
@@ -250,10 +283,14 @@ const Header: React.FC<Props> = (props) => {
                               color={themes.white}
                               position="relative"
                          >
-                              <StyledIcon width="30px" height="30px">
-                                   <IconMap />
-                              </StyledIcon>
-                              <StyledSpan> Switch to map </StyledSpan>
+                              <StyledWrapperButton
+                                   onClick={() => dispatch(toggleMap())}
+                              >
+                                   <StyledIcon width="30px" height="30px">
+                                        <IconMap />
+                                   </StyledIcon>
+                                   <StyledSpan> Switch to map </StyledSpan>
+                              </StyledWrapperButton>
                               <StyledTooltip>
                                    <StyledTooltipText>
                                         Switch to map

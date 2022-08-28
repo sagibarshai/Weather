@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
      StyledChartBigContainer,
      StyledChartContainer,
@@ -35,6 +36,7 @@ const LineChart: React.FC<Props> = (props) => {
           Legend,
           ChartDataLabels
      );
+
      const optionsDay = {
           title: { display: false },
           legend: { display: false },

@@ -13,6 +13,8 @@ import { useDispatch } from "react-redux";
 import Notification from "../shared/notifacation/Notification";
 import Popup from "../components/Popup";
 import { logout } from "../redux/authSlice";
+import FooterMobile from "../components/FooterMobile";
+import SearchBoxMobile from "../components/SearchBoxMobile";
 import {
      StyledFavoritePageContainer,
      StyledCenteredDiv,
@@ -32,26 +34,17 @@ import { getFromFavorites } from "../shared/utils/Services/Abra-Server/getFromFa
 import { addToFavorites } from "../shared/utils/Services/Abra-Server/addToFavorites";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
+import { SharedPageProps } from "./Home";
 export type FavoriteType = {
      key: number;
      city: string;
      country: string;
      title?: string;
 };
-const Favorites = () => {
+const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      const dispatch = useDispatch();
      const navigate = useNavigate();
-     const deviceValue = useScreenWidth()[0];
-     const [existingCity, setExistingCity] = useState<null | Result>(null);
-     const [notFoundCityName, setNotFoundCityName] = useState<string>("");
-     const [renderMobile, setRenderMobile] = useState<boolean>(true);
-     const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
-          useState<boolean>(true);
-     const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
 
-     const [selectedCityKey, setSelectedCityKey] = useState<
-          string | number | null
-     >(null);
      const [favoritesList, setFavoritesList] = useState<[] | FavoriteType[]>(
           []
      );
@@ -73,14 +66,12 @@ const Favorites = () => {
           useState<boolean>(false);
 
      useEffect(() => {
-          if (deviceValue === "bigDesktop" || deviceValue === "laptop") {
-               setRenderLaptopAnDesktop(true);
-               setRenderMobile(false);
-          } else {
-               setRenderLaptopAnDesktop(false);
-               setRenderMobile(true);
+          if (pageProps.noResultAndEnter) {
+               navigate("/home", {
+                    state: { noResultAndEnter: pageProps.noResultAndEnter },
+               });
           }
-     }, [deviceValue]);
+     }, [pageProps.noResultAndEnter]);
      const { data, isLoading } = useQuery("favorites", getFromFavorites, {
           cacheTime: Infinity,
           staleTime: Infinity,
@@ -96,7 +87,6 @@ const Favorites = () => {
           },
           onError: (e: any) => console.log(e),
      });
-
      const removeFromFavoritesHandler = async () => {
           setOpenNotification(true);
           setTimeout(() => setOpenNotification(false), 4000);
@@ -152,22 +142,12 @@ const Favorites = () => {
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openPopupRemoveFavorites) setOpenPopupRemoveFavorites(false);
+          if (pageProps.openSearchBoxMobile)
+               pageProps.setOpenSearchBoxMobile(false);
      };
-
      if (!favoritesList.length && favoritesSearch === "")
           return (
                <>
-                    {renderLaptopAnDesktop && (
-                         <Header
-                              setNotFoundCityName={setNotFoundCityName}
-                              existingCity={existingCity}
-                              setExistingCity={setExistingCity}
-                              setNoResultAndEnter={setNoResultAndEnter}
-                              noResultAndEnter={noResultAndEnter}
-                              setSelectedCityKey={setSelectedCityKey}
-                         />
-                    )}
-                    {renderMobile && <MobileHeader />}
                     <StyledFavoritePageContainer
                          openPopup={openPopup}
                          onClick={onClickHandler}
@@ -203,17 +183,6 @@ const Favorites = () => {
           );
      return (
           <>
-               {renderLaptopAnDesktop && (
-                    <Header
-                         setNotFoundCityName={setNotFoundCityName}
-                         existingCity={existingCity}
-                         setExistingCity={setExistingCity}
-                         setNoResultAndEnter={setNoResultAndEnter}
-                         noResultAndEnter={noResultAndEnter}
-                         setSelectedCityKey={setSelectedCityKey}
-                    />
-               )}
-               {renderMobile && <MobileHeader />}
                <StyledFavoritePageContainer
                     onClick={onClickHandler}
                     renderPraimaryBackground={renderPraimaryBackground}
@@ -247,6 +216,9 @@ const Favorites = () => {
                                                        fontSize="3.2rem"
                                                        fontWeight="bold"
                                                        onClick={() => {
+                                                            pageProps.setCurrentPage(
+                                                                 "/home"
+                                                            );
                                                             navigate("/home", {
                                                                  state: {
                                                                       selectedCityData:
@@ -267,6 +239,7 @@ const Favorites = () => {
                                                   </StyledSubtitle>
                                                   <StyledSubtitle
                                                        fontSize="2.4rem"
+                                                       fontSizeMobile="1.8rem"
                                                        fontWeight="500"
                                                        marginTop="4px"
                                                   >
@@ -317,7 +290,11 @@ const Favorites = () => {
                                         <StyledIcon>
                                              <IconStars />
                                         </StyledIcon>
-                                        <StyledSubtitle marginTop="36px">
+                                        <StyledSubtitle
+                                             marginTop="36px"
+                                             fontSizeMobile="1.4rem"
+                                             mobileWidth="70vw"
+                                        >
                                              We couldn’t find any city named "
                                              {favoritesSearch}" in the Favorites
                                              list, please try again.

@@ -7,6 +7,7 @@ export const scrollBarHandler = (
      setIndex: (x: number) => void
 ) => {
      const scrollElement = document.getElementById(parantId) as HTMLDivElement;
+     if (!scrollElement) return;
      if (currentIndex <= 0) {
           scrollElement.scrollTop = 0;
      }

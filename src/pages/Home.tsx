@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import MobileHeader, { MobileMenuBottom } from "../components/MobileHeader";
-import FooterMobile from "../components/FooterMobile";
+
 import {
      StyledPageContainer,
      StyledLocationTitle,
@@ -12,7 +11,6 @@ import {
 } from "./styles/StyledHome";
 import { RootState } from "../redux/store";
 import { closeMobileMenu, togglePopup } from "../redux/headerSlice";
-import Header from "../components/Header";
 import Popup from "../components/Popup";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconLocation } from "../shared/svg/location.svg";
@@ -20,30 +18,37 @@ import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import themes from "../shared/themes/themes";
-import SearchBox from "../components/SearchBox";
-import SearchBoxMobile from "../components/SearchBoxMobile";
-import { useScreenWidth } from "../shared/utils/getScreenWidth";
 import HomePageDisplayCity from "../components/HomePageDisplayCity";
 import { Result } from "../components/SearchBox";
 import { logout } from "../redux/authSlice";
 import { useLocation } from "react-router-dom";
-const Home = () => {
+import DisplayMap from "../components/Map";
+export type SharedPageProps = {
+     pageProps: {
+          coords: {
+               lat: number;
+               lng: number;
+          };
+          existingCity?: Result | null;
+          renderMobile?: boolean;
+          renderLaptopAnDesktop?: boolean;
+          selectedCityKey: string | number | null;
+          setSelectedCityKey: (x: string | number | null) => void;
+          selectedCityDataFromFavorites: Result | null;
+          setSelectedCityDataFromFavorites: (x: Result) => void;
+          setOpenSearchBoxMobile: (x: boolean) => void;
+          openSearchBoxMobile?: boolean;
+          setExistingCity: (x: null | Result) => void;
+          notFoundCityName?: string;
+          setNoResultAndEnter: (x: boolean) => void;
+          noResultAndEnter: boolean;
+          setCurrentPage: (x: string) => void;
+     };
+};
+const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const location = useLocation() as any;
-     const deviceValue = useScreenWidth()[0];
-     const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
-     const [selectedCityKey, setSelectedCityKey] = useState<
-          string | number | null
-     >(null);
-     const [existingCity, setExistingCity] = useState<null | Result>(null);
-     const [notFoundCityName, setNotFoundCityName] = useState<string>("");
-     const [openSearchBoxMobile, setOpenSearchBoxMobile] =
-          useState<boolean>(false);
-     const [selectedCityDataFromFavorites, setSelectedCityDataFromFavorites] =
-          useState<Result | null>(null);
-     const [renderMobile, setRenderMobile] = useState<boolean>(true);
-     const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
-          useState<boolean>(true);
      const [locationIsOpen, setLocationIsOpen] = useState<boolean>(false);
+     const [showOnMap, setShowOnMap] = useState<boolean>(false);
      const dispatch = useDispatch();
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
@@ -54,43 +59,53 @@ const Home = () => {
      const openPopup = useSelector(
           (state: RootState) => state.headerSlice.openPopup
      );
+     const openMap = useSelector(
+          (state: RootState) => state.headerSlice.openMap
+     );
      useEffect(() => {
-          if (deviceValue === "bigDesktop" || deviceValue === "laptop") {
-               setRenderLaptopAnDesktop(true);
-               setRenderMobile(false);
-          } else {
-               setRenderLaptopAnDesktop(false);
-               setRenderMobile(true);
-          }
-     }, [deviceValue]);
+          if (pageProps.coords) setShowOnMap(openMap);
+     }, [openMap]);
      useEffect(() => {
           if (location.state) {
-               setSelectedCityKey(location.state.selectedCityData.key);
-               setSelectedCityDataFromFavorites(
-                    location.state.selectedCityData
-               );
+               if (location.state.noResultAndEnter) {
+                    pageProps.setNoResultAndEnter(
+                         location.state.noResultAndEnter
+                    );
+               }
+               if (location.state.selectedCityData) {
+                    pageProps.setSelectedCityKey(
+                         location.state.selectedCityData.key
+                    );
+                    pageProps.setSelectedCityDataFromFavorites(
+                         location.state.selectedCityData
+                    );
+               }
           }
      }, [location]);
+     console.log("ggg");
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
-          if (noResultAndEnter) setNoResultAndEnter(false);
-          if (openSearchBoxMobile) setOpenSearchBoxMobile(false);
+          if (pageProps.noResultAndEnter) pageProps.setNoResultAndEnter(false);
+          if (pageProps.openSearchBoxMobile)
+               pageProps.setOpenSearchBoxMobile(false);
      };
+     if (showOnMap)
+          return (
+               <>
+                    <StyledPageContainer
+                         onClick={onClickHandler}
+                         openMobileMenu={openMobileMenu}
+                         renderPraimaryBackground={renderPraimaryBackground}
+                         openPopup={openPopup}
+                    >
+                         <DisplayMap coords={pageProps.coords} />
+                    </StyledPageContainer>
+               </>
+          );
      if (locationIsOpen)
           return (
                <>
-                    {renderLaptopAnDesktop && (
-                         <Header
-                              setNotFoundCityName={setNotFoundCityName}
-                              existingCity={existingCity}
-                              setExistingCity={setExistingCity}
-                              setNoResultAndEnter={setNoResultAndEnter}
-                              noResultAndEnter={noResultAndEnter}
-                              setSelectedCityKey={setSelectedCityKey}
-                         />
-                    )}
-                    {renderMobile && <MobileHeader />}
                     <StyledPageContainer
                          onClick={onClickHandler}
                          openMobileMenu={openMobileMenu}
@@ -133,27 +148,11 @@ const Home = () => {
                               </StyledButton>
                          </StyledLocationDiv>
                     </StyledPageContainer>
-                    <MobileMenuBottom />
-                    <FooterMobile
-                         setOpenSearchBoxMobile={setOpenSearchBoxMobile}
-                    />
                </>
           );
-
-     if (noResultAndEnter)
+     if (pageProps.noResultAndEnter)
           return (
                <>
-                    {renderLaptopAnDesktop && (
-                         <Header
-                              setNotFoundCityName={setNotFoundCityName}
-                              existingCity={existingCity}
-                              setExistingCity={setExistingCity}
-                              setSelectedCityKey={setSelectedCityKey}
-                              setNoResultAndEnter={setNoResultAndEnter}
-                              noResultAndEnter={noResultAndEnter}
-                         />
-                    )}
-
                     <StyledPageContainer
                          openMobileMenu={openMobileMenu}
                          renderPraimaryBackground={renderPraimaryBackground}
@@ -166,28 +165,15 @@ const Home = () => {
                               </StyledIcon>
                               <StyledTextNotFoundCity>
                                    We couldn’t find any city named "
-                                   {notFoundCityName}", <br />
+                                   {pageProps.notFoundCityName}", <br />
                                    please try again.
                               </StyledTextNotFoundCity>
                          </StyledNotFoundCityDiv>
                     </StyledPageContainer>
                </>
           );
-
      return (
           <>
-               {renderLaptopAnDesktop && (
-                    <Header
-                         setNotFoundCityName={setNotFoundCityName}
-                         existingCity={existingCity}
-                         setExistingCity={setExistingCity}
-                         setSelectedCityKey={setSelectedCityKey}
-                         setNoResultAndEnter={setNoResultAndEnter}
-                         noResultAndEnter={noResultAndEnter}
-                    />
-               )}
-               {renderMobile && <MobileHeader display={!openSearchBoxMobile} />}
-
                <StyledPageContainer
                     openMobileMenu={openMobileMenu}
                     renderPraimaryBackground={renderPraimaryBackground}
@@ -195,12 +181,12 @@ const Home = () => {
                     openPopup={openPopup}
                >
                     <HomePageDisplayCity
-                         existingCity={existingCity}
-                         renderMobile={renderMobile}
-                         renderLaptopAnDesktop={renderLaptopAnDesktop}
-                         selectedCityKey={selectedCityKey}
+                         existingCity={pageProps.existingCity}
+                         renderMobile={pageProps.renderMobile}
+                         renderLaptopAnDesktop={pageProps.renderLaptopAnDesktop}
+                         selectedCityKey={pageProps.selectedCityKey}
                          selectedCityDataFromFavorites={
-                              selectedCityDataFromFavorites
+                              pageProps.selectedCityDataFromFavorites
                          }
                     />
                </StyledPageContainer>
@@ -214,16 +200,6 @@ const Home = () => {
                          callback={() => dispatch(logout())}
                     />
                )}
-               <MobileMenuBottom />
-               {openSearchBoxMobile && (
-                    <SearchBoxMobile
-                         setExistingCity={setExistingCity}
-                         existingCity={existingCity}
-                         setSelectedCityKey={setSelectedCityKey}
-                         setOpenSearchBoxMobile={setOpenSearchBoxMobile}
-                    />
-               )}
-               <FooterMobile setOpenSearchBoxMobile={setOpenSearchBoxMobile} />
           </>
      );
 };

@@ -5,6 +5,7 @@ export type HeaderSliceState = {
      degressType: DeggresType;
      openMobileMenu: boolean;
      openPopup: boolean;
+     openMap: boolean;
 };
 
 let initialState: HeaderSliceState = {
@@ -12,6 +13,7 @@ let initialState: HeaderSliceState = {
      degressType: "C",
      openMobileMenu: false,
      openPopup: false,
+     openMap: false,
 };
 const headerSlice = createSlice({
      name: "headerSlice",
@@ -34,6 +36,9 @@ const headerSlice = createSlice({
           togglePopup(state) {
                state.openPopup = !state.openPopup;
           },
+          toggleMap(state) {
+               state.openMap = !state.openMap;
+          },
      },
 });
 export default headerSlice.reducer;
@@ -43,4 +48,5 @@ export const {
      toggleMobileMenu,
      closeMobileMenu,
      togglePopup,
+     toggleMap,
 } = headerSlice.actions;

@@ -106,3 +106,7 @@ export const StyledTooltipText = styled.span`
      font-weight: bold;
      margin-top: 30px;
 `;
+export const StyledWrapperButton = styled.button`
+     all: unset;
+     cursor: pointer;
+`;

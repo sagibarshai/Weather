@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import BackgroundAnimation from "./shared/backgroundAnimation/BackgroundAnimation";
@@ -9,11 +9,19 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/store";
 import { checkToken } from "./shared/utils/Services/Abra-Server/checkToken";
 import { logout } from "./redux/authSlice";
-
+import PageSharedTamplate from "./pages/PageSharedTamplate";
 const App: React.FC = () => {
+     const [lat, setLat] = useState<number>();
+     const [lng, setLng] = useState<number>();
      const dispatch = useDispatch();
      const navigate = useNavigate();
      const isLogin = useSelector((state: RootState) => state.authSlice.isLogin);
+     useEffect(() => {
+          navigator.geolocation.getCurrentPosition((position) => {
+               setLat(position.coords.latitude);
+               setLng(position.coords.longitude);
+          });
+     }, []);
      useEffect(() => {
           if (isLogin) navigate("/home");
      }, [isLogin]);
@@ -35,10 +43,7 @@ const App: React.FC = () => {
           return (
                <>
                     <BackgroundAnimation />
-                    <Routes>
-                         <Route element={<Home />} path="/home" />
-                         <Route element={<Favorites />} path="/favorites" />
-                    </Routes>
+                    <PageSharedTamplate coords={{ lat, lng }} />
                     <ReactQueryDevtools initialIsOpen={false} />
                </>
           );

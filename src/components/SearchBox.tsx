@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import themes from "../shared/themes/themes";
 import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { StyledIcon } from "../shared/Icons/Icon";
+import { useLocation, useNavigate } from "react-router-dom";
 export type Result = {
      LocalizedName: string;
      Country: { LocalizedName: string };
@@ -101,6 +102,8 @@ const StyledConutryText = styled.span`
      font-weight: normal;
 `;
 const SearchBox: React.FC<Props> = (props) => {
+     const navigate = useNavigate();
+     const location = useLocation();
      if (props.results?.length === 0 && !props.noResultAndEnter)
           return (
                <StyledBigContainer
@@ -150,6 +153,29 @@ const SearchBox: React.FC<Props> = (props) => {
                                                             props.setExistingCity(
                                                                  item
                                                             );
+                                                       {
+                                                            location.pathname !==
+                                                                 "/home" &&
+                                                                 navigate(
+                                                                      "/home",
+                                                                      {
+                                                                           state: {
+                                                                                selectedCityData:
+                                                                                     {
+                                                                                          key: item.Key,
+                                                                                          LocalizedName:
+                                                                                               item.LocalizedName,
+                                                                                          Country: {
+                                                                                               LocalizedName:
+                                                                                                    item
+                                                                                                         .Country
+                                                                                                         .LocalizedName,
+                                                                                          },
+                                                                                     },
+                                                                           },
+                                                                      }
+                                                                 );
+                                                       }
                                                   }}
                                              >
                                                   {item.LocalizedName},
