@@ -28,6 +28,10 @@ interface StyledButtonProps {
      border?: string;
      alignItem?: string;
      boxShadow?: string;
+     bottom?: string;
+     transform?: string;
+     left?: string;
+     padding?: string;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -101,6 +105,11 @@ export const StyledButton = styled.button<StyledButtonProps>`
      color: ${(props) => props.color};
      border: ${(props) => props.border};
      box-shadow: ${(props) => props.boxShadow};
+     bottom: ${(props) => props.bottom};
+     left: ${(props) => props.left};
+     transform: ${(props) => props.transform};
+     padding: ${(props) => props.padding};
+
      @media ${cssBreakPoints.bigDesktop} {
           ${(props) => props.displayOnlyOnMobile === true && "display:none"}
      }

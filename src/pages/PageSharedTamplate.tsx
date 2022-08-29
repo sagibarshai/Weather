@@ -32,6 +32,8 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           useState<boolean>(false);
      const [selectedCityDataFromFavorites, setSelectedCityDataFromFavorites] =
           useState<Result | null>(null);
+     const [showOnMap, setShowOnMap] = useState<boolean>(false);
+
      const pageProps = {
           notFoundCityName,
           setNotFoundCityName,
@@ -49,6 +51,8 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           setSelectedCityDataFromFavorites,
           coords: props.coords,
           setCurrentPage,
+          showOnMap,
+          setShowOnMap,
      };
      useEffect(() => {
           if (location.pathname === "/home") setCurrentPage("/home");
@@ -92,7 +96,10 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                          />
                     )}
                </Routes>
-               <FooterMobile setOpenSearchBoxMobile={setOpenSearchBoxMobile} />
+               <FooterMobile
+                    setOpenSearchBoxMobile={setOpenSearchBoxMobile}
+                    showOnMap={showOnMap}
+               />
                <MobileMenuBottom />
                {openSearchBoxMobile && (
                     <SearchBoxMobile

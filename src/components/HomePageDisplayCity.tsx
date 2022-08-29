@@ -43,6 +43,7 @@ export type SelectedCityType = {
      selectedCityKey?: number | string | null;
      renderMobile?: boolean;
      renderLaptopAnDesktop?: boolean;
+     setShowOnMap: (x: boolean) => void;
 };
 export type DailyForecastsType = {
      Date: Date;
@@ -97,6 +98,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      );
      const returnKeyFunction = () => {
           if (existingResult) return existingResult.Key;
+          else if (props.existingCity) return props.existingCity.Key;
           else if (props.selectedCityKey)
                return props.selectedCityKey.toString();
           return undefined;
@@ -125,6 +127,8 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const forcast5daystemperatureNight: number[] = [];
      const forcast5daysLablesDays: string[] = [];
      const forcast5daysLablesDates: string[] = [];
+     console.log(forcasst5Days);
+
      const addToFavoriteHandler = async (item: Result | undefined | null) => {
           if (!item) return;
           mutate({
@@ -645,6 +649,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         width="114px"
                                         margin="60px auto 0 auto"
                                         fontWeight="bold"
+                                        onClick={() => props.setShowOnMap(true)}
                                    >
                                         <StyledIcon marginRight="8px">
                                              <IconMapBlack />

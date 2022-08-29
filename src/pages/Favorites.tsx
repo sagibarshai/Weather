@@ -216,9 +216,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                                        fontSize="3.2rem"
                                                        fontWeight="bold"
                                                        onClick={() => {
-                                                            pageProps.setCurrentPage(
-                                                                 "/home"
-                                                            );
                                                             navigate("/home", {
                                                                  state: {
                                                                       selectedCityData:

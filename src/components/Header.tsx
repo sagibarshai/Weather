@@ -41,7 +41,6 @@ import { ReactComponent as IconC } from "../shared/svg/c_.svg";
 import { ReactComponent as IconF } from "../shared/svg/f_.svg";
 import { Result } from "./SearchBox";
 import useDebounce from "../shared/utils/useDebouncedSearch";
-import HomePageDisplayCity from "./HomePageDisplayCity";
 import { useLocation, useNavigate } from "react-router-dom";
 type Props = {
      setNoResultAndEnter: (x: boolean) => void;
@@ -57,17 +56,18 @@ const Header: React.FC<Props> = (props) => {
      const location = useLocation();
      const dispatch = useDispatch();
      const [activeIconId, setActiveIconId] = useState<string>(
-          props.currentPage
+          location.pathname
      );
      const [searchInput, setSearchInput] = useState<string>("");
      const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
      const [searchIsFocus, setSearchIsFocus] = useState<boolean>(false);
      const [hoverIndexResult, setHoverIndexResult] = useState<number>(-1);
      const currentIcon: LinksType | undefined = links.find((link) => {
-          if (link.to === activeIconId) return link;
+          if (link.to === location.pathname) return link;
      }) as LinksType;
-     console.log(activeIconId);
-
+     useEffect(() => {
+          setActiveIconId(location.pathname);
+     }, [location]);
      const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
           currentIcon ? currentIcon.activeIcon : undefined
      );

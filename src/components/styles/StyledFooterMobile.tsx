@@ -2,6 +2,9 @@ import styled from "styled-components";
 import cssBreakPoints from "../../shared/cssBreakPoints/cssBreakPoints";
 import { Link } from "react-router-dom";
 import themes from "../../shared/themes/themes";
+type StyledProps = {
+     color?: string;
+};
 export const StyledFooterContainer = styled.footer`
      display: none;
      @media ${cssBreakPoints.mobile} {
@@ -34,6 +37,13 @@ export const StyledButtonFooter = styled.button`
 export const StyledLink = styled(Link)`
      text-decoration: none;
 `;
-export const StyledText = styled.span`
-     color: ${themes.white};
+export const StyledText = styled.span<StyledProps>`
+     color: ${(props) => props.color || themes.white};
+     font-size: 1.4rem;
+`;
+export const StyledButtonText = styled.span`
+     font-family: inherit;
+     font-size: 1.8rem;
+     font-weight: bold;
+     color: #222;
 `;

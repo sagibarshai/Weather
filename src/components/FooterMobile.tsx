@@ -8,9 +8,14 @@ import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconFavorite } from "../shared/svg/fav-outline-white.svg";
 import { ReactComponent as IconSearch } from "../shared/svg/search-white.svg";
 import { ReactComponent as IconHome } from "../shared/svg/home-outline.svg";
+import { ReactComponent as IconFavoriteOutline } from "../shared/svg/fav-outline.svg";
+import { ReactComponent as IconSearchOutline } from "../shared/svg/search-dark.svg";
+import { ReactComponent as IconHomeOutline } from "../shared/svg/home-outline-dark.svg";
+import themes from "../shared/themes/themes";
 
 type Props = {
      setOpenSearchBoxMobile: (x: boolean) => void;
+     showOnMap: boolean;
 };
 
 const FooterMobile: React.FC<Props> = (props) => {
@@ -19,26 +24,62 @@ const FooterMobile: React.FC<Props> = (props) => {
                <StyledButtonFooter>
                     <StyledLink to="/favorites">
                          <StyledIcon>
-                              <IconFavorite />
+                              {props.showOnMap ? (
+                                   <IconFavoriteOutline />
+                              ) : (
+                                   <IconFavorite />
+                              )}
                          </StyledIcon>
                     </StyledLink>
-                    <StyledText>Favorites</StyledText>
+                    <StyledText
+                         color={
+                              props.showOnMap
+                                   ? `${themes.secondary}`
+                                   : `${themes.white}`
+                         }
+                    >
+                         Favorites
+                    </StyledText>
                </StyledButtonFooter>
                <StyledButtonFooter
                     onClick={() => props.setOpenSearchBoxMobile(true)}
                >
                     <StyledIcon>
-                         <IconSearch />
+                         {props.showOnMap ? (
+                              <IconSearchOutline />
+                         ) : (
+                              <IconSearch />
+                         )}{" "}
                     </StyledIcon>
-                    <StyledText>Search</StyledText>
+                    <StyledText
+                         color={
+                              props.showOnMap
+                                   ? `${themes.secondary}`
+                                   : `${themes.white}`
+                         }
+                    >
+                         Search
+                    </StyledText>
                </StyledButtonFooter>
                <StyledButtonFooter>
                     <StyledLink to="/home">
                          <StyledIcon>
-                              <IconHome />
+                              {props.showOnMap ? (
+                                   <IconHomeOutline />
+                              ) : (
+                                   <IconHome />
+                              )}{" "}
                          </StyledIcon>
                     </StyledLink>
-                    <StyledText>Home</StyledText>
+                    <StyledText
+                         color={
+                              props.showOnMap
+                                   ? `${themes.secondary}`
+                                   : `${themes.white}`
+                         }
+                    >
+                         Home
+                    </StyledText>
                </StyledButtonFooter>
           </StyledFooterContainer>
      );

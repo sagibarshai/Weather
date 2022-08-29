@@ -23,6 +23,11 @@ const App: React.FC = () => {
           });
      }, []);
      useEffect(() => {
+          if (lat && lng) {
+               localStorage.setItem("coords", JSON.stringify({ lat, lng }));
+          }
+     }, [lat, lng]);
+     useEffect(() => {
           if (isLogin) navigate("/home");
      }, [isLogin]);
      const checkIfTokenIsValid = async () => {

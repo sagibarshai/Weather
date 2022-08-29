@@ -8,6 +8,7 @@ import {
      StyledLocationParagraph,
      StyledNotFoundCityDiv,
      StyledTextNotFoundCity,
+     StyledButtonText,
 } from "./styles/StyledHome";
 import { RootState } from "../redux/store";
 import { closeMobileMenu, togglePopup } from "../redux/headerSlice";
@@ -15,6 +16,7 @@ import Popup from "../components/Popup";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconLocation } from "../shared/svg/location.svg";
 import { ReactComponent as IconCity } from "../shared/svg/city.svg";
+import { ReactComponent as IconLayout } from "../shared/svg/layout.svg";
 import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import themes from "../shared/themes/themes";
@@ -22,13 +24,10 @@ import HomePageDisplayCity from "../components/HomePageDisplayCity";
 import { Result } from "../components/SearchBox";
 import { logout } from "../redux/authSlice";
 import { useLocation } from "react-router-dom";
-import DisplayMap from "../components/Map";
+import DisplayMap, { Coords } from "../components/Map";
 export type SharedPageProps = {
      pageProps: {
-          coords: {
-               lat: number;
-               lng: number;
-          };
+          coords: Coords;
           existingCity?: Result | null;
           renderMobile?: boolean;
           renderLaptopAnDesktop?: boolean;
@@ -43,12 +42,19 @@ export type SharedPageProps = {
           setNoResultAndEnter: (x: boolean) => void;
           noResultAndEnter: boolean;
           setCurrentPage: (x: string) => void;
+          showOnMap: boolean;
+          setShowOnMap: (x: boolean) => void;
      };
 };
 const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const location = useLocation() as any;
-     const [locationIsOpen, setLocationIsOpen] = useState<boolean>(false);
-     const [showOnMap, setShowOnMap] = useState<boolean>(false);
+     const [locationIsOpen, setLocationIsOpen] = useState<boolean>(
+          localStorage.getItem("coords") ? true : false
+     );
+     const [coordsForCityDisplay, setCoordsForCityDisplay] =
+          useState<Coords | null>(null);
+     const [selectedCityDataFromMap, setSelectedCityDataFromMap] =
+          useState<Result | null>(null);
      const dispatch = useDispatch();
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
@@ -63,7 +69,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           (state: RootState) => state.headerSlice.openMap
      );
      useEffect(() => {
-          if (pageProps.coords) setShowOnMap(openMap);
+          if (pageProps.coords) pageProps.setShowOnMap(openMap);
      }, [openMap]);
      useEffect(() => {
           if (location.state) {
@@ -82,7 +88,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                }
           }
      }, [location]);
-     console.log("ggg");
+     coordsForCityDisplay && console.log(coordsForCityDisplay);
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
@@ -90,7 +96,11 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
      };
-     if (showOnMap)
+     useEffect(() => {
+          selectedCityDataFromMap &&
+               pageProps.setExistingCity(selectedCityDataFromMap);
+     }, [selectedCityDataFromMap]);
+     if (pageProps.showOnMap)
           return (
                <>
                     <StyledPageContainer
@@ -99,11 +109,39 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          renderPraimaryBackground={renderPraimaryBackground}
                          openPopup={openPopup}
                     >
-                         <DisplayMap coords={pageProps.coords} />
+                         <DisplayMap
+                              setShowOnMap={pageProps.setShowOnMap}
+                              coords={pageProps.coords}
+                              setCoordsForCityDisplay={setCoordsForCityDisplay}
+                              setSelectedCityDataFromMap={
+                                   setSelectedCityDataFromMap
+                              }
+                         />
+                         {pageProps.renderMobile && (
+                              <StyledButton
+                                   variant="white"
+                                   position="absolute"
+                                   width="auto"
+                                   height="auto"
+                                   padding="12px"
+                                   bottom="116px"
+                                   left="50%"
+                                   transform="translate(-50%,-100%)"
+                                   onClick={() => pageProps.setShowOnMap(false)}
+                              >
+                                   <StyledIcon marginRight="8px">
+                                        <IconLayout
+                                             width="22px"
+                                             height="22px"
+                                        />
+                                   </StyledIcon>
+                                   <StyledButtonText>Layout</StyledButtonText>
+                              </StyledButton>
+                         )}
                     </StyledPageContainer>
                </>
           );
-     if (locationIsOpen)
+     if (!locationIsOpen)
           return (
                <>
                     <StyledPageContainer
@@ -188,6 +226,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          selectedCityDataFromFavorites={
                               pageProps.selectedCityDataFromFavorites
                          }
+                         setShowOnMap={pageProps.setShowOnMap}
                     />
                </StyledPageContainer>
                {openPopup && (
