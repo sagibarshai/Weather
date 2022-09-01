@@ -24,6 +24,7 @@ export const StyledPageContainer = styled.div<StyledHome>`
                `;
           }
      }};
+     z-index: 2;
 `;
 export const StyledLocationDiv = styled.div`
      display: flex;

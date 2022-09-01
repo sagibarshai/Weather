@@ -11,8 +11,8 @@ import SearchBoxMobile from "../components/SearchBoxMobile";
 import { Result } from "../components/SearchBox";
 type Props = {
      coords: {
-          lat: number;
-          lng: number;
+          lat: number | undefined;
+          lng: number | undefined;
      };
 };
 const PageSharedTamplate: React.FC<Props> = (props) => {

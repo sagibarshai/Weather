@@ -47,6 +47,7 @@ export const StyledContainer = styled.div`
      flex-direction: column;
      overflow: hidden;
      align-items: center;
+     z-index: 2;
      @media ${cssBreakPoints.mobile} {
           width: 100vw;
           margin-bottom: 150px;

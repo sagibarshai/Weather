@@ -1,5 +1,5 @@
 import axios from "axios";
-const key = "HzrijhpGAVKFhKoEY3ivKakM4eiJoQJH";
+const key = process.env.REACT_APP_ACCUWEATHER_API_KEY;
 export const getForcastFor12Hours = async (
      cityKey: number | string | undefined
 ) => {

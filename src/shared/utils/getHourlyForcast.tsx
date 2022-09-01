@@ -1,13 +1,10 @@
 import axios from "axios";
 const key = process.env.REACT_APP_ACCUWEATHER_API_KEY;
-export const selectCity = async (cityKey: string | number | undefined) => {
+export const getHourlyForcast = async (cityKey: string | undefined) => {
      if (!cityKey) return;
      try {
           const response = await axios.get(
-               `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${cityKey}?apikey=${key}`,
-               {
-                    headers: { "Content-type": "application/json" },
-               }
+               `http://dataservice.accuweather.com/forecasts/v1/hourly/1hour/${cityKey}?apikey=${key}`
           );
           const data = await response.data;
           return data;

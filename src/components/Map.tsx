@@ -1,9 +1,32 @@
 // AIzaSyAgLCyxSADazy6Orz55RLmosWpVRjQeFcs
-import React from "react";
+import React, { useEffect } from "react";
+import styled from "styled-components";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { Marker, InfoWindow } from "@react-google-maps/api";
 import { Result } from "./SearchBox";
 import { searchCityByCoords } from "../shared/utils/searchCityByCoords";
-
+import { useLocation } from "react-router-dom";
+import themes from "../shared/themes/themes";
+import { StyledIcon } from "../shared/Icons/Icon";
+import DiscoverIcon from "../shared/utils/DiscoverIcon";
+import { toggleDeggres } from "../shared/utils/toggleDeggres";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { DeggresType } from "../shared/utils/toggleDeggres";
+const StyledContainer = styled.div`
+     overflow: hidden;
+     min-width: 130px;
+     min-height: 60px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     gap: 5px;
+`;
+const StyledText = styled.span`
+     color: ${themes.black};
+     font-weight: bold;
+     font-size: 1.8rem;
+`;
 const containerStyle = {
      width: "100vw",
      height: "100vh",
@@ -14,73 +37,143 @@ export type Coords = {
 };
 type Props = {
      coords: Coords;
-     setCoordsForCityDisplay: (x: Coords) => void;
-     setShowOnMap: (x: boolean) => void;
+     setCoordsForCityDisplay?: (x: Coords) => void;
+     setShowOnMap?: (x: boolean) => void;
      setSelectedCityDataFromMap?: (x: Result) => void;
+     markerCoordsArray?: { data: Coords }[];
+     zoom?: number;
+     center?: Coords;
+     citiesHourlyForcast?: {
+          data: {
+               temp: number;
+               unit: DeggresType;
+               iconParshe: string;
+               icon: number;
+          };
+     }[];
 };
 const DisplayMap: React.FC<Props> = (props) => {
-     const mapRef = React.useRef<any>(null);
-     const [center, setCenter] = React.useState<any>(props.coords);
+     const location = useLocation();
+     // const mapRef = React.useRef<any>(null);
+     // const [center, setCenter] = React.useState<any>(props.coords);
      const { isLoaded } = useJsApiLoader({
           id: "google-map-script",
           googleMapsApiKey: "AIzaSyAgLCyxSADazy6Orz55RLmosWpVRjQeFcs",
      });
-     const [position, setPosition] = React.useState<any>(
-          props.coords || localStorage.getItem("coords")
+     const [position, setPosition] = React.useState<any>(props.coords);
+     // const [map, setMap] = React.useState<any>(null);
+
+     // const onUnmount = React.useCallback(function callback(map: any) {
+     //      setMap(null);
+     // }, []);
+     // function handleCenter() {
+     //      if (!mapRef.current) return;
+
+     //      const newPos = mapRef.current.getCenter().toJSON();
+     //      setCenter(newPos);
+     // }
+     // function handleLoad(map: any) {
+     //      mapRef.current = map;
+     // }
+     const degressType: DeggresType = useSelector(
+          (state: RootState) => state.headerSlice.degressType
      );
-     const [map, setMap] = React.useState<any>(null);
-
-     const onLoad = React.useCallback(function callback(map: any) {
-          const bounds = new window.google.maps.LatLngBounds(
-               props.coords || localStorage.getItem("coords")
-          );
-          map.fitBounds(bounds);
-          setMap(map);
-     }, []);
-
-     const onUnmount = React.useCallback(function callback(map: any) {
-          setMap(null);
-     }, []);
-     function handleCenter() {
-          if (!mapRef.current) return;
-
-          const newPos = mapRef.current.getCenter().toJSON();
-          setCenter(newPos);
-     }
-     function handleLoad(map: any) {
-          mapRef.current = map;
-     }
-     return isLoaded ? (
-          <GoogleMap
-               id="map"
-               mapContainerStyle={containerStyle}
-               center={position}
-               zoom={10}
-               onClick={(e) => {
-                    const coords = {
-                         lat: e.latLng?.lat(),
-                         lng: e.latLng?.lng(),
-                    };
-                    if (coords) {
-                         props.setCoordsForCityDisplay(coords);
-                         props.setShowOnMap(false);
+     if (!isLoaded) return <></>;
+     else if (props.coords && location.pathname === "/home")
+          return (
+               <GoogleMap
+                    id="map"
+                    mapContainerStyle={containerStyle}
+                    center={props.center || position}
+                    zoom={props.zoom || 10}
+                    onClick={(e) => {
+                         const coords: Coords = {
+                              lat: e.latLng?.lat(),
+                              lng: e.latLng?.lng(),
+                         };
+                         props.setCoordsForCityDisplay &&
+                              props.setCoordsForCityDisplay(coords);
+                         props.setShowOnMap && props.setShowOnMap(false);
                          searchCityByCoords(coords)
-                              .then((res) =>
-                                   props.setSelectedCityDataFromMap(res)
-                              )
+                              .then((res) => {
+                                   props.setSelectedCityDataFromMap &&
+                                        props.setSelectedCityDataFromMap(res);
+                              })
                               .catch((err) => console.log(err));
-                    }
-               }}
-               onLoad={handleLoad}
-               onUnmount={onUnmount}
-               onDragEnd={handleCenter}
-          >
-               {/* Child components, such as markers, info windows, etc. */}
-               <></>
-          </GoogleMap>
-     ) : (
-          <></>
-     );
+                    }}
+                    // onLoad={handleLoad}
+                    // onUnmount={onUnmount}
+                    // onDragEnd={handleCenter}
+               ></GoogleMap>
+          );
+     else if (
+          props.markerCoordsArray &&
+          props.citiesHourlyForcast &&
+          location.pathname === "/favorites"
+     )
+          return (
+               <GoogleMap
+                    id="map"
+                    mapContainerStyle={containerStyle}
+                    center={props.center || position}
+                    zoom={props.zoom || 10}
+               >
+                    {props.markerCoordsArray.map((fav, index) => (
+                         <Marker
+                              position={
+                                   {
+                                        lat: fav.data?.lat,
+                                        lng: fav.data?.lng,
+                                   } as { lat: number; lng: number }
+                              }
+                              key={index}
+                         >
+                              <InfoWindow
+                                   position={{
+                                        lat: Number(fav.data?.lat),
+                                        lng: Number(fav.data?.lng),
+                                   }}
+                              >
+                                   <StyledContainer>
+                                        <StyledText>
+                                             {props.citiesHourlyForcast &&
+                                                  toggleDeggres(
+                                                       degressType,
+                                                       props
+                                                            .citiesHourlyForcast[
+                                                            index
+                                                       ]?.data?.temp,
+                                                       props
+                                                            .citiesHourlyForcast[
+                                                            index
+                                                       ]?.data?.unit
+                                                  )}
+                                             °
+                                        </StyledText>
+                                        <StyledIcon width="35px" height="35px">
+                                             {props.citiesHourlyForcast && (
+                                                  <DiscoverIcon
+                                                       IconPhrase={
+                                                            props
+                                                                 .citiesHourlyForcast[
+                                                                 index
+                                                            ]?.data?.iconParshe
+                                                       }
+                                                       Icon={
+                                                            props
+                                                                 .citiesHourlyForcast[
+                                                                 index
+                                                            ]?.data?.icon
+                                                       }
+                                                  />
+                                             )}
+                                        </StyledIcon>
+                                   </StyledContainer>
+                              </InfoWindow>
+                         </Marker>
+                    ))}
+               </GoogleMap>
+          );
 };
 
-export default React.memo(DisplayMap);
+export default DisplayMap;

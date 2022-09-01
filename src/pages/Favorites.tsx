@@ -1,8 +1,4 @@
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
-import { useScreenWidth } from "../shared/utils/getScreenWidth";
-import MobileHeader from "../components/MobileHeader";
-import { Result } from "../components/SearchBox";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconSearchWhite } from "../shared/svg/search-white.svg";
 import { ReactComponent as IconStars } from "../shared/svg/stars.svg";
@@ -13,8 +9,6 @@ import { useDispatch } from "react-redux";
 import Notification from "../shared/notifacation/Notification";
 import Popup from "../components/Popup";
 import { logout } from "../redux/authSlice";
-import FooterMobile from "../components/FooterMobile";
-import SearchBoxMobile from "../components/SearchBoxMobile";
 import {
      StyledFavoritePageContainer,
      StyledCenteredDiv,
@@ -32,9 +26,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { getFromFavorites } from "../shared/utils/Services/Abra-Server/getFromFavorites";
 import { addToFavorites } from "../shared/utils/Services/Abra-Server/addToFavorites";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueries } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { SharedPageProps } from "./Home";
+import { getCoordsOfCity } from "../shared/utils/Services/Geocoding-Api/getCoordsOfCity";
+import DisplayMap, { Coords } from "../components/Map";
+import { searchCityByCoords } from "../shared/utils/searchCityByCoords";
+import { selectCity } from "../shared/utils/selectCity";
+import { getHourlyForcast } from "../shared/utils/getHourlyForcast";
 export type FavoriteType = {
      key: number;
      city: string;
@@ -44,7 +43,7 @@ export type FavoriteType = {
 const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      const dispatch = useDispatch();
      const navigate = useNavigate();
-
+     const [coordsList, setCoordsList] = useState<Coords[] | []>([]);
      const [favoritesList, setFavoritesList] = useState<[] | FavoriteType[]>(
           []
      );
@@ -64,7 +63,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      );
      const [openPopupRemoveFavorites, setOpenPopupRemoveFavorites] =
           useState<boolean>(false);
-
      useEffect(() => {
           if (pageProps.noResultAndEnter) {
                navigate("/home", {
@@ -102,7 +100,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                mutate(favObj);
           }
      };
-
      const updatedListFunction = () => {
           const updatedList: FavoriteType[] | [] | any = [];
           if (data) {
@@ -139,12 +136,83 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           }
           setFilteredSearch(filteredArr);
      }, [favoritesSearch]);
+
+     const markerCoordsArray: { data: Coords }[] | [] = useQueries(
+          favoritesList.map((fav) => {
+               return {
+                    queryKey: ["getCoords", fav.city],
+                    queryFn: () =>
+                         getCoordsOfCity(fav.city)
+                              .then((res) => {
+                                   console.log(res);
+                                   return {
+                                        lat: res[0].lat,
+                                        lng: res[0].lon,
+                                   };
+                              })
+                              .catch((err) => console.log(err)),
+               };
+          })
+     );
+     const citiesKeys: { data: string }[] | [] = useQueries(
+          markerCoordsArray.map((coords: { data: Coords }) => {
+               return {
+                    queryKey: ["coords", coords],
+                    queryFn: () =>
+                         searchCityByCoords(coords.data)
+                              .then((res) => res.Key)
+                              .catch((err) => console.log(err)),
+               };
+          })
+     );
+     const citiesHourlyForcast = useQueries(
+          citiesKeys.map((cityKey) => {
+               return {
+                    queryKey: ["hourlyForcastForCityInMap", cityKey.data],
+                    queryFn: () =>
+                         getHourlyForcast(cityKey.data)
+                              .then((res) => {
+                                   return {
+                                        temp: res[0].Temperature.Value,
+                                        unit: res[0].Temperature.Unit,
+                                        iconPhrase: res[0].IconPhrase,
+                                        icon: res[0].WeatherIcon,
+                                   };
+                              })
+                              .catch((err) => console.log(err)),
+               };
+          })
+     );
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openPopupRemoveFavorites) setOpenPopupRemoveFavorites(false);
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
      };
+     const openMap = useSelector(
+          (state: RootState) => state.headerSlice.openMap
+     );
+     if (openMap) {
+          return (
+               <>
+                    <DisplayMap
+                         citiesHourlyForcast={citiesHourlyForcast}
+                         markerCoordsArray={markerCoordsArray}
+                         coords={pageProps.coords}
+                         center={coordsList[0]}
+                         zoom={5}
+                    />
+                    {openPopup && (
+                         <Popup
+                              message="You about to log out from WeatherApp.
+                                       Are you sure you want to log out?"
+                              cancelMessage="I want to stay"
+                              callback={() => logout()}
+                         />
+                    )}
+               </>
+          );
+     }
      if (!favoritesList.length && favoritesSearch === "")
           return (
                <>

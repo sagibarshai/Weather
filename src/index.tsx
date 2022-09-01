@@ -18,18 +18,16 @@ const root = ReactDOM.createRoot(
 
 const client = new QueryClient();
 root.render(
-     <React.StrictMode>
-          <QueryClientProvider client={client}>
-               <Provider store={store as any}>
-                    <BrowserRouter>
-                         <ThemeProvider theme={themes}>
-                              <GlobalStyle />
-                              <App />
-                         </ThemeProvider>
-                    </BrowserRouter>
-               </Provider>
-          </QueryClientProvider>
-     </React.StrictMode>
+     <QueryClientProvider client={client}>
+          <Provider store={store as any}>
+               <BrowserRouter>
+                    <ThemeProvider theme={themes}>
+                         <GlobalStyle />
+                         <App />
+                    </ThemeProvider>
+               </BrowserRouter>
+          </Provider>
+     </QueryClientProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

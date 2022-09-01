@@ -88,7 +88,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                }
           }
      }, [location]);
-     coordsForCityDisplay && console.log(coordsForCityDisplay);
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
@@ -97,8 +96,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                pageProps.setOpenSearchBoxMobile(false);
      };
      useEffect(() => {
-          selectedCityDataFromMap &&
-               pageProps.setExistingCity(selectedCityDataFromMap);
+          pageProps.setExistingCity(selectedCityDataFromMap);
      }, [selectedCityDataFromMap]);
      if (pageProps.showOnMap)
           return (

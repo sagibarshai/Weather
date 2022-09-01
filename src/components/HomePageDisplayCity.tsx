@@ -127,7 +127,6 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const forcast5daystemperatureNight: number[] = [];
      const forcast5daysLablesDays: string[] = [];
      const forcast5daysLablesDates: string[] = [];
-     console.log(forcasst5Days);
 
      const addToFavoriteHandler = async (item: Result | undefined | null) => {
           if (!item) return;

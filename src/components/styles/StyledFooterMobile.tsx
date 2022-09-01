@@ -41,9 +41,3 @@ export const StyledText = styled.span<StyledProps>`
      color: ${(props) => props.color || themes.white};
      font-size: 1.4rem;
 `;
-export const StyledButtonText = styled.span`
-     font-family: inherit;
-     font-size: 1.8rem;
-     font-weight: bold;
-     color: #222;
-`;
