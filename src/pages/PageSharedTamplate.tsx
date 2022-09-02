@@ -25,7 +25,6 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           useState<boolean>(true);
      const [existingCity, setExistingCity] = useState<null | Result>(null);
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
-
      const [openSearchBoxMobile, setOpenSearchBoxMobile] =
           useState<boolean>(false);
      const [selectedCityDataFromFavorites, setSelectedCityDataFromFavorites] =
@@ -68,7 +67,6 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           selectedCityDataFromFavorites &&
                setExistingCity(selectedCityDataFromFavorites);
      }, [selectedCityDataFromFavorites, location]);
-     console.log(existingCity, selectedCityDataFromFavorites);
      return (
           <>
                {renderLaptopAnDesktop && (

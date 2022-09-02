@@ -37,7 +37,6 @@ export type Coords = {
 };
 type Props = {
      coords: Coords;
-     setCoordsForCityDisplay?: (x: Coords) => void;
      setShowOnMap?: (x: boolean) => void;
      setSelectedCityDataFromMap?: (x: Result) => void;
      markerCoordsArray?: { data: Coords }[];
@@ -54,27 +53,11 @@ type Props = {
 };
 const DisplayMap: React.FC<Props> = (props) => {
      const location = useLocation();
-     // const mapRef = React.useRef<any>(null);
-     // const [center, setCenter] = React.useState<any>(props.coords);
      const { isLoaded } = useJsApiLoader({
           id: "google-map-script",
           googleMapsApiKey: "AIzaSyAgLCyxSADazy6Orz55RLmosWpVRjQeFcs",
      });
      const [position, setPosition] = React.useState<any>(props.coords);
-     // const [map, setMap] = React.useState<any>(null);
-
-     // const onUnmount = React.useCallback(function callback(map: any) {
-     //      setMap(null);
-     // }, []);
-     // function handleCenter() {
-     //      if (!mapRef.current) return;
-
-     //      const newPos = mapRef.current.getCenter().toJSON();
-     //      setCenter(newPos);
-     // }
-     // function handleLoad(map: any) {
-     //      mapRef.current = map;
-     // }
      const degressType: DeggresType = useSelector(
           (state: RootState) => state.headerSlice.degressType
      );
@@ -91,8 +74,7 @@ const DisplayMap: React.FC<Props> = (props) => {
                               lat: e.latLng?.lat(),
                               lng: e.latLng?.lng(),
                          };
-                         props.setCoordsForCityDisplay &&
-                              props.setCoordsForCityDisplay(coords);
+
                          props.setShowOnMap && props.setShowOnMap(false);
                          searchCityByCoords(coords)
                               .then((res) => {
@@ -104,10 +86,7 @@ const DisplayMap: React.FC<Props> = (props) => {
                               })
                               .catch((err) => console.log(err));
                     }}
-                    // onLoad={handleLoad}
-                    // onUnmount={onUnmount}
-                    // onDragEnd={handleCenter}
-               ></GoogleMap>
+               />
           );
      else if (
           props.markerCoordsArray &&

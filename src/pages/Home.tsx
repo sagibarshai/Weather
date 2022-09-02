@@ -49,8 +49,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const [locationIsOpen, setLocationIsOpen] = useState<boolean>(
           localStorage.getItem("coords") ? true : false
      );
-     const [coordsForCityDisplay, setCoordsForCityDisplay] =
-          useState<Coords | null>(null);
      const [selectedCityDataFromMap, setSelectedCityDataFromMap] =
           useState<Result | null>(null);
      const dispatch = useDispatch();
@@ -84,11 +82,9 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           }
      }, [location]);
      useEffect(() => {
-          location.state &&
-               pageProps.setExistingCity(
-                    pageProps.selectedCityDataFromFavorites
-               );
-     }, [pageProps.selectedCityDataFromFavorites, location]);
+          selectedCityDataFromMap &&
+               pageProps.setExistingCity(selectedCityDataFromMap);
+     }, [selectedCityDataFromMap]);
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
@@ -96,10 +92,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
      };
-     useEffect(() => {
-          pageProps.setExistingCity(selectedCityDataFromMap);
-     }, [selectedCityDataFromMap]);
-
      if (pageProps.showOnMap)
           return (
                <>
@@ -112,7 +104,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          <DisplayMap
                               setShowOnMap={pageProps.setShowOnMap}
                               coords={pageProps.coords}
-                              setCoordsForCityDisplay={setCoordsForCityDisplay}
                               setSelectedCityDataFromMap={
                                    setSelectedCityDataFromMap
                               }

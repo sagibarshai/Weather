@@ -6,7 +6,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 export type Result = {
      LocalizedName: string;
      Country: { LocalizedName: string };
-     Key: string | number;
+     Key: number;
+};
+export type cityObj = {
+     LocalizedName: string;
+     Country: { LocalizedName: string };
+     key: number;
 };
 
 type Props = {
@@ -24,9 +29,8 @@ type Props = {
      overflow?: string;
      boxShadow?: string;
      color?: string;
-     setSelectedCityKey?: (x: number | string) => void;
-     setExistingCity?: (x: Result) => void;
-     existingCity?: Result;
+     setExistingCity?: (x: cityObj) => void;
+     existingCity?: cityObj;
 };
 const StyledBigContainer = styled.div<Props>`
      display: ${(props) => (props.display === true ? "inline-block" : "none")};
@@ -151,9 +155,7 @@ const SearchBox: React.FC<Props> = (props) => {
                                                             props.setExistingCity(
                                                                  {
                                                                       ...item,
-                                                                      key: Number(
-                                                                           item.Key
-                                                                      ),
+                                                                      key,
                                                                  }
                                                             );
                                                        {

@@ -76,7 +76,6 @@ const StyledResultCountry = styled.span`
 `;
 type Props = {
      setOpenSearchBoxMobile: (x: boolean) => void;
-     setSelectedCityKey: (x: string) => void;
      setExistingCity?: (x: Result) => void;
      existingCity?: Result | null;
 };
@@ -147,9 +146,6 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                                                   onClick={() => {
                                                        props.setOpenSearchBoxMobile(
                                                             false
-                                                       );
-                                                       props.setSelectedCityKey(
-                                                            item.Key
                                                        );
                                                        props.setExistingCity &&
                                                             props.setExistingCity(

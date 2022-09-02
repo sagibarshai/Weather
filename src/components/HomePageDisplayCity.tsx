@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { selectCity } from "../shared/utils/Services/Accuweather-Api/selectCity";
-import { Result } from "./SearchBox";
+import { Result, cityObj } from "./SearchBox";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { convertDateToText } from "../shared/utils/Dates/convertDateToText";
 import { StyledButton } from "../shared/UIElements/Button/Button";
@@ -47,14 +47,15 @@ import {
      SelectedCityType,
      DailyForecastsType,
      forcast12HoursType,
+     FavoritesResultsAbraApi,
 } from "./HomePageDisplayCity/types";
 const twelveHours = 1000 * 60 * 60 * 12;
 const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const queryClient = useQueryClient();
      const [itemIsOnFavorites, setItemIsOnFavorites] = useState<boolean>(false);
-     const [favoritesList, setFavoritesList] = useState<
-          FavoriteType[] | [] | null
-     >(JSON.parse(localStorage.getItem("favorites")) || []);
+     const [favoritesList, setFavoritesList] = useState<any>(
+          JSON.parse(localStorage.getItem("favorites"))
+     );
      const [now, setNow] = useState<string>(convertDateToText());
      const [showAddToFavoritesNotification, setShowAddToFavoritesNotification] =
           useState<boolean>(false);
@@ -72,14 +73,14 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           staleTime: Infinity,
           refetchOnMount: true,
           refetchOnReconnect: true,
-          onSuccess: (data) => {
+          onSuccess: (favList: FavoritesResultsAbraApi) => {
                localStorage.setItem(
                     "favorites",
-                    JSON.stringify(data.data.results)
+                    JSON.stringify(favList.data.results)
                );
-               setFavoritesList(data.data.results);
+               setFavoritesList(favList.data.results);
           },
-          onError: (e) => {
+          onError: (e: any) => {
                console.log(e);
           },
      });
@@ -88,6 +89,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      );
      const [open5daysForcastMobile, setOpen5daysForcastMobile] =
           useState<boolean>(false);
+     console.log(props.existingCity);
      const { data: forcasst5Days } = useQuery(
           ["5daysForcast", props.existingCity && props.existingCity.key],
           () => selectCity(props.existingCity && props.existingCity.key),
@@ -112,7 +114,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const forcast5daysLablesDays: string[] = [];
      const forcast5daysLablesDates: string[] = [];
      const favoriteHandler = async (
-          item: Result | undefined | null,
+          item: cityObj | undefined | null,
           payload = "add"
      ) => {
           if (!item) return;
@@ -121,7 +123,6 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                city: item.LocalizedName,
                country: item.Country.LocalizedName,
           };
-          console.log(payload);
           payload === "add" && mutate(favoriteObj);
           payload === "remove" &&
                mutate({ ...favoriteObj, title: "deleted item" });
@@ -129,14 +130,13 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      useEffect(() => {
           if (favoritesList && props.existingCity && props.existingCity.key) {
                const cityInFavorites = favoritesList.find(
-                    (fav) => fav.key == props.existingCity.key
+                    (fav: FavoriteType) => fav.key == props.existingCity.key
                );
-               if (cityInFavorites)
-                    setTimeout(() => setItemIsOnFavorites(true), 0);
-               else setTimeout(() => setItemIsOnFavorites(false), 0);
+
+               if (cityInFavorites) setItemIsOnFavorites(true);
+               else setItemIsOnFavorites(false);
           }
      }, [
-          props.selectedCityKey,
           favoriteHandler,
           props.selectedCityDataFromFavorites,
           props.selectedCityDataFromMap,
@@ -147,7 +147,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           forcast5daysLablesDates,
           forcast5daysLablesDays,
      };
-     console.log(props.existingCity, forcasst5Days, forcast12Hours);
+     console.log(itemIsOnFavorites);
      return (
           <>
                {props.existingCity && forcasst5Days && forcast12Hours && (
