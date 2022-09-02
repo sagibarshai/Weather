@@ -31,9 +31,9 @@ import { useNavigate } from "react-router-dom";
 import { SharedPageProps } from "./Home";
 import { getCoordsOfCity } from "../shared/utils/Services/Geocoding-Api/getCoordsOfCity";
 import DisplayMap, { Coords } from "../components/Map";
-import { searchCityByCoords } from "../shared/utils/searchCityByCoords";
-import { selectCity } from "../shared/utils/selectCity";
-import { getHourlyForcast } from "../shared/utils/getHourlyForcast";
+import { searchCityByCoords } from "../shared/utils/Services/Accuweather-Api/searchCityByCoords";
+import { selectCity } from "../shared/utils/Services/Accuweather-Api/selectCity";
+import { getHourlyForcast } from "../shared/utils/Services/Accuweather-Api/getHourlyForcast";
 export type FavoriteType = {
      key: number;
      city: string;
@@ -75,6 +75,8 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           staleTime: Infinity,
           refetchOnMount: true,
           refetchOnReconnect: true,
+          onSuccess: () => {},
+          onError: () => {},
      });
      const { mutate } = useMutation(addToFavorites, {
           onSuccess: () => {
@@ -113,6 +115,11 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      };
      useEffect(() => setFilteredSearch(favoritesList), [favoritesList]);
      useEffect(() => {
+          console.log(data?.data?.results);
+          localStorage.setItem(
+               "favorites",
+               JSON.stringify(data?.data?.results)
+          );
           setFavoritesList(updatedListFunction());
           setFilteredSearch(updatedListFunction());
      }, [data]);
@@ -144,7 +151,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                     queryFn: () =>
                          getCoordsOfCity(fav.city)
                               .then((res) => {
-                                   console.log(res);
                                    return {
                                         lat: res[0].lat,
                                         lng: res[0].lon,

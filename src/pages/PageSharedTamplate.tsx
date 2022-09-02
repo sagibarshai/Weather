@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import MobileHeader from "../components/MobileHeader";
-import { useScreenWidth } from "../shared/utils/getScreenWidth";
+import { useScreenWidth } from "../shared/utils/hooks/useScreenWidth";
 import { Route, useLocation, Routes } from "react-router-dom";
 import Home from "./Home";
 import Favorites from "./Favorites";
@@ -25,9 +25,7 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           useState<boolean>(true);
      const [existingCity, setExistingCity] = useState<null | Result>(null);
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
-     const [selectedCityKey, setSelectedCityKey] = useState<
-          string | number | null
-     >(null);
+
      const [openSearchBoxMobile, setOpenSearchBoxMobile] =
           useState<boolean>(false);
      const [selectedCityDataFromFavorites, setSelectedCityDataFromFavorites] =
@@ -43,8 +41,6 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           setExistingCity,
           noResultAndEnter,
           setNoResultAndEnter,
-          selectedCityKey,
-          setSelectedCityKey,
           openSearchBoxMobile,
           setOpenSearchBoxMobile,
           selectedCityDataFromFavorites,
@@ -68,6 +64,11 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                setRenderMobile(true);
           }
      }, [deviceValue]);
+     useEffect(() => {
+          selectedCityDataFromFavorites &&
+               setExistingCity(selectedCityDataFromFavorites);
+     }, [selectedCityDataFromFavorites, location]);
+     console.log(existingCity, selectedCityDataFromFavorites);
      return (
           <>
                {renderLaptopAnDesktop && (
@@ -75,7 +76,6 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                          setNotFoundCityName={setNotFoundCityName}
                          existingCity={existingCity}
                          setExistingCity={setExistingCity}
-                         setSelectedCityKey={setSelectedCityKey}
                          setNoResultAndEnter={setNoResultAndEnter}
                          noResultAndEnter={noResultAndEnter}
                          currentPage={currentPage}
@@ -105,7 +105,6 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                     <SearchBoxMobile
                          setExistingCity={setExistingCity}
                          existingCity={existingCity}
-                         setSelectedCityKey={setSelectedCityKey}
                          setOpenSearchBoxMobile={setOpenSearchBoxMobile}
                     />
                )}

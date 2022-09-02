@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { jsBreakPoints } from "../jsBreakPoints/jsBreakPoints";
+import { jsBreakPoints } from "../../jsBreakPoints/jsBreakPoints";
 function getWindowSize() {
      const { innerWidth } = window;
      return innerWidth;

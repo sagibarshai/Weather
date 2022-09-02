@@ -109,7 +109,7 @@ const Login = () => {
                               />
                          )}
                          <Input
-                              mobileWidth="90vw"
+                              mobileWidth="354px"
                               type="text"
                               variant={emailInputState}
                               errorMessage={emailErrorMessage}
@@ -146,7 +146,7 @@ const Login = () => {
                               }}
                          />
                          <Input
-                              mobileWidth="90vw"
+                              mobileWidth="354px"
                               type="password"
                               variant={passwordInputState}
                               label="Password"
@@ -181,7 +181,7 @@ const Login = () => {
                          />
                     </StyledInputsContainer>
                     <StyledButton
-                         mobileWidthWithCalc="90vw"
+                         mobileWidthWithCalc="354px"
                          margin="40px 0 0 0"
                          disabled={!(emailIsValid && passwordIsValid)}
                          variant={

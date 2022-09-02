@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
-import { selectCity } from "../shared/utils/selectCity";
+import { selectCity } from "../shared/utils/Services/Accuweather-Api/selectCity";
 import { Result } from "./SearchBox";
 import { useQuery, useQueryClient, useMutation } from "react-query";
-import { convertDateToText } from "../shared/utils/convertDateToText";
+import { convertDateToText } from "../shared/utils/Dates/convertDateToText";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconFavroiteOutline } from "../shared/svg/fav-outline.svg";
+import { ReactComponent as IconFavWhiteFull } from "../shared/svg/fav-full.svg";
 import { ReactComponent as IconArrowWind } from "../shared/svg/arrow-wind.svg";
 import { ReactComponent as IconArrowLeft } from "../shared/svg/arrow-square-left.svg";
 import { ReactComponent as IconFavWhite } from "../shared/svg/fav-outline-white.svg";
 import { ReactComponent as IconMapBlack } from "../shared/svg/map-black.svg";
-import { returnShortDayFromDate } from "../shared/utils/returnShortDayFromDate";
-import DiscoverDescription from "../shared/utils/DiscoverDescription";
-import { getForcastFor12Hours } from "../shared/utils/getForcastFor12Hours";
-import { epochConverter } from "../shared/utils/epochConverter";
+import { returnShortDayFromDate } from "../shared/utils/Dates/returnShortDayFromDate";
+import DiscoverDescription from "../shared/utils/Components/DiscoverDescription";
+import { getForcastFor12Hours } from "../shared/utils/Services/Accuweather-Api/getForcastFor12Hours";
+import { epochConverter } from "../shared/utils/Times/epochConverter";
 import LineChart from "./LineChart";
-import { getDayNumber } from "../shared/utils/getDateNumber";
+import { getDayNumber } from "../shared/utils/Dates/getDateNumber";
 import {
      StyledContainer,
      StyledCityName,
@@ -27,61 +28,37 @@ import {
      StyledColumnDiv,
      StyledMobileAddToFavButton,
      StyledTempratureSpan,
-} from "./styles/StyledHomePageDisplayCity";
+} from "./HomePageDisplayCity/StyledHomePageDisplayCity";
 import LineChartMobile from "./LineChartMobile";
-import DiscoverIcon from "../shared/utils/DiscoverIcon";
+import DiscoverIcon from "../shared/utils/Components/DiscoverIcon";
 import { addToFavorites } from "../shared/utils/Services/Abra-Server/addToFavorites";
 import Notification from "../shared/notifacation/Notification";
 import { ReactComponent as IconSuccses } from "../shared/svg/check-v.svg";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { DeggresType, toggleDeggres } from "../shared/utils/toggleDeggres";
-export type SelectedCityType = {
-     existingCity: any;
-     selectedCityDataFromFavorites?: Result | null;
-     searchResults?: Result[] | [];
-     selectedCityKey?: number | string | null;
-     renderMobile?: boolean;
-     renderLaptopAnDesktop?: boolean;
-     setShowOnMap: (x: boolean) => void;
-};
-export type DailyForecastsType = {
-     Date: Date;
-     Temperature: {
-          Minimum: { Value: number; Unit: DeggresType };
-          Maximum: { Value: number; Unit: DeggresType };
-     };
-     Day: { IconPhrase: string; Icon: number };
-};
-export type DataType = {
-     data: {
-          DailyForecasts: DailyForecastsType[];
-     };
-};
-type forcast12HoursType = {
-     data: {
-          EpochDateTime: number;
-          DateTime: string;
-          Temperature: { Value: number; Unit: DeggresType };
-          IconPhrase: string;
-          WeatherIcon: number;
-          Wind: {
-               Speed: { Value: number; Unit: string };
-               Direction: { Degrees: number };
-          };
-     }[];
-};
+import {
+     DeggresType,
+     toggleDeggres,
+} from "../shared/utils/Functions/toggleDeggres";
+import { FavoriteType } from "../pages/Favorites";
+import { getFromFavorites } from "../shared/utils/Services/Abra-Server/getFromFavorites";
+import {
+     DataType,
+     SelectedCityType,
+     DailyForecastsType,
+     forcast12HoursType,
+} from "./HomePageDisplayCity/types";
 const twelveHours = 1000 * 60 * 60 * 12;
 const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const queryClient = useQueryClient();
+     const [itemIsOnFavorites, setItemIsOnFavorites] = useState<boolean>(false);
+     const [favoritesList, setFavoritesList] = useState<
+          FavoriteType[] | [] | null
+     >(JSON.parse(localStorage.getItem("favorites")) || []);
      const [now, setNow] = useState<string>(convertDateToText());
-     const [currentDateTime, setCurrentDateTime] = useState(
-          new Date().toLocaleString()
-     );
      const [showAddToFavoritesNotification, setShowAddToFavoritesNotification] =
           useState<boolean>(false);
      const [selected, setSelected] = useState<null | string>(null);
-
      const { mutate } = useMutation(addToFavorites, {
           onSuccess: () => {
                queryClient.invalidateQueries("favorites");
@@ -90,34 +67,41 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           },
           onError: (e: any) => console.log(e),
      });
-     const existingResult = props.searchResults?.find(
-          (result) => result.Key === props.selectedCityKey
-     );
+     const { data, isLoading } = useQuery("favorites", getFromFavorites, {
+          cacheTime: Infinity,
+          staleTime: Infinity,
+          refetchOnMount: true,
+          refetchOnReconnect: true,
+          onSuccess: (data) => {
+               localStorage.setItem(
+                    "favorites",
+                    JSON.stringify(data.data.results)
+               );
+               setFavoritesList(data.data.results);
+          },
+          onError: (e) => {
+               console.log(e);
+          },
+     });
      const degressType: DeggresType = useSelector(
           (state: RootState) => state.headerSlice.degressType
      );
-     const returnKeyFunction = () => {
-          if (existingResult) return existingResult.Key;
-          else if (props.existingCity) return props.existingCity.Key;
-          else if (props.selectedCityKey)
-               return props.selectedCityKey.toString();
-          return undefined;
-     };
      const [open5daysForcastMobile, setOpen5daysForcastMobile] =
           useState<boolean>(false);
      const { data: forcasst5Days } = useQuery(
-          ["5daysForcast", returnKeyFunction()],
-          () => selectCity(returnKeyFunction()),
+          ["5daysForcast", props.existingCity && props.existingCity.key],
+          () => selectCity(props.existingCity && props.existingCity.key),
           { cacheTime: twelveHours, staleTime: twelveHours }
      ) as DataType;
      setInterval(() => {
           setNow(convertDateToText());
-          setCurrentDateTime(new Date().toLocaleString());
      }, 1000 * 60);
-
      const { data: forcast12Hours } = useQuery(
-          ["forcast12Hours", returnKeyFunction()],
-          () => getForcastFor12Hours(returnKeyFunction()),
+          ["forcast12Hours", props.existingCity && props.existingCity.key],
+          () =>
+               getForcastFor12Hours(
+                    props.existingCity && props.existingCity.key
+               ),
           { cacheTime: twelveHours / 6, staleTime: twelveHours / 6 }
      ) as forcast12HoursType;
      useEffect(() => {
@@ -127,44 +111,75 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const forcast5daystemperatureNight: number[] = [];
      const forcast5daysLablesDays: string[] = [];
      const forcast5daysLablesDates: string[] = [];
-
-     const addToFavoriteHandler = async (item: Result | undefined | null) => {
+     const favoriteHandler = async (
+          item: Result | undefined | null,
+          payload = "add"
+     ) => {
           if (!item) return;
-          mutate({
-               key: Number(item.Key),
+          let favoriteObj = {
+               key: item.key,
                city: item.LocalizedName,
                country: item.Country.LocalizedName,
-          });
+          };
+          console.log(payload);
+          payload === "add" && mutate(favoriteObj);
+          payload === "remove" &&
+               mutate({ ...favoriteObj, title: "deleted item" });
      };
+     useEffect(() => {
+          if (favoritesList && props.existingCity && props.existingCity.key) {
+               const cityInFavorites = favoritesList.find(
+                    (fav) => fav.key == props.existingCity.key
+               );
+               if (cityInFavorites)
+                    setTimeout(() => setItemIsOnFavorites(true), 0);
+               else setTimeout(() => setItemIsOnFavorites(false), 0);
+          }
+     }, [
+          props.selectedCityKey,
+          favoriteHandler,
+          props.selectedCityDataFromFavorites,
+          props.selectedCityDataFromMap,
+     ]);
+     const lineChartData = {
+          forcast5daystemperatureDay,
+          forcast5daystemperatureNight,
+          forcast5daysLablesDates,
+          forcast5daysLablesDays,
+     };
+     console.log(props.existingCity, forcasst5Days, forcast12Hours);
      return (
           <>
-               {(props.existingCity || props.selectedCityDataFromFavorites) &&
-                    forcasst5Days &&
-                    forcast12Hours && (
+               {props.existingCity && forcasst5Days && forcast12Hours && (
+                    <>
+                         {props.renderMobile && (
+                              <StyledMobileAddToFavButton
+                                   onClick={() =>
+                                        itemIsOnFavorites
+                                             ? favoriteHandler(
+                                                    props.existingCity,
+                                                    "remove"
+                                               )
+                                             : favoriteHandler(
+                                                    props.existingCity
+                                               )
+                                   }
+                              >
+                                   {itemIsOnFavorites ? (
+                                        <IconFavWhiteFull />
+                                   ) : (
+                                        <IconFavWhite />
+                                   )}
+                              </StyledMobileAddToFavButton>
+                         )}
                          <StyledContainer
                               onClick={() =>
                                    open5daysForcastMobile &&
                                    setOpen5daysForcastMobile(false)
                               }
                          >
-                              {props.renderMobile && (
-                                   <StyledMobileAddToFavButton
-                                        onClick={() =>
-                                             addToFavoriteHandler(
-                                                  props.existingCity ||
-                                                       props.selectedCityDataFromFavorites
-                                             )
-                                        }
-                                   >
-                                        <IconFavWhite />
-                                   </StyledMobileAddToFavButton>
-                              )}
-
                               <StyledCityName width="100%">
-                                   {props.existingCity
-                                        ? props.existingCity.LocalizedName
-                                        : props.selectedCityDataFromFavorites
-                                               ?.LocalizedName}
+                                   {props.existingCity.LocalizedName}
                               </StyledCityName>
                               <StyledDivRow
                                    alignItems="center"
@@ -248,20 +263,32 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    {props.renderLaptopAnDesktop && (
                                         <StyledButton
                                              onClick={() =>
-                                                  addToFavoriteHandler(
-                                                       props.existingCity ||
-                                                            props.selectedCityDataFromFavorites
-                                                  )
+                                                  itemIsOnFavorites
+                                                       ? favoriteHandler(
+                                                              props.existingCity,
+                                                              "remove"
+                                                         )
+                                                       : favoriteHandler(
+                                                              props.existingCity
+                                                         )
                                              }
                                              variant="white"
                                              display="flex"
                                              alignItem="revert"
                                              fontWeight="bold"
+                                             width="220px"
+                                             height="58px"
+                                             disabled={
+                                                  showAddToFavoritesNotification
+                                             }
                                         >
                                              <StyledIcon marginRight="8px">
                                                   <IconFavroiteOutline />
                                              </StyledIcon>
-                                             Add to favorite
+                                             {itemIsOnFavorites
+                                                  ? "Removed from "
+                                                  : "Add to "}
+                                             favorite
                                         </StyledButton>
                                    )}
                                    {showAddToFavoritesNotification && (
@@ -272,12 +299,12 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                              mobileHeigt="68px"
                                              message={`${
                                                   props.existingCity
-                                                       ? props.existingCity
-                                                              .LocalizedName
-                                                       : props
-                                                              .selectedCityDataFromFavorites
-                                                              ?.LocalizedName
-                                             } has added to favorites `}
+                                                       .LocalizedName
+                                             } has ${
+                                                  !itemIsOnFavorites
+                                                       ? "removed from"
+                                                       : "add to"
+                                             } favorites `}
                                              icon={<IconSuccses />}
                                         />
                                    )}
@@ -627,20 +654,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    </StyledDivRow>
                               )}
                               {props.renderLaptopAnDesktop && (
-                                   <LineChart
-                                        forcast5daysLablesDates={
-                                             forcast5daysLablesDates
-                                        }
-                                        forcast5daysLablesDays={
-                                             forcast5daysLablesDays
-                                        }
-                                        forcast5daystemperatureNight={
-                                             forcast5daystemperatureNight
-                                        }
-                                        forcast5daystemperatureDay={
-                                             forcast5daystemperatureDay
-                                        }
-                                   />
+                                   <LineChart lineChartData={lineChartData} />
                               )}
                               {props.renderMobile && (
                                    <StyledButton
@@ -657,16 +671,10 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    </StyledButton>
                               )}
                          </StyledContainer>
-                    )}
+                    </>
+               )}
                {open5daysForcastMobile && props.renderMobile && (
-                    <LineChartMobile
-                         forcast5daysLablesDates={forcast5daysLablesDates}
-                         forcast5daysLablesDays={forcast5daysLablesDays}
-                         forcast5daystemperatureNight={
-                              forcast5daystemperatureNight
-                         }
-                         forcast5daystemperatureDay={forcast5daystemperatureDay}
-                    />
+                    <LineChartMobile lineChartData={lineChartData} />
                )}
           </>
      );

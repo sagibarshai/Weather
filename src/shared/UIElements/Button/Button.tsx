@@ -35,6 +35,8 @@ interface StyledButtonProps {
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
+     position: relative;
+     z-index: 2;
      font-family: inherit;
      width: 402px;
      height: 54px;

@@ -1,4 +1,4 @@
-import { Result } from "../../components/SearchBox";
+import { Result } from "../../../components/SearchBox";
 export const scrollBarHandler = (
      parantId: string,
      list: [] | Result[],

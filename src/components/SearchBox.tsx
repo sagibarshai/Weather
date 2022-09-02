@@ -39,7 +39,7 @@ const StyledBigContainer = styled.div<Props>`
      top: ${(props) => props.top || "86px"};
      left: 50%;
      transform: translate(-50%, 0);
-     z-index: 2;
+     z-index: 5;
      padding: 12px 0;
      max-height: 372px;
      height: ${(props) => props.height};
@@ -145,13 +145,16 @@ const SearchBox: React.FC<Props> = (props) => {
                                                   }
                                                   index={index}
                                                   onClick={() => {
-                                                       props.setSelectedCityKey &&
-                                                            props.setSelectedCityKey(
-                                                                 item.Key
-                                                            );
+                                                       let key = item.Key;
+
                                                        props.setExistingCity &&
                                                             props.setExistingCity(
-                                                                 item
+                                                                 {
+                                                                      ...item,
+                                                                      key: Number(
+                                                                           item.Key
+                                                                      ),
+                                                                 }
                                                             );
                                                        {
                                                             location.pathname !==

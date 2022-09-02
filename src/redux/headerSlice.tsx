@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { DeggresType } from "../shared/utils/toggleDeggres";
+import { DeggresType } from "../shared/utils/Functions/toggleDeggres";
 export type HeaderSliceState = {
      renderPraimaryBackground: boolean;
      degressType: DeggresType;

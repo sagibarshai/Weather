@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import cssBreakPoints from "../cssBreakPoints/cssBreakPoints";
+import cssBreakPoints from "../../cssBreakPoints/cssBreakPoints";
 const weatherIcons: string[] = [
      "sunny.png",
      "mostly-sunny.png",

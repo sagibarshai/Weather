@@ -31,8 +31,6 @@ export type SharedPageProps = {
           existingCity?: Result | null;
           renderMobile?: boolean;
           renderLaptopAnDesktop?: boolean;
-          selectedCityKey: string | number | null;
-          setSelectedCityKey: (x: string | number | null) => void;
           selectedCityDataFromFavorites: Result | null;
           setSelectedCityDataFromFavorites: (x: Result) => void;
           setOpenSearchBoxMobile: (x: boolean) => void;
@@ -79,15 +77,18 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                     );
                }
                if (location.state.selectedCityData) {
-                    pageProps.setSelectedCityKey(
-                         location.state.selectedCityData.key
-                    );
                     pageProps.setSelectedCityDataFromFavorites(
                          location.state.selectedCityData
                     );
                }
           }
      }, [location]);
+     useEffect(() => {
+          location.state &&
+               pageProps.setExistingCity(
+                    pageProps.selectedCityDataFromFavorites
+               );
+     }, [pageProps.selectedCityDataFromFavorites, location]);
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
@@ -98,6 +99,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      useEffect(() => {
           pageProps.setExistingCity(selectedCityDataFromMap);
      }, [selectedCityDataFromMap]);
+
      if (pageProps.showOnMap)
           return (
                <>
@@ -217,10 +219,10 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                     openPopup={openPopup}
                >
                     <HomePageDisplayCity
+                         selectedCityDataFromMap={selectedCityDataFromMap}
                          existingCity={pageProps.existingCity}
                          renderMobile={pageProps.renderMobile}
                          renderLaptopAnDesktop={pageProps.renderLaptopAnDesktop}
-                         selectedCityKey={pageProps.selectedCityKey}
                          selectedCityDataFromFavorites={
                               pageProps.selectedCityDataFromFavorites
                          }

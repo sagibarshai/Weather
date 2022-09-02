@@ -1,8 +1,7 @@
 import axios from "axios";
-import { Coords } from "../../components/Map";
+import { Coords } from "../../../../components/Map";
 const key = process.env.REACT_APP_ACCUWEATHER_API_KEY;
 export const searchCityByCoords = async (coords: Coords | undefined) => {
-     console.log(coords);
      if (!coords) return;
      let lat = coords.lat;
      let lng = coords.lng;

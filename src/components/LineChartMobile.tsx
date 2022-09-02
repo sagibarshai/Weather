@@ -14,11 +14,13 @@ import { Line } from "react-chartjs-2";
 
 import ChartDataLabels from "chartjs-plugin-datalabels";
 type Props = {
-     forcast5daystemperatureDay: number[];
-     forcast5daystemperatureNight: number[];
-     forcast5daysLablesDays: string[];
-     forcast5daysLablesDates: string[];
-     mobile?: boolean;
+     lineChartData: {
+          forcast5daystemperatureDay: number[];
+          forcast5daystemperatureNight: number[];
+          forcast5daysLablesDays: string[];
+          forcast5daysLablesDates: string[];
+          mobile?: boolean;
+     };
 };
 const StyledMobileLineContainer = styled.div`
      width: 100vw;
@@ -54,7 +56,7 @@ export const StyledSelectedItem = styled.div`
      filter: blur(1px);
      background-color: #f2f2f2;
 `;
-const LineChartMobile: React.FC<Props> = (props) => {
+const LineChartMobile: React.FC<Props> = ({ lineChartData }) => {
      ChartJS.register(
           CategoryScale,
           LinearScale,
@@ -124,7 +126,7 @@ const LineChartMobile: React.FC<Props> = (props) => {
                          drawBorder: false,
                     },
                     position: "top",
-                    labels: props.forcast5daysLablesDates,
+                    labels: lineChartData.forcast5daysLablesDates,
                },
 
                thirdXAxis: {
@@ -134,7 +136,7 @@ const LineChartMobile: React.FC<Props> = (props) => {
                          drawBorder: false,
                     },
                     position: "top",
-                    labels: props.forcast5daysLablesDays,
+                    labels: lineChartData.forcast5daysLablesDays,
                     ticks: {
                          color: "#444e72",
                          font: {
@@ -159,11 +161,11 @@ const LineChartMobile: React.FC<Props> = (props) => {
           },
      };
      const dataDay = {
-          labels: props.forcast5daysLablesDays,
+          labels: lineChartData.forcast5daysLablesDays,
           datasets: [
                {
                     label: "",
-                    data: props.forcast5daystemperatureDay,
+                    data: lineChartData.forcast5daystemperatureDay,
                     borderColor: "#bebebe",
                     backgroundColor: "#bebebe",
                     borderWidth: 1,
@@ -245,11 +247,11 @@ const LineChartMobile: React.FC<Props> = (props) => {
      };
 
      const dataNight = {
-          labels: props.forcast5daysLablesDays,
+          labels: lineChartData.forcast5daysLablesDays,
           datasets: [
                {
                     label: "",
-                    data: props.forcast5daystemperatureNight,
+                    data: lineChartData.forcast5daystemperatureNight,
                     borderColor: "#bebebe",
                     backgroundColor: "#bebebe",
                     borderWidth: 1,

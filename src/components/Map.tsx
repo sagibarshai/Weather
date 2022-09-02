@@ -4,15 +4,15 @@ import styled from "styled-components";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { Marker, InfoWindow } from "@react-google-maps/api";
 import { Result } from "./SearchBox";
-import { searchCityByCoords } from "../shared/utils/searchCityByCoords";
+import { searchCityByCoords } from "../shared/utils/Services/Accuweather-Api/searchCityByCoords";
 import { useLocation } from "react-router-dom";
 import themes from "../shared/themes/themes";
 import { StyledIcon } from "../shared/Icons/Icon";
-import DiscoverIcon from "../shared/utils/DiscoverIcon";
-import { toggleDeggres } from "../shared/utils/toggleDeggres";
+import DiscoverIcon from "../shared/utils/Components/DiscoverIcon";
+import { toggleDeggres } from "../shared/utils/Functions/toggleDeggres";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { DeggresType } from "../shared/utils/toggleDeggres";
+import { DeggresType } from "../shared/utils/Functions/toggleDeggres";
 const StyledContainer = styled.div`
      overflow: hidden;
      min-width: 130px;
@@ -97,7 +97,10 @@ const DisplayMap: React.FC<Props> = (props) => {
                          searchCityByCoords(coords)
                               .then((res) => {
                                    props.setSelectedCityDataFromMap &&
-                                        props.setSelectedCityDataFromMap(res);
+                                        props.setSelectedCityDataFromMap({
+                                             ...res,
+                                             key: res.Key,
+                                        });
                               })
                               .catch((err) => console.log(err));
                     }}

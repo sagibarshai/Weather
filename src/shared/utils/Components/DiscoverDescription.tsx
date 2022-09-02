@@ -1,4 +1,4 @@
-import { StyledDescription } from "../../components/styles/StyledHomePageDisplayCity";
+import { StyledDescription } from "../../../components/HomePageDisplayCity/StyledHomePageDisplayCity";
 type Props = {
      IconPhrase: string;
      fontSize?: string;

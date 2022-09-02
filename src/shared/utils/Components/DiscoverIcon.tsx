@@ -1,11 +1,11 @@
-import { ReactComponent as IconForcastSun } from "../svg/sun.svg";
-import { ReactComponent as IconForcastSunAndCloudy } from "../svg/sun-cloud-1.svg";
-import { ReactComponent as IconForcastCloudy } from "../svg/cloud.svg";
-import { ReactComponent as IconForcastRain } from "../svg/rain.svg";
-import { ReactComponent as IconForcastStorm } from "../svg/storm.svg";
-import { ReactComponent as IconForcastSnow } from "../svg/snow.svg";
-import { ReactComponent as IconForcastWind } from "../svg/wind.svg";
-import { StyledIcon } from "../Icons/Icon";
+import { ReactComponent as IconForcastSun } from "../../svg/sun.svg";
+import { ReactComponent as IconForcastSunAndCloudy } from "../../svg/sun-cloud-1.svg";
+import { ReactComponent as IconForcastCloudy } from "../../svg/cloud.svg";
+import { ReactComponent as IconForcastRain } from "../../svg/rain.svg";
+import { ReactComponent as IconForcastStorm } from "../../svg/storm.svg";
+import { ReactComponent as IconForcastSnow } from "../../svg/snow.svg";
+import { ReactComponent as IconForcastWind } from "../../svg/wind.svg";
+import { StyledIcon } from "../../Icons/Icon";
 import ReturnIconForcast from "./ReturnIconForcast";
 type Props = {
      IconPhrase: string;

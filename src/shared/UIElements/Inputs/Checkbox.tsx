@@ -21,7 +21,7 @@ type Props = {
 };
 const StyledLabel = styled.label<StyleProps>`
      width: 73px;
-     height: 40px;
+     height: 38px;
      border-radius: 100px;
      display: inline-block;
      cursor: pointer;
@@ -36,7 +36,7 @@ const StyledLabel = styled.label<StyleProps>`
 const StyledDivToggle = styled.div<StyleProps>`
      position: relative;
      width: 73px;
-     height: 40px;
+     height: 38px;
      border-radius: 100px;
      transition: background-color 0.4s;
      background-color: ${themes.white};
@@ -46,7 +46,7 @@ const StyledDivToggle = styled.div<StyleProps>`
           top: 50%;
           left: 0;
           transform: translateY(-50%);
-          height: 36px;
+          height: 34px;
           width: 38px;
           background-color: ${themes.fadeText};
           border-radius: 100px;

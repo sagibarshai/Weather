@@ -7,10 +7,10 @@ import { ReactComponent as IconSearch } from "../shared/svg/search-dark.svg";
 import { ReactComponent as IconCity } from "../shared/svg/city.svg";
 import { StyledIcon } from "../shared/Icons/Icon";
 import Input from "../shared/UIElements/Inputs/Input";
-import { search } from "../shared/utils/search";
+import { search } from "../shared/utils/Services/Accuweather-Api/search";
 import { Result } from "./SearchBox";
 import { useQuery, useQueryClient } from "react-query";
-import useDebounce from "../shared/utils/useDebouncedSearch";
+import useDebounce from "../shared/utils/hooks/useDebouncedSearch";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const StyledMobileSearchBoxContainer = styled.div`

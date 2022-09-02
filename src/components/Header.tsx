@@ -7,8 +7,8 @@ import { useQuery, useQueryClient } from "react-query";
 import Checkbox from "../shared/UIElements/Inputs/Checkbox";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import Input from "../shared/UIElements/Inputs/Input";
-import { search } from "../shared/utils/search";
-import { scrollBarHandler } from "../shared/utils/scrollbarHandler";
+import { search } from "../shared/utils/Services/Accuweather-Api/search";
+import { scrollBarHandler } from "../shared/utils/Functions/scrollbarHandler";
 import SearchBox from "./SearchBox";
 import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
 import links from "../shared/links/links";
@@ -40,12 +40,11 @@ import { ReactComponent as IconLogout } from "../shared/svg/log-out.svg";
 import { ReactComponent as IconC } from "../shared/svg/c_.svg";
 import { ReactComponent as IconF } from "../shared/svg/f_.svg";
 import { Result } from "./SearchBox";
-import useDebounce from "../shared/utils/useDebouncedSearch";
+import useDebounce from "../shared/utils/hooks/useDebouncedSearch";
 import { useLocation, useNavigate } from "react-router-dom";
 type Props = {
      setNoResultAndEnter: (x: boolean) => void;
      noResultAndEnter: boolean;
-     setSelectedCityKey: (x: number | string) => void;
      setExistingCity: (x: any) => any;
      existingCity: any;
      setNotFoundCityName: (x: string) => void;
@@ -103,6 +102,9 @@ const Header: React.FC<Props> = (props) => {
 
      const openLogoutPopup = useSelector(
           (state: RootState) => state.headerSlice.openPopup
+     );
+     const mapIsOpen = useSelector(
+          (state: RootState) => !state.headerSlice.openMap
      );
      useEffect(() => {
           scrollBarHandler(
@@ -189,6 +191,9 @@ const Header: React.FC<Props> = (props) => {
                                         setHoverIndexResult((prev) => prev - 1);
                                    else if (e.keyCode === 13) {
                                         // enter
+                                        let key =
+                                             searchResults[hoverIndexResult]
+                                                  .Key;
                                         if (!searchResults.length) {
                                              props.setNoResultAndEnter(true);
                                              setSearchIsFocus(false);
@@ -201,9 +206,6 @@ const Header: React.FC<Props> = (props) => {
                                              searchResults[hoverIndexResult]
                                         );
                                         props.setNoResultAndEnter(false);
-                                        props.setSelectedCityKey(
-                                             searchResults[hoverIndexResult].Key
-                                        );
 
                                         setSearchIsFocus(false);
                                         {
@@ -268,7 +270,6 @@ const Header: React.FC<Props> = (props) => {
                                    display={searchIsFocus && searchInput !== ""}
                                    results={searchResults}
                                    hoverIndexResult={hoverIndexResult}
-                                   setSelectedCityKey={props.setSelectedCityKey}
                               />
                          </Input>
                     </StyledDiv>
@@ -287,13 +288,18 @@ const Header: React.FC<Props> = (props) => {
                                    onClick={() => dispatch(toggleMap())}
                               >
                                    <StyledIcon width="30px" height="30px">
-                                        <IconMap />
+                                        {mapIsOpen ? <IconMap /> : ""}
                                    </StyledIcon>
-                                   <StyledSpan> Switch to map </StyledSpan>
+                                   <StyledSpan>
+                                        {" "}
+                                        Switch to {mapIsOpen
+                                             ? "map"
+                                             : "layout"}{" "}
+                                   </StyledSpan>
                               </StyledWrapperButton>
                               <StyledTooltip>
                                    <StyledTooltipText>
-                                        Switch to map
+                                        Switch to {mapIsOpen ? "map" : "layout"}
                                    </StyledTooltipText>
                               </StyledTooltip>
                          </StyledButton>
