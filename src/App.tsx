@@ -16,17 +16,7 @@ const App: React.FC = () => {
      const dispatch = useDispatch();
      const navigate = useNavigate();
      const isLogin = useSelector((state: RootState) => state.authSlice.isLogin);
-     useEffect(() => {
-          navigator.geolocation.getCurrentPosition((position) => {
-               setLat(position.coords.latitude);
-               setLng(position.coords.longitude);
-          });
-     }, []);
-     useEffect(() => {
-          if (lat && lng) {
-               localStorage.setItem("coords", JSON.stringify({ lat, lng }));
-          }
-     }, [lat, lng]);
+
      useEffect(() => {
           if (isLogin) navigate("/home");
      }, [isLogin]);
@@ -48,7 +38,7 @@ const App: React.FC = () => {
           return (
                <>
                     <BackgroundAnimation />
-                    <PageSharedTamplate coords={{ lat, lng }} />
+                    <PageSharedTamplate />
                     <ReactQueryDevtools initialIsOpen={false} />
                </>
           );

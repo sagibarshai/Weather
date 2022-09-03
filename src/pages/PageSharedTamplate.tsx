@@ -22,13 +22,8 @@ export const StyledButtonText = styled.span`
      font-weight: bold;
      color: black;
 `;
-type Props = {
-     coords: {
-          lat: number | undefined;
-          lng: number | undefined;
-     };
-};
-const PageSharedTamplate: React.FC<Props> = (props) => {
+
+const PageSharedTamplate: React.FC = () => {
      const dispatch = useDispatch();
      const location = useLocation();
      const deviceValue = useScreenWidth()[0];
@@ -43,9 +38,32 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           useState<boolean>(false);
      const [selectedCityDataFromFavorites, setSelectedCityDataFromFavorites] =
           useState<CityObj | null>(null);
+     const [locationIsOpen, setLocationIsOpen] = useState<boolean>(
+          localStorage.getItem("coords") ? true : false
+     );
      const mapIsOpen = useSelector(
           (state: RootState) => state.headerSlice.openMap
      );
+     useEffect(() => {
+          navigator.geolocation.getCurrentPosition((position) => {
+               localStorage.setItem(
+                    "coords",
+                    JSON.stringify({
+                         lat: position.coords.latitude,
+                         lng: position.coords.longitude,
+                    })
+               );
+               setLocationIsOpen(true);
+          });
+     }, []);
+     console.log(locationIsOpen);
+     useEffect(() => {
+          if (localStorage.getItem("coords")) {
+               console.log(localStorage.getItem("coords"));
+               setLocationIsOpen(true);
+          }
+     }, []);
+
      const pageProps = {
           notFoundCityName,
           setNotFoundCityName,
@@ -59,8 +77,9 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           setOpenSearchBoxMobile,
           selectedCityDataFromFavorites,
           setSelectedCityDataFromFavorites,
-          coords: props.coords,
+          coords: JSON.parse(localStorage.getItem("coords")),
           setCurrentPage,
+          locationIsOpen,
      };
      useEffect(() => {
           if (location.pathname === "/home") setCurrentPage("/home");

@@ -39,13 +39,12 @@ export type SharedPageProps = {
           setNoResultAndEnter: (x: boolean) => void;
           noResultAndEnter: boolean;
           setCurrentPage: (x: string) => void;
+          locationIsOpen?: boolean;
      };
 };
 const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const location = useLocation() as any;
-     const [locationIsOpen, setLocationIsOpen] = useState<boolean>(
-          localStorage.getItem("coords") ? true : false
-     );
+
      const [selectedCityDataFromMap, setSelectedCityDataFromMap] =
           useState<CityObj | null>(null);
      const dispatch = useDispatch();
@@ -75,6 +74,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                }
           }
      }, [location]);
+     console.log(pageProps.locationIsOpen);
      useEffect(() => {
           selectedCityDataFromMap &&
                pageProps.setExistingCity(selectedCityDataFromMap);
@@ -104,7 +104,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                     </StyledPageContainer>
                </>
           );
-     if (!locationIsOpen)
+     if (!pageProps.locationIsOpen)
           return (
                <>
                     <StyledPageContainer
