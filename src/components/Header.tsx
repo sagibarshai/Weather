@@ -3,13 +3,13 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { CSSProperties } from "styled-components";
 import { useQuery, useQueryClient } from "react-query";
-
+import { ReactComponent as IconLayoutWhite } from "../shared/svg/layout-white.svg";
 import Checkbox from "../shared/UIElements/Inputs/Checkbox";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import Input from "../shared/UIElements/Inputs/Input";
 import { search } from "../shared/utils/Services/Accuweather-Api/search";
-import { scrollBarHandler } from "../shared/utils/Functions/scrollbarHandler";
-import SearchBox, { cityObj } from "./SearchBox";
+import { scrollBarHandlerYAxis } from "../shared/utils/Functions/scrollbarHandler";
+import SearchBox, { CityObj } from "./SearchBox";
 import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
 import links from "../shared/links/links";
 import themes from "../shared/themes/themes";
@@ -45,8 +45,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 type Props = {
      setNoResultAndEnter: (x: boolean) => void;
      noResultAndEnter: boolean;
-     setExistingCity: (x: cityObj) => void;
-     existingCity: cityObj | null;
+     setExistingCity: (x: CityObj) => void;
+     existingCity: CityObj | null;
      setNotFoundCityName: (x: string) => void;
      currentPage: string;
 };
@@ -67,6 +67,7 @@ const Header: React.FC<Props> = (props) => {
      useEffect(() => {
           setActiveIconId(location.pathname);
      }, [location]);
+     useEffect(() => props.setNoResultAndEnter(false), [location.pathname]);
      const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
           currentIcon ? currentIcon.activeIcon : undefined
      );
@@ -107,7 +108,7 @@ const Header: React.FC<Props> = (props) => {
           (state: RootState) => !state.headerSlice.openMap
      );
      useEffect(() => {
-          scrollBarHandler(
+          scrollBarHandlerYAxis(
                "scroll",
                searchResults,
                hoverIndexResult,
@@ -193,7 +194,7 @@ const Header: React.FC<Props> = (props) => {
                                         // enter
                                         let key =
                                              searchResults[hoverIndexResult]
-                                                  .Key;
+                                                  ?.Key;
                                         let updatedExistingCity = {
                                              key,
                                              ...searchResults[hoverIndexResult],
@@ -291,7 +292,14 @@ const Header: React.FC<Props> = (props) => {
                                    onClick={() => dispatch(toggleMap())}
                               >
                                    <StyledIcon width="30px" height="30px">
-                                        {mapIsOpen ? <IconMap /> : ""}
+                                        {mapIsOpen ? (
+                                             <IconMap />
+                                        ) : (
+                                             <IconLayoutWhite
+                                                  width="22px"
+                                                  height="22px"
+                                             />
+                                        )}
                                    </StyledIcon>
                                    <StyledSpan>
                                         {" "}

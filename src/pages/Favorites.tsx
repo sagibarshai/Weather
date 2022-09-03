@@ -92,7 +92,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                setTimeout(() => setOpenNotification(false), 4000);
                setOpenPopupRemoveFavorites(false);
                let favObj = {
-                    key: exsistingItem.key,
+                    key: Number(exsistingItem.key),
                     city: exsistingItem.city,
                     country: exsistingItem.country,
                };

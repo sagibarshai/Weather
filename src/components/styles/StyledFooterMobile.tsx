@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import themes from "../../shared/themes/themes";
 type StyledProps = {
      color?: string;
+     backgroundColor?: string;
+     borderColor?: string;
 };
-export const StyledFooterContainer = styled.footer`
+export const StyledFooterContainer = styled.footer<StyledProps>`
      display: none;
      @media ${cssBreakPoints.mobile} {
           display: flex;
@@ -15,17 +17,18 @@ export const StyledFooterContainer = styled.footer`
      width: 100vw;
      height: 80px;
      margin: 217px 0 0;
-     background-color: rgba(255, 255, 255, 0.3);
+     background-color: ${(props) => props.backgroundColor};
      border-radius: 20px 20px 0 0;
      align-items: center;
+     z-index: 3;
 `;
-export const StyledButtonFooter = styled.button`
+export const StyledButtonFooter = styled.button<StyledProps>`
      width: 33.333%;
      height: 46px;
      vertical-align: middle;
      border: none;
      &:not(:last-child) {
-          border-right: 1px white solid;
+          border-right: ${(props) => `1px ${props.borderColor} solid`};
      }
      background-color: transparent;
      display: flex;

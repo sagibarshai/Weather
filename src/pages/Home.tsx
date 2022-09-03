@@ -8,10 +8,9 @@ import {
      StyledLocationParagraph,
      StyledNotFoundCityDiv,
      StyledTextNotFoundCity,
-     StyledButtonText,
 } from "./styles/StyledHome";
 import { RootState } from "../redux/store";
-import { closeMobileMenu, togglePopup } from "../redux/headerSlice";
+import { closeMobileMenu, toggleMap, togglePopup } from "../redux/headerSlice";
 import Popup from "../components/Popup";
 import { StyledIcon } from "../shared/Icons/Icon";
 import { ReactComponent as IconLocation } from "../shared/svg/location.svg";
@@ -21,27 +20,25 @@ import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import themes from "../shared/themes/themes";
 import HomePageDisplayCity from "../components/HomePageDisplayCity";
-import { cityObj, Result } from "../components/SearchBox";
+import { CityObj, Result } from "../components/SearchBox";
 import { logout } from "../redux/authSlice";
 import { useLocation } from "react-router-dom";
 import DisplayMap, { Coords } from "../components/Map";
 export type SharedPageProps = {
      pageProps: {
           coords: Coords;
-          existingCity: cityObj | null;
+          existingCity: CityObj | null;
           renderMobile?: boolean;
           renderLaptopAnDesktop?: boolean;
-          selectedCityDataFromFavorites: cityObj | null;
-          setSelectedCityDataFromFavorites: (x: cityObj) => void;
+          selectedCityDataFromFavorites: CityObj | null;
+          setSelectedCityDataFromFavorites: (x: CityObj) => void;
           setOpenSearchBoxMobile: (x: boolean) => void;
           openSearchBoxMobile?: boolean;
-          setExistingCity: (x: null | cityObj) => void;
+          setExistingCity: (x: null | CityObj) => void;
           notFoundCityName?: string;
           setNoResultAndEnter: (x: boolean) => void;
           noResultAndEnter: boolean;
           setCurrentPage: (x: string) => void;
-          showOnMap: boolean;
-          setShowOnMap: (x: boolean) => void;
      };
 };
 const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
@@ -50,7 +47,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           localStorage.getItem("coords") ? true : false
      );
      const [selectedCityDataFromMap, setSelectedCityDataFromMap] =
-          useState<cityObj | null>(null);
+          useState<CityObj | null>(null);
      const dispatch = useDispatch();
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
@@ -64,9 +61,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const openMap = useSelector(
           (state: RootState) => state.headerSlice.openMap
      );
-     useEffect(() => {
-          if (pageProps.coords) pageProps.setShowOnMap(openMap);
-     }, [openMap]);
      useEffect(() => {
           if (location.state) {
                if (location.state.noResultAndEnter) {
@@ -92,7 +86,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
      };
-     if (pageProps.showOnMap)
+     if (openMap)
           return (
                <>
                     <StyledPageContainer
@@ -102,33 +96,11 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          openPopup={openPopup}
                     >
                          <DisplayMap
-                              setShowOnMap={pageProps.setShowOnMap}
                               coords={pageProps.coords}
                               setSelectedCityDataFromMap={
                                    setSelectedCityDataFromMap
                               }
                          />
-                         {pageProps.renderMobile && (
-                              <StyledButton
-                                   variant="white"
-                                   position="absolute"
-                                   width="auto"
-                                   height="auto"
-                                   padding="12px"
-                                   bottom="116px"
-                                   left="50%"
-                                   transform="translate(-50%,-100%)"
-                                   onClick={() => pageProps.setShowOnMap(false)}
-                              >
-                                   <StyledIcon marginRight="8px">
-                                        <IconLayout
-                                             width="22px"
-                                             height="22px"
-                                        />
-                                   </StyledIcon>
-                                   <StyledButtonText>Layout</StyledButtonText>
-                              </StyledButton>
-                         )}
                     </StyledPageContainer>
                </>
           );
@@ -217,7 +189,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          selectedCityDataFromFavorites={
                               pageProps.selectedCityDataFromFavorites
                          }
-                         setShowOnMap={pageProps.setShowOnMap}
                     />
                </StyledPageContainer>
                {openPopup && (

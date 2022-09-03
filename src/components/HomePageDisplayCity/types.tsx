@@ -1,14 +1,13 @@
-import { cityObj, Result } from "../SearchBox";
+import { CityObj, Result } from "../SearchBox";
 import { DeggresType } from "../../shared/utils/Functions/toggleDeggres";
 import { FavoriteType } from "../../pages/Favorites";
 export type SelectedCityType = {
-     existingCity: cityObj | null;
-     selectedCityDataFromFavorites?: cityObj | null;
+     existingCity: CityObj | null;
+     selectedCityDataFromFavorites?: CityObj | null;
      searchResults?: Result[] | [];
      renderMobile?: boolean;
      renderLaptopAnDesktop?: boolean;
-     setShowOnMap: (x: boolean) => void;
-     selectedCityDataFromMap?: cityObj | null;
+     selectedCityDataFromMap?: CityObj | null;
 };
 export type DailyForecastsType = {
      Date: Date;

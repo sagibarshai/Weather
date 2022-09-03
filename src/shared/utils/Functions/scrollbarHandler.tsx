@@ -1,9 +1,8 @@
 import { Result } from "../../../components/SearchBox";
-export const scrollBarHandler = (
+export const scrollBarHandlerYAxis = (
      parantId: string,
      list: [] | Result[],
      currentIndex: number,
-
      setIndex: (x: number) => void
 ) => {
      const scrollElement = document.getElementById(parantId) as HTMLDivElement;
@@ -19,5 +18,19 @@ export const scrollBarHandler = (
      if (list && currentIndex === list.length) {
           scrollElement.scrollTop = 0;
           setIndex(-1);
+     }
+};
+type Action = "+" | "-";
+export const scrollBarHandlerXAxis = (
+     parantId: string,
+     currentId: string,
+     action: Action
+) => {
+     const scrollElement = document.getElementById(parantId) as HTMLDivElement;
+     const myElement = document.getElementById(`${currentId}`);
+     if (myElement) {
+          const leftPos = myElement.offsetWidth;
+          if (action === "+") scrollElement.scrollLeft += leftPos;
+          else if (action === "-") scrollElement.scrollLeft -= leftPos;
      }
 };

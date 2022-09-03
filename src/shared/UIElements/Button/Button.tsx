@@ -32,6 +32,7 @@ interface StyledButtonProps {
      transform?: string;
      left?: string;
      padding?: string;
+     flexBasis?: string;
 }
 
 export const StyledButton = styled.button<StyledButtonProps>`
@@ -111,7 +112,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
      left: ${(props) => props.left};
      transform: ${(props) => props.transform};
      padding: ${(props) => props.padding};
-
+     flex-basis: ${(props) => props.flexBasis};
      @media ${cssBreakPoints.bigDesktop} {
           ${(props) => props.displayOnlyOnMobile === true && "display:none"}
      }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import styled from "styled-components";
 import Header from "../components/Header";
 import MobileHeader from "../components/MobileHeader";
 import { useScreenWidth } from "../shared/utils/hooks/useScreenWidth";
@@ -8,7 +9,19 @@ import Favorites from "./Favorites";
 import FooterMobile from "../components/FooterMobile";
 import { MobileMenuBottom } from "../components/MobileHeader";
 import SearchBoxMobile from "../components/SearchBoxMobile";
-import { cityObj, Result } from "../components/SearchBox";
+import { CityObj } from "../components/SearchBox";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../redux/store";
+import { StyledButton } from "../shared/UIElements/Button/Button";
+import { toggleMap } from "../redux/headerSlice";
+import { StyledIcon } from "../shared/Icons/Icon";
+import { ReactComponent as IconLayout } from "../shared/svg/layout.svg";
+export const StyledButtonText = styled.span`
+     font-family: inherit;
+     font-size: 1.8rem;
+     font-weight: bold;
+     color: black;
+`;
 type Props = {
      coords: {
           lat: number | undefined;
@@ -16,6 +29,7 @@ type Props = {
      };
 };
 const PageSharedTamplate: React.FC<Props> = (props) => {
+     const dispatch = useDispatch();
      const location = useLocation();
      const deviceValue = useScreenWidth()[0];
      const [currentPage, setCurrentPage] = useState<string>("/home");
@@ -23,14 +37,15 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
      const [renderMobile, setRenderMobile] = useState<boolean>(true);
      const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
           useState<boolean>(true);
-     const [existingCity, setExistingCity] = useState<null | cityObj>(null);
+     const [existingCity, setExistingCity] = useState<null | CityObj>(null);
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
      const [openSearchBoxMobile, setOpenSearchBoxMobile] =
           useState<boolean>(false);
      const [selectedCityDataFromFavorites, setSelectedCityDataFromFavorites] =
-          useState<cityObj | null>(null);
-     const [showOnMap, setShowOnMap] = useState<boolean>(false);
-
+          useState<CityObj | null>(null);
+     const mapIsOpen = useSelector(
+          (state: RootState) => state.headerSlice.openMap
+     );
      const pageProps = {
           notFoundCityName,
           setNotFoundCityName,
@@ -46,8 +61,6 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           setSelectedCityDataFromFavorites,
           coords: props.coords,
           setCurrentPage,
-          showOnMap,
-          setShowOnMap,
      };
      useEffect(() => {
           if (location.pathname === "/home") setCurrentPage("/home");
@@ -94,11 +107,24 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                          />
                     )}
                </Routes>
-               <FooterMobile
-                    setOpenSearchBoxMobile={setOpenSearchBoxMobile}
-                    showOnMap={showOnMap}
-               />
-               <MobileMenuBottom />
+               {renderMobile && mapIsOpen && (
+                    <StyledButton
+                         variant="white"
+                         position="absolute"
+                         width="auto"
+                         height="auto"
+                         padding="12px"
+                         bottom="116px"
+                         left="50%"
+                         transform="translate(-50%,-100%)"
+                         onClick={() => dispatch(toggleMap())}
+                    >
+                         <StyledIcon marginRight="8px">
+                              <IconLayout width="22px" height="22px" />
+                         </StyledIcon>
+                         <StyledButtonText>Layout</StyledButtonText>
+                    </StyledButton>
+               )}
                {openSearchBoxMobile && (
                     <SearchBoxMobile
                          setExistingCity={setExistingCity}
@@ -106,6 +132,8 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                          setOpenSearchBoxMobile={setOpenSearchBoxMobile}
                     />
                )}
+               <FooterMobile setOpenSearchBoxMobile={setOpenSearchBoxMobile} />
+               <MobileMenuBottom />
           </>
      );
 };

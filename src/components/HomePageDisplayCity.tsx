@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { selectCity } from "../shared/utils/Services/Accuweather-Api/selectCity";
-import { Result, cityObj } from "./SearchBox";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { convertDateToText } from "../shared/utils/Dates/convertDateToText";
 import { StyledButton } from "../shared/UIElements/Button/Button";
@@ -28,13 +27,14 @@ import {
      StyledColumnDiv,
      StyledMobileAddToFavButton,
      StyledTempratureSpan,
+     StyleSimpleButton,
 } from "./HomePageDisplayCity/StyledHomePageDisplayCity";
 import LineChartMobile from "./LineChartMobile";
 import DiscoverIcon from "../shared/utils/Components/DiscoverIcon";
 import { favoritesHandler } from "../shared/utils/Services/Abra-Server/favoritesHandler";
 import Notification from "../shared/notifacation/Notification";
 import { ReactComponent as IconSuccses } from "../shared/svg/check-v.svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import {
      DeggresType,
@@ -47,11 +47,13 @@ import {
      SelectedCityType,
      DailyForecastsType,
      forcast12HoursType,
-     FavoritesResultsAbraApi,
 } from "./HomePageDisplayCity/types";
+import { toggleMap } from "../redux/headerSlice";
+import { scrollBarHandlerXAxis } from "../shared/utils/Functions/scrollbarHandler";
 const twelveHours = 1000 * 60 * 60 * 12;
 const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
-     console.log(props.existingCity);
+     const twelveHoursRefs = useRef([]);
+     const dispatch = useDispatch();
      const queryClient = useQueryClient();
      const [itemIsOnFavorites, setItemIsOnFavorites] = useState<boolean>(false);
      const [favoritesList, setFavoritesList] = useState<
@@ -60,7 +62,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const [now, setNow] = useState<string>(convertDateToText());
      const [showAddToFavoritesNotification, setShowAddToFavoritesNotification] =
           useState<boolean>(false);
-     const [selected, setSelected] = useState<null | string>(null);
+     const [selected, setSelected] = useState<number>(0);
      const { mutate } = useMutation(favoritesHandler, {
           onSuccess: (data: { status: number }) => {
                queryClient.invalidateQueries("favorites");
@@ -108,17 +110,11 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      setInterval(() => {
           setNow(convertDateToText());
      }, 1000 * 60);
-
      const { data: forcast12Hours } = useQuery(
           ["forcast12Hours", props?.existingCity?.key],
           () => getForcastFor12Hours(props?.existingCity?.key),
           { cacheTime: twelveHours / 6, staleTime: twelveHours / 6, enabled }
      ) as forcast12HoursType;
-
-     useEffect(() => {
-          forcast12Hours && setSelected(forcast12Hours[0].DateTime);
-     }, [forcast12Hours]);
-
      const forcast5daystemperatureDay: number[] = [];
      const forcast5daystemperatureNight: number[] = [];
      const forcast5daysLablesDays: string[] = [];
@@ -138,7 +134,9 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    onClick={() => {
                                         if (props.existingCity) {
                                              const cityObj = {
-                                                  key: props.existingCity.key,
+                                                  key: Number(
+                                                       props.existingCity.key
+                                                  ),
                                                   city: props.existingCity
                                                        .LocalizedName,
                                                   country: props.existingCity
@@ -248,9 +246,11 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                              onClick={() => {
                                                   if (props.existingCity) {
                                                        const cityObj = {
-                                                            key: props
-                                                                 .existingCity
-                                                                 .key,
+                                                            key: Number(
+                                                                 props
+                                                                      .existingCity
+                                                                      .key
+                                                            ),
                                                             city: props
                                                                  .existingCity
                                                                  .LocalizedName,
@@ -271,12 +271,13 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                              disabled={
                                                   showAddToFavoritesNotification
                                              }
+                                             flexBasis="fit-content"
                                         >
                                              <StyledIcon marginRight="8px">
                                                   <IconFavroiteOutline />
                                              </StyledIcon>
                                              {itemIsOnFavorites
-                                                  ? "Removed from "
+                                                  ? "Remove from "
                                                   : "Add to "}
                                              favorite
                                         </StyledButton>
@@ -285,8 +286,8 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         <Notification
                                              variant="success"
                                              animation={true}
-                                             mobileWidth="327px"
-                                             mobileHeigt="68px"
+                                             mobileWidth="300px"
+                                             mobileHeigt="50px"
                                              message={`${
                                                   props.existingCity
                                                        .LocalizedName
@@ -542,12 +543,14 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                    mobileGap="10px"
                                    marginMobile="48px 25px 0 25px"
                                    marginTop="140px"
+                                   overFlowX="scroll"
+                                   id="forcast12Hours"
                               >
                                    {forcast12Hours &&
                                         forcast12Hours.map((day, index) => {
-                                             if (index % 2 !== 0) return;
                                              return (
                                                   <StyledColumnDiv
+                                                       id={`forcast12hours-${index}`}
                                                        key={index}
                                                        mobilePadding="16px 4px"
                                                        padding="40px 17px 39.9px 16px"
@@ -558,9 +561,9 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                        minMobileWidth="80px"
                                                        alignItemsMobile="center"
                                                        borderRadius="20px"
+                                                       minWidth="153px"
                                                        selected={
-                                                            day.DateTime.toLocaleString() ==
-                                                            selected
+                                                            index === selected
                                                                  ? true
                                                                  : false
                                                        }
@@ -632,15 +635,36 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         gap="24px"
                                         padding="0 20px 0 0 "
                                    >
-                                        <IconArrowLeft
-                                             style={{ cursor: "pointer" }}
-                                        />
-                                        <IconArrowLeft
-                                             style={{
-                                                  transform: "rotate(180deg)",
-                                                  cursor: "pointer",
+                                        <StyleSimpleButton
+                                             onClick={() => {
+                                                  if (selected <= 0) return;
+                                                  let newIndex = selected - 1;
+                                                  setSelected(newIndex);
+                                                  scrollBarHandlerXAxis(
+                                                       "forcast12Hours",
+                                                       `forcast12hours-${selected}`,
+                                                       "-"
+                                                  );
                                              }}
-                                        />
+                                        >
+                                             <IconArrowLeft />
+                                        </StyleSimpleButton>
+                                        <StyleSimpleButton
+                                             rotate="rotate(180deg)"
+                                             onClick={() => {
+                                                  if (selected >= 11)
+                                                       return setSelected(11);
+                                                  let newIndex = selected + 1;
+                                                  setSelected(newIndex);
+                                                  scrollBarHandlerXAxis(
+                                                       "forcast12Hours",
+                                                       `forcast12hours-${selected}`,
+                                                       "+"
+                                                  );
+                                             }}
+                                        >
+                                             <IconArrowLeft />
+                                        </StyleSimpleButton>
                                    </StyledDivRow>
                               )}
                               {props.renderLaptopAnDesktop && (
@@ -652,7 +676,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         width="114px"
                                         margin="60px auto 0 auto"
                                         fontWeight="bold"
-                                        onClick={() => props.setShowOnMap(true)}
+                                        onClick={() => dispatch(toggleMap())}
                                    >
                                         <StyledIcon marginRight="8px">
                                              <IconMapBlack />

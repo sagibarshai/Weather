@@ -12,19 +12,29 @@ import { ReactComponent as IconFavoriteOutline } from "../shared/svg/fav-outline
 import { ReactComponent as IconSearchOutline } from "../shared/svg/search-dark.svg";
 import { ReactComponent as IconHomeOutline } from "../shared/svg/home-outline-dark.svg";
 import themes from "../shared/themes/themes";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 type Props = {
      setOpenSearchBoxMobile: (x: boolean) => void;
-     showOnMap: boolean;
 };
 
 const FooterMobile: React.FC<Props> = (props) => {
+     const mapIsOpen = useSelector(
+          (state: RootState) => state.headerSlice.openMap
+     );
      return (
-          <StyledFooterContainer>
-               <StyledButtonFooter>
+          <StyledFooterContainer
+               backgroundColor={
+                    mapIsOpen ? themes.white : `rgba(255, 255, 255, 0.3)`
+               }
+          >
+               <StyledButtonFooter
+                    borderColor={mapIsOpen ? themes.secondary : themes.white}
+               >
                     <StyledLink to="/favorites">
                          <StyledIcon>
-                              {props.showOnMap ? (
+                              {mapIsOpen ? (
                                    <IconFavoriteOutline />
                               ) : (
                                    <IconFavorite />
@@ -33,7 +43,7 @@ const FooterMobile: React.FC<Props> = (props) => {
                     </StyledLink>
                     <StyledText
                          color={
-                              props.showOnMap
+                              mapIsOpen
                                    ? `${themes.secondary}`
                                    : `${themes.white}`
                          }
@@ -42,18 +52,15 @@ const FooterMobile: React.FC<Props> = (props) => {
                     </StyledText>
                </StyledButtonFooter>
                <StyledButtonFooter
+                    borderColor={mapIsOpen ? themes.secondary : themes.white}
                     onClick={() => props.setOpenSearchBoxMobile(true)}
                >
                     <StyledIcon>
-                         {props.showOnMap ? (
-                              <IconSearchOutline />
-                         ) : (
-                              <IconSearch />
-                         )}{" "}
+                         {mapIsOpen ? <IconSearchOutline /> : <IconSearch />}{" "}
                     </StyledIcon>
                     <StyledText
                          color={
-                              props.showOnMap
+                              mapIsOpen
                                    ? `${themes.secondary}`
                                    : `${themes.white}`
                          }
@@ -61,19 +68,17 @@ const FooterMobile: React.FC<Props> = (props) => {
                          Search
                     </StyledText>
                </StyledButtonFooter>
-               <StyledButtonFooter>
+               <StyledButtonFooter
+                    borderColor={mapIsOpen ? themes.secondary : themes.white}
+               >
                     <StyledLink to="/home">
                          <StyledIcon>
-                              {props.showOnMap ? (
-                                   <IconHomeOutline />
-                              ) : (
-                                   <IconHome />
-                              )}{" "}
+                              {mapIsOpen ? <IconHomeOutline /> : <IconHome />}{" "}
                          </StyledIcon>
                     </StyledLink>
                     <StyledText
                          color={
-                              props.showOnMap
+                              mapIsOpen
                                    ? `${themes.secondary}`
                                    : `${themes.white}`
                          }

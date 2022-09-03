@@ -38,6 +38,9 @@ type StyledProps = {
      width?: string;
      alignSelf?: string;
      alignSelfMobile?: string;
+     overFlowX?: string;
+     minWidth?: string;
+     rotate?: string;
 };
 
 export const StyledContainer = styled.div`
@@ -84,6 +87,16 @@ export const StyledDivRow = styled.div<StyledProps>`
      width: 100%;
      align-items: ${(props) => props.alignItems};
      box-sizing: border-box;
+     ${(props) =>
+          props.overFlowX === "scroll" &&
+          css`
+               overflow: hidden;
+               overflow-x: scroll;
+               &::-webkit-scrollbar {
+                    height: 0px;
+               }
+          `}
+
      @media ${cssBreakPoints.mobile} {
           justify-content: center;
           margin-left: 0;
@@ -178,6 +191,7 @@ export const StyledColumnDiv = styled.div<StyledProps>`
      padding: ${(props) => props.padding};
      border-radius: ${(props) => props.borderRadius};
      align-items: center;
+     min-width: ${(props) => props.minWidth};
      ${(props) =>
           props.selected === true &&
           css`
@@ -214,4 +228,9 @@ export const StyledTempratureSpan = styled.span<StyledProps>`
           left: ${(props) => props.leftMobile};
           transform: ${(props) => props.transformMobile};
      }
+`;
+export const StyleSimpleButton = styled.button<StyledProps>`
+     all: unset;
+     transform: ${(props) => props.rotate};
+     cursor: pointer;
 `;

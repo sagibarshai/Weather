@@ -77,9 +77,10 @@ const StyledNotificationContainer = styled.div<Props>`
      @media ${cssBreakPoints.mobile} {
           width: ${(props) => props.mobileWidth};
           height: ${(props) => props.mobileHeigt};
-          padding: 11px 16px;
           bottom: ${(props) => props.mobileBottom};
-          font-size: 1.4rem;
+          left: 50%;
+          transform: translate(-50%, -100%);
+          padding: 11px 16px;
      }
 `;
 export const StyledSpan = styled.span<Props>`
@@ -93,7 +94,9 @@ export const StyledSpan = styled.span<Props>`
           `};
      flex-grow: 0;
      font-family: inherit;
-     /* color: ${(props) => props.color || themes.notificationText}; */
+     @media ${cssBreakPoints.mobile} {
+          font-size: 1.4rem;
+     }
 `;
 const Notification: React.FC<Props> = (props) => {
      return (

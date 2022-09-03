@@ -8,12 +8,11 @@ export type Result = {
      Country: { LocalizedName: string };
      Key: number;
 };
-export type cityObj = {
+export type CityObj = {
      LocalizedName: string;
      Country: { LocalizedName: string };
      key: number;
 };
-
 type Props = {
      display?: boolean;
      results?: Result[] | [];
@@ -29,8 +28,8 @@ type Props = {
      overflow?: string;
      boxShadow?: string;
      color?: string;
-     setExistingCity?: (x: cityObj) => void;
-     existingCity?: cityObj | null;
+     setExistingCity?: (x: CityObj) => void;
+     existingCity?: CityObj | null;
 };
 const StyledBigContainer = styled.div<Props>`
      display: ${(props) => (props.display === true ? "inline-block" : "none")};

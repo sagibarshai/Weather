@@ -3,16 +3,20 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { Marker, InfoWindow } from "@react-google-maps/api";
-import { cityObj, Result } from "./SearchBox";
+import { CityObj, Result } from "./SearchBox";
 import { searchCityByCoords } from "../shared/utils/Services/Accuweather-Api/searchCityByCoords";
 import { useLocation } from "react-router-dom";
 import themes from "../shared/themes/themes";
 import { StyledIcon } from "../shared/Icons/Icon";
 import DiscoverIcon from "../shared/utils/Components/DiscoverIcon";
-import { toggleDeggres } from "../shared/utils/Functions/toggleDeggres";
+import {
+     toggleDeggres,
+     DeggresType,
+} from "../shared/utils/Functions/toggleDeggres";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { DeggresType } from "../shared/utils/Functions/toggleDeggres";
+import { toggleMap } from "../redux/headerSlice";
+import { useDispatch } from "react-redux";
 const StyledContainer = styled.div`
      overflow: hidden;
      min-width: 130px;
@@ -37,8 +41,8 @@ export type Coords = {
 };
 type Props = {
      coords: Coords;
-     setShowOnMap?: (x: boolean) => void;
-     setSelectedCityDataFromMap?: (x: cityObj) => void;
+
+     setSelectedCityDataFromMap?: (x: CityObj) => void;
      markerCoordsArray?: { data: Coords }[];
      zoom?: number;
      center?: Coords;
@@ -52,6 +56,7 @@ type Props = {
      }[];
 };
 const DisplayMap: React.FC<Props> = (props) => {
+     const dispatch = useDispatch();
      const location = useLocation();
      const { isLoaded } = useJsApiLoader({
           id: "google-map-script",
@@ -75,13 +80,13 @@ const DisplayMap: React.FC<Props> = (props) => {
                               lng: e.latLng?.lng(),
                          };
 
-                         props.setShowOnMap && props.setShowOnMap(false);
+                         dispatch(toggleMap());
                          searchCityByCoords(coords)
                               .then((res) => {
                                    props.setSelectedCityDataFromMap &&
                                         props.setSelectedCityDataFromMap({
                                              ...res,
-                                             key: res.Key,
+                                             key: Number(res.Key),
                                         });
                               })
                               .catch((err) => console.log(err));
