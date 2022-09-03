@@ -21,21 +21,21 @@ import { ReactComponent as IconApp } from "../shared/svg/logo-large.svg";
 import { StyledButton } from "../shared/UIElements/Button/Button";
 import themes from "../shared/themes/themes";
 import HomePageDisplayCity from "../components/HomePageDisplayCity";
-import { Result } from "../components/SearchBox";
+import { cityObj, Result } from "../components/SearchBox";
 import { logout } from "../redux/authSlice";
 import { useLocation } from "react-router-dom";
 import DisplayMap, { Coords } from "../components/Map";
 export type SharedPageProps = {
      pageProps: {
           coords: Coords;
-          existingCity?: Result | null;
+          existingCity: cityObj | null;
           renderMobile?: boolean;
           renderLaptopAnDesktop?: boolean;
-          selectedCityDataFromFavorites: Result | null;
-          setSelectedCityDataFromFavorites: (x: Result) => void;
+          selectedCityDataFromFavorites: cityObj | null;
+          setSelectedCityDataFromFavorites: (x: cityObj) => void;
           setOpenSearchBoxMobile: (x: boolean) => void;
           openSearchBoxMobile?: boolean;
-          setExistingCity: (x: null | Result) => void;
+          setExistingCity: (x: null | cityObj) => void;
           notFoundCityName?: string;
           setNoResultAndEnter: (x: boolean) => void;
           noResultAndEnter: boolean;
@@ -50,7 +50,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           localStorage.getItem("coords") ? true : false
      );
      const [selectedCityDataFromMap, setSelectedCityDataFromMap] =
-          useState<Result | null>(null);
+          useState<cityObj | null>(null);
      const dispatch = useDispatch();
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground

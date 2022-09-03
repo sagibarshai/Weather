@@ -1,7 +1,8 @@
 import { cityObj, Result } from "../SearchBox";
 import { DeggresType } from "../../shared/utils/Functions/toggleDeggres";
+import { FavoriteType } from "../../pages/Favorites";
 export type SelectedCityType = {
-     existingCity: cityObj;
+     existingCity: cityObj | null;
      selectedCityDataFromFavorites?: cityObj | null;
      searchResults?: Result[] | [];
      renderMobile?: boolean;
@@ -35,3 +36,4 @@ export type forcast12HoursType = {
           };
      }[];
 };
+export type FavoritesResultsAbraApi = { data: { results: FavoriteType[] } };

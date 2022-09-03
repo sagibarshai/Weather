@@ -1,7 +1,6 @@
 import { axiosAbraInstence } from "./axiosAbraInstence";
 import { FavoriteType } from "../../../../pages/Favorites";
-export const addToFavorites = async (data: FavoriteType) => {
-     console.log(data);
+export const favoritesHandler = async (data: FavoriteType) => {
      const token = localStorage.getItem("token");
      try {
           const res = await axiosAbraInstence.post("/favorites/", data, {

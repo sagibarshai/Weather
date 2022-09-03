@@ -8,7 +8,7 @@ import Favorites from "./Favorites";
 import FooterMobile from "../components/FooterMobile";
 import { MobileMenuBottom } from "../components/MobileHeader";
 import SearchBoxMobile from "../components/SearchBoxMobile";
-import { Result } from "../components/SearchBox";
+import { cityObj, Result } from "../components/SearchBox";
 type Props = {
      coords: {
           lat: number | undefined;
@@ -23,12 +23,12 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
      const [renderMobile, setRenderMobile] = useState<boolean>(true);
      const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
           useState<boolean>(true);
-     const [existingCity, setExistingCity] = useState<null | Result>(null);
+     const [existingCity, setExistingCity] = useState<null | cityObj>(null);
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
      const [openSearchBoxMobile, setOpenSearchBoxMobile] =
           useState<boolean>(false);
      const [selectedCityDataFromFavorites, setSelectedCityDataFromFavorites] =
-          useState<Result | null>(null);
+          useState<cityObj | null>(null);
      const [showOnMap, setShowOnMap] = useState<boolean>(false);
 
      const pageProps = {

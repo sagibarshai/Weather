@@ -30,7 +30,7 @@ type Props = {
      boxShadow?: string;
      color?: string;
      setExistingCity?: (x: cityObj) => void;
-     existingCity?: cityObj;
+     existingCity?: cityObj | null;
 };
 const StyledBigContainer = styled.div<Props>`
      display: ${(props) => (props.display === true ? "inline-block" : "none")};

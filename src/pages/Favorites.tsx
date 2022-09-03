@@ -25,14 +25,13 @@ import {
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { getFromFavorites } from "../shared/utils/Services/Abra-Server/getFromFavorites";
-import { addToFavorites } from "../shared/utils/Services/Abra-Server/addToFavorites";
-import { useMutation, useQuery, useQueries } from "react-query";
+import { favoritesHandler } from "../shared/utils/Services/Abra-Server/favoritesHandler";
+import { useMutation, useQuery, useQueries, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { SharedPageProps } from "./Home";
 import { getCoordsOfCity } from "../shared/utils/Services/Geocoding-Api/getCoordsOfCity";
 import DisplayMap, { Coords } from "../components/Map";
 import { searchCityByCoords } from "../shared/utils/Services/Accuweather-Api/searchCityByCoords";
-import { selectCity } from "../shared/utils/Services/Accuweather-Api/selectCity";
 import { getHourlyForcast } from "../shared/utils/Services/Accuweather-Api/getHourlyForcast";
 export type FavoriteType = {
      key: number;
@@ -41,16 +40,16 @@ export type FavoriteType = {
      title?: string;
 };
 const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
+     const queryClient = useQueryClient();
      const dispatch = useDispatch();
      const navigate = useNavigate();
-     const [coordsList, setCoordsList] = useState<Coords[] | []>([]);
      const [favoritesList, setFavoritesList] = useState<[] | FavoriteType[]>(
           []
      );
-     const [favoritesSearch, setFavoritesSearch] = useState<string>("");
      const [filteredSearch, setFilteredSearch] = useState<FavoriteType[] | []>(
           favoritesList
      );
+     const [favoritesSearch, setFavoritesSearch] = useState<string>("");
      const renderPraimaryBackground = useSelector(
           (state: RootState) => state.headerSlice.renderPraimaryBackground
      );
@@ -75,53 +74,38 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           staleTime: Infinity,
           refetchOnMount: true,
           refetchOnReconnect: true,
-          onSuccess: () => {},
+          onSuccess: (data: { data: { results: [] | FavoriteType[] } }) => {
+               setFilteredSearch(data.data.results);
+               setFavoritesList(data.data.results);
+          },
           onError: () => {},
      });
-     const { mutate } = useMutation(addToFavorites, {
+     const { mutate } = useMutation(favoritesHandler, {
           onSuccess: () => {
-               setTimeout(() => {
-                    setFavoritesList(updatedListFunction());
-                    setFilteredSearch(updatedListFunction());
-               }, 500);
+               queryClient.invalidateQueries("favorites");
           },
           onError: (e: any) => console.log(e),
      });
      const removeFromFavoritesHandler = async () => {
-          setOpenNotification(true);
-          setTimeout(() => setOpenNotification(false), 4000);
-          setOpenPopupRemoveFavorites(false);
           if (exsistingItem) {
-               exsistingItem.title = "deleted item";
+               setOpenNotification(true);
+               setTimeout(() => setOpenNotification(false), 4000);
+               setOpenPopupRemoveFavorites(false);
                let favObj = {
                     key: exsistingItem.key,
                     city: exsistingItem.city,
                     country: exsistingItem.country,
-                    title: exsistingItem.title,
                };
                mutate(favObj);
-          }
+          } else return;
      };
-     const updatedListFunction = () => {
-          const updatedList: FavoriteType[] | [] | any = [];
-          if (data) {
-               const list = data.data.results;
-               for (let item of list) {
-                    if (item.title === "deleted item") continue;
-                    else updatedList.push(item);
-               }
-          }
-          return updatedList;
-     };
+     const openMap = useSelector(
+          (state: RootState) => state.headerSlice.openMap
+     );
      useEffect(() => setFilteredSearch(favoritesList), [favoritesList]);
      useEffect(() => {
-          console.log(data?.data?.results);
-          localStorage.setItem(
-               "favorites",
-               JSON.stringify(data?.data?.results)
-          );
-          setFavoritesList(updatedListFunction());
-          setFilteredSearch(updatedListFunction());
+          if (!data) setFavoritesList([]);
+          else setFavoritesList(data?.data?.results);
      }, [data]);
 
      useEffect(() => {
@@ -143,7 +127,8 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           }
           setFilteredSearch(filteredArr);
      }, [favoritesSearch]);
-
+     let enabled = false;
+     if (openMap && location.pathname === "/favorites") enabled = true;
      const markerCoordsArray: { data: Coords }[] | [] = useQueries(
           favoritesList.map((fav) => {
                return {
@@ -157,6 +142,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    };
                               })
                               .catch((err) => console.log(err)),
+                    enabled,
                };
           })
      );
@@ -168,6 +154,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                          searchCityByCoords(coords.data)
                               .then((res) => res.Key)
                               .catch((err) => console.log(err)),
+                    enabled,
                };
           })
      );
@@ -186,6 +173,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    };
                               })
                               .catch((err) => console.log(err)),
+                    enabled,
                };
           })
      );
@@ -195,9 +183,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
      };
-     const openMap = useSelector(
-          (state: RootState) => state.headerSlice.openMap
-     );
      if (openMap) {
           return (
                <>
@@ -205,7 +190,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                          citiesHourlyForcast={citiesHourlyForcast}
                          markerCoordsArray={markerCoordsArray}
                          coords={pageProps.coords}
-                         center={coordsList[0]}
                          zoom={5}
                     />
                     {openPopup && (
@@ -219,7 +203,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                </>
           );
      }
-     if (!favoritesList.length && favoritesSearch === "")
+     if (favoritesList && !favoritesList.length && favoritesSearch === "")
           return (
                <>
                     <StyledFavoritePageContainer
@@ -281,7 +265,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    <IconSearchWhite />
                               </StyledIcon>
                          </StyledInputContainer>
-                         {filteredSearch.length > 0 && (
+                         {filteredSearch && filteredSearch.length > 0 && (
                               <StyledItemsContainer>
                                    {filteredSearch.map((fav) => {
                                         return (

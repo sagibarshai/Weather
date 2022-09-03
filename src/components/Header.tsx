@@ -9,7 +9,7 @@ import { StyledButton } from "../shared/UIElements/Button/Button";
 import Input from "../shared/UIElements/Inputs/Input";
 import { search } from "../shared/utils/Services/Accuweather-Api/search";
 import { scrollBarHandler } from "../shared/utils/Functions/scrollbarHandler";
-import SearchBox from "./SearchBox";
+import SearchBox, { cityObj } from "./SearchBox";
 import NavLinkActiveStyle from "../shared/navLinks/NavLinkActiveStyle";
 import links from "../shared/links/links";
 import themes from "../shared/themes/themes";
@@ -45,8 +45,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 type Props = {
      setNoResultAndEnter: (x: boolean) => void;
      noResultAndEnter: boolean;
-     setExistingCity: (x: any) => any;
-     existingCity: any;
+     setExistingCity: (x: cityObj) => void;
+     existingCity: cityObj | null;
      setNotFoundCityName: (x: string) => void;
      currentPage: string;
 };
@@ -194,6 +194,10 @@ const Header: React.FC<Props> = (props) => {
                                         let key =
                                              searchResults[hoverIndexResult]
                                                   .Key;
+                                        let updatedExistingCity = {
+                                             key,
+                                             ...searchResults[hoverIndexResult],
+                                        };
                                         if (!searchResults.length) {
                                              props.setNoResultAndEnter(true);
                                              setSearchIsFocus(false);
@@ -203,10 +207,9 @@ const Header: React.FC<Props> = (props) => {
                                              return;
                                         }
                                         props.setExistingCity(
-                                             searchResults[hoverIndexResult]
+                                             updatedExistingCity
                                         );
                                         props.setNoResultAndEnter(false);
-
                                         setSearchIsFocus(false);
                                         {
                                              location.pathname !== "/home" &&

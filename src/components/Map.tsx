@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { Marker, InfoWindow } from "@react-google-maps/api";
-import { Result } from "./SearchBox";
+import { cityObj, Result } from "./SearchBox";
 import { searchCityByCoords } from "../shared/utils/Services/Accuweather-Api/searchCityByCoords";
 import { useLocation } from "react-router-dom";
 import themes from "../shared/themes/themes";
@@ -38,7 +38,7 @@ export type Coords = {
 type Props = {
      coords: Coords;
      setShowOnMap?: (x: boolean) => void;
-     setSelectedCityDataFromMap?: (x: Result) => void;
+     setSelectedCityDataFromMap?: (x: cityObj) => void;
      markerCoordsArray?: { data: Coords }[];
      zoom?: number;
      center?: Coords;
@@ -156,6 +156,7 @@ const DisplayMap: React.FC<Props> = (props) => {
                     ))}
                </GoogleMap>
           );
+     return <></>;
 };
 
 export default DisplayMap;
