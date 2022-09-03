@@ -23,6 +23,17 @@ export type DataType = {
      };
 };
 export type forcast12HoursType = {
+     EpochDateTime: number;
+     DateTime: string;
+     Temperature: { Value: number; Unit: DeggresType };
+     IconPhrase: string;
+     WeatherIcon: number;
+     Wind: {
+          Speed: { Value: number; Unit: string };
+          Direction: { Degrees: number };
+     };
+}[];
+export type forcast12HoursTypeData = {
      data: {
           EpochDateTime: number;
           DateTime: string;
