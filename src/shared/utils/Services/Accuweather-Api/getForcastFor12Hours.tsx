@@ -6,7 +6,7 @@ export const getForcastFor12Hours = async (
      if (!cityKey) return;
      try {
           const response = await axios.get(
-               `http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/${cityKey}?apikey=${key}&details=true&metric=true`,
+               `//dataservice.accuweather.com/forecasts/v1/hourly/12hour/${cityKey}?apikey=${key}&details=true&metric=true`,
                {
                     headers: { "Content-type": "application/json" },
                }

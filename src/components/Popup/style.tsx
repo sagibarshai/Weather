@@ -14,7 +14,7 @@ export const StyledPopupContainer = styled.div<Props>`
      left: 50%;
      transform: translate(-50%, -50%);
      border-radius: 30px;
-     z-index: 1;
+     z-index: 4;
      @media ${cssBreakPoints.mobile} {
           width: calc(100vw - 80px);
           height: 270px;

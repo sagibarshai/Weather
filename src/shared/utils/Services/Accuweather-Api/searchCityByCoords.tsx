@@ -7,7 +7,7 @@ export const searchCityByCoords = async (coords: Coords | undefined) => {
      let lng = coords.lng;
      let coordsStringTamplate = `${lat},${lng}`;
      const response = await axios.get(
-          `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${key}&q=${coordsStringTamplate}`
+          `//dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=${key}&q=${coordsStringTamplate}`
      );
      const data = await response.data;
      return data;

@@ -4,7 +4,7 @@ export const getHourlyForcast = async (cityKey: string | undefined) => {
      if (!cityKey) return;
      try {
           const response = await axios.get(
-               `http://dataservice.accuweather.com/forecasts/v1/hourly/1hour/${cityKey}?apikey=${key}`
+               `//dataservice.accuweather.com/forecasts/v1/hourly/1hour/${cityKey}?apikey=${key}`
           );
           const data = await response.data;
           return data;

@@ -3,7 +3,7 @@ const key = process.env.REACT_APP_ACCUWEATHER_API_KEY;
 export const search = async (value: string) => {
      try {
           const response = await axios.get(
-               `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${key}&q=${value}`,
+               `//dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=${key}&q=${value}`,
                {
                     headers: { "Content-type": "application/json" },
                }

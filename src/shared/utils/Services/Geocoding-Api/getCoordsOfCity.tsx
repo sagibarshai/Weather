@@ -5,7 +5,7 @@ export const getCoordsOfCity = async (cityName: string | undefined) => {
      if (!cityName) return;
      try {
           const response = await axios.get(
-               `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${key}`
+               `//api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=1&appid=${key}`
           );
           const data = await response.data;
           return data;
