@@ -1,23 +1,11 @@
 import styled, { css } from "styled-components";
 import themes from "../../shared/themes/themes";
 import cssBreakPoints from "../../shared/cssBreakPoints/cssBreakPoints";
-type Props = {
-     gap?: string;
-     height?: string;
-     flexDeiraction?: string;
-     mobileServerError?: boolean;
-     margin?: string;
-     serverError?: string | null;
-     renderPraimaryBackground?: boolean;
-};
+import { Props } from "./types";
 export const StyledLoginPageContainer = styled.div<Props>`
      display: inline-block;
-     min-width: 100vw;
+     width: 100vw;
      min-height: 100vh;
-     background-image: ${(props) => {
-          if (props.renderPraimaryBackground) return themes.backgroundPraimary;
-          else return themes.darkBackground;
-     }};
 `;
 export const StyledLoginContainer = styled.form<Props>`
      background-color: ${themes.white};
@@ -25,10 +13,15 @@ export const StyledLoginContainer = styled.form<Props>`
      width:732px;
      box-shadow: 0 4px 40px 0 rgba(0, 0, 0, 0.16);
      text-align: center;
+     position: fixed;
+     top:50%;
+     left:50%;
+     transform:translate(-50%,-50%);
      border-radius: 30px;
-     margin:168px auto 168px auto;
+     /* margin:168px auto 168px auto; */
      padding:54px;
-     position: relative;
+     display: flex;
+     justify-content: center;
      z-index:2;
      @media ${cssBreakPoints.laptop} {
           width: 588px;
@@ -41,11 +34,12 @@ export const StyledLoginContainer = styled.form<Props>`
           background-color: #fff;
           display: inline-block;
           border-radius: 30px 30px 0 0 ;
-          margin-top:184px;
-          height: 658px;
-          margin:184px 0 0 0;
-          padding-bottom: 0;
-     
+          height: 80vh;
+          top:unset;
+          position: fixed;
+          bottom: 0;
+          transform:translate(-50%,0);
+          padding: 0;
           ${(props) =>
                props.mobileServerError === true &&
                css`
@@ -86,7 +80,7 @@ export const StyledContainer = styled.div<Props>`
      @media ${cssBreakPoints.mobile} {
           flex-direction: ${(props) =>
                props.flexDeiraction ? props.flexDeiraction : "row"};
-          margin: 54px 0 0 0;
+          /* margin: 54px 0 0 0; */
      }
 `;
 export const StyledHr = styled.hr`
@@ -99,14 +93,12 @@ export const StyledSpan = styled.span`
      font-size: 1.4rem;
      white-space: nowrap;
 `;
-export const StyledLogoContainer = styled.span`
-     position: absolute;
-     top: 20px;
-     left: 50px;
-     transform: translate(-30px, -30px);
-     @media ${cssBreakPoints.mobile} {
-          top: 74px;
-          left: 50%;
-          transform: translate(-15px, -50%);
-     }
+export const StyledContentContainer = styled.div`
+     /* display: none; */
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     /* margin: 54px 54px 54px 0; */
+     width: 100%;
+     height: 100%;
 `;

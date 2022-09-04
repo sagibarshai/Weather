@@ -355,6 +355,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                     </StyledContentContainer>
                     {openNotification && exsistingItem && (
                          <Notification
+                              mobileTransform="translate(-50%, -100%)"
                               animation={true}
                               variant="success"
                               icon={<IconSuccses />}

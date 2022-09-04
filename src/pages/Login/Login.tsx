@@ -22,7 +22,7 @@ import {
      StyledContainer,
      StyledHr,
      StyledSpan,
-     StyledLogoContainer,
+     StyledContentContainer,
 } from "./style";
 const Login = () => {
      const [email, setEmail] = useState<string>("");
@@ -89,129 +89,145 @@ const Login = () => {
                     openMobileMenu ? dispatch(closeMobileMenu()) : ""
                }
           >
-               <StyledLogoContainer>
+               <StyledIcon
+                    position="absolute"
+                    top="0"
+                    mobileLeft="50%"
+                    left="0"
+                    transformMobile="translate(-50%,0)"
+                    transform="translate(0,0)"
+               >
                     <IconApp />
-               </StyledLogoContainer>
+               </StyledIcon>
                <StyledLoginContainer
                     onSubmit={(e: any) => onSubmitHandler(e)}
                     height={serverError ? "737px" : "639px"}
                     mobileServerError={serverError ? true : false}
                     serverError={serverError}
                >
-                    <StyledTitle>Log in</StyledTitle>
-                    <StyledInputsContainer>
-                         {serverError && (
-                              <Notification
-                                   variant="error"
-                                   icon={<IconNotification />}
-                                   message={serverError}
-                                   mobileHeigt="63px"
+                    <StyledContentContainer>
+                         <StyledTitle>Log in</StyledTitle>
+                         <StyledInputsContainer>
+                              {serverError && (
+                                   <Notification
+                                        variant="error"
+                                        icon={<IconNotification />}
+                                        message={serverError}
+                                        mobileHeigt="63px"
+                                   />
+                              )}
+                              <Input
+                                   mobileWidth="324px"
+                                   type="text"
+                                   variant={emailInputState}
+                                   errorMessage={emailErrorMessage}
+                                   label="Email Account"
+                                   placeHolder="example@example.com..."
+                                   onChange={(e: any) => {
+                                        setEmail(e.target.value);
+                                        setServerError(null);
+                                   }}
+                                   onBlur={() => {
+                                        setEmailIsFocus(false);
+                                        if (!emailIsValid) {
+                                             let errorMessage = "";
+                                             if (email.length < 6)
+                                                  errorMessage +=
+                                                       "Email must contain at least 6 characters";
+                                             else if (!email.includes("@"))
+                                                  errorMessage +=
+                                                       'Email must contain "@" ';
+                                             else if (!email.includes("."))
+                                                  errorMessage +=
+                                                       'Email must contain "." ';
+                                             else if (email.endsWith("."))
+                                                  errorMessage +=
+                                                       'Email cannot end with "." ';
+                                             setEmailInputState("validation");
+                                             setEmailErrorMessage(errorMessage);
+                                        }
+                                   }}
+                                   onFocus={() => {
+                                        setEmailIsFocus(true);
+                                        setEmailErrorMessage("");
+                                        setEmailInputState("active");
+                                   }}
                               />
-                         )}
-                         <Input
-                              mobileWidth="354px"
-                              type="text"
-                              variant={emailInputState}
-                              errorMessage={emailErrorMessage}
-                              label="Email Account"
-                              placeHolder="example@example.com..."
-                              onChange={(e: any) => {
-                                   setEmail(e.target.value);
-                                   setServerError(null);
-                              }}
-                              onBlur={() => {
-                                   setEmailIsFocus(false);
-                                   if (!emailIsValid) {
-                                        let errorMessage = "";
-                                        if (email.length < 6)
-                                             errorMessage +=
-                                                  "Email must contain at least 6 characters";
-                                        else if (!email.includes("@"))
-                                             errorMessage +=
-                                                  'Email must contain "@" ';
-                                        else if (!email.includes("."))
-                                             errorMessage +=
-                                                  'Email must contain "." ';
-                                        else if (email.endsWith("."))
-                                             errorMessage +=
-                                                  'Email cannot end with "." ';
-                                        setEmailInputState("validation");
-                                        setEmailErrorMessage(errorMessage);
-                                   }
-                              }}
-                              onFocus={() => {
-                                   setEmailIsFocus(true);
-                                   setEmailErrorMessage("");
-                                   setEmailInputState("active");
-                              }}
-                         />
-                         <Input
-                              mobileWidth="354px"
-                              type="password"
-                              variant={passwordInputState}
-                              label="Password"
-                              placeHolder="6 characters and digit numbers..."
-                              errorMessage={passwordErrorMessage}
-                              onChange={(e: any) => {
-                                   setPassword(e.target.value);
-                                   setServerError(null);
-                              }}
-                              onBlur={() => {
-                                   setPasswordIsFocus(false);
-                                   if (!passwordIsValid) {
-                                        let errorMessage = "";
-                                        if (password.length < 6)
-                                             errorMessage +=
-                                                  "password must contain at least 6 characters";
-                                        else if (!/[a-zA-Z]/.test(password))
-                                             errorMessage +=
-                                                  "password must contain at least one character ";
-                                        else if (!/\d/.test(password))
-                                             errorMessage +=
-                                                  "password must contain at least one number";
-                                        setPasswordInputState("validation");
-                                        setPasswordErrorMessage(errorMessage);
-                                   }
-                              }}
-                              onFocus={() => {
-                                   setPasswordIsFocus(true);
-                                   setPasswordInputState("active");
-                                   setPasswordErrorMessage("");
-                              }}
-                         />
-                    </StyledInputsContainer>
-                    <StyledButton
-                         mobileWidthWithCalc="354px"
-                         margin="40px 0 0 0"
-                         disabled={!(emailIsValid && passwordIsValid)}
-                         variant={
-                              !(emailIsValid && passwordIsValid)
-                                   ? "disabled"
-                                   : "default"
-                         }
-                    >
-                         Log in
-                    </StyledButton>
-                    <StyledContainer margin="48px 54px 0">
-                         <StyledHr />
-                         <StyledSpan>Or log in with</StyledSpan>
-                         <StyledHr />
-                    </StyledContainer>
+                              <Input
+                                   mobileWidth="324px"
+                                   type="password"
+                                   variant={passwordInputState}
+                                   label="Password"
+                                   placeHolder="6 characters and digit numbers..."
+                                   errorMessage={passwordErrorMessage}
+                                   onChange={(e: any) => {
+                                        setPassword(e.target.value);
+                                        setServerError(null);
+                                   }}
+                                   onBlur={() => {
+                                        setPasswordIsFocus(false);
+                                        if (!passwordIsValid) {
+                                             let errorMessage = "";
+                                             if (password.length < 6)
+                                                  errorMessage +=
+                                                       "password must contain at least 6 characters";
+                                             else if (
+                                                  !/[a-zA-Z]/.test(password)
+                                             )
+                                                  errorMessage +=
+                                                       "password must contain at least one character ";
+                                             else if (!/\d/.test(password))
+                                                  errorMessage +=
+                                                       "password must contain at least one number";
+                                             setPasswordInputState(
+                                                  "validation"
+                                             );
+                                             setPasswordErrorMessage(
+                                                  errorMessage
+                                             );
+                                        }
+                                   }}
+                                   onFocus={() => {
+                                        setPasswordIsFocus(true);
+                                        setPasswordInputState("active");
+                                        setPasswordErrorMessage("");
+                                   }}
+                              />
+                         </StyledInputsContainer>
+                         <StyledButton
+                              alignSelf="center"
+                              mobileWidthWithCalc="324px"
+                              margin="40px 0 0 0"
+                              disabled={!(emailIsValid && passwordIsValid)}
+                              variant={
+                                   !(emailIsValid && passwordIsValid)
+                                        ? "disabled"
+                                        : "default"
+                              }
+                         >
+                              Log in
+                         </StyledButton>
+                         <StyledContainer margin="48px 54px 0">
+                              <StyledHr />
+                              <StyledSpan>Or log in with</StyledSpan>
+                              <StyledHr />
+                         </StyledContainer>
 
-                    <StyledContainer gap="16px" flexDeiraction="column">
-                         <StyledButton variant="linkWithImg">
-                              <StyledIcon marginRight="8px">
-                                   <IconFacebook />
-                              </StyledIcon>
-                              Log in with facebook
-                         </StyledButton>
-                         <StyledButton variant="linkWithImg">
-                              <StyledIcon marginRight="8px">
-                                   <IconGoogle />
-                              </StyledIcon>
-                              Log in with google
-                         </StyledButton>
-                    </StyledContainer>
+                         <StyledContainer gap="16px" flexDeiraction="column">
+                              <StyledButton variant="linkWithImg">
+                                   <StyledIcon marginRight="8px">
+                                        <IconFacebook />
+                                   </StyledIcon>
+                                   Log in with facebook
+                              </StyledButton>
+                              <StyledButton variant="linkWithImg">
+                                   <StyledIcon marginRight="8px">
+                                        <IconGoogle />
+                                   </StyledIcon>
+                                   Log in with google
+                              </StyledButton>
+                         </StyledContainer>
+                    </StyledContentContainer>
                </StyledLoginContainer>
           </StyledLoginPageContainer>
      );

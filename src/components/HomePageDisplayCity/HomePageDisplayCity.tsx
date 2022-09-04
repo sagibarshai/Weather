@@ -215,6 +215,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                               )}
                               {showAddToFavoritesNotification && (
                                    <Notification
+                                        mobileTransform="translate(-50%, -100%)"
                                         variant="success"
                                         animation={true}
                                         mobileWidth="300px"

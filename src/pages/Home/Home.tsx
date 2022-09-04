@@ -117,6 +117,32 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    margin="0 0 16px 0"
                                    fontWeight="bold"
                                    displayOnlyOnMobile={true}
+                                   onClick={() => {
+                                        pageProps.renderMobile &&
+                                             navigator.geolocation.getCurrentPosition(
+                                                  (position) => {
+                                                       localStorage.setItem(
+                                                            "coords",
+                                                            JSON.stringify({
+                                                                 lat: position
+                                                                      .coords
+                                                                      .latitude,
+                                                                 lng: position
+                                                                      .coords
+                                                                      .longitude,
+                                                            })
+                                                       );
+                                                       pageProps.setLocationIsOpen(
+                                                            true
+                                                       );
+                                                  },
+                                                  () => {
+                                                       // pageProps.setLocationIsOpen(
+                                                       //      true
+                                                       // );
+                                                  }
+                                             );
+                                   }}
                               >
                                    Open location service
                               </StyledButton>

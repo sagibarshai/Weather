@@ -57,7 +57,7 @@ export const StyledNotificationContainer = styled.div<Props>`
           height: ${(props) => props.mobileHeigt};
           bottom: ${(props) => props.mobileBottom};
           left: 50%;
-          transform: translate(-50%, -100%);
+          transform: ${(props) => props.mobileTransform};
           padding: 11px 16px;
      }
 `;

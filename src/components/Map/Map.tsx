@@ -36,6 +36,7 @@ const DisplayMap: React.FC<Props> = (props) => {
      if (!isLoaded) return <></>;
      else if (props.coords && location.pathname === "/home")
           return (
+               // <div style={{ position: "relative", zIndex: 1000 }}>
                <GoogleMap
                     id="map"
                     mapContainerStyle={containerStyle}
@@ -59,6 +60,7 @@ const DisplayMap: React.FC<Props> = (props) => {
                               .catch((err) => console.log(err));
                     }}
                />
+               // </div>
           );
      else if (
           props.markerCoordsArray &&

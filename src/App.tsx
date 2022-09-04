@@ -8,13 +8,17 @@ import { StoreState } from "./redux/store";
 import { checkToken } from "./shared/utils/Services/Abra-Server/checkToken";
 import { logout } from "./redux/authSlice";
 import PageSharedTamplate from "./pages/SharedTemplate/PageSharedTamplate";
+import { StyleAppContainer } from "./GlobalStyle";
+
 const App: React.FC = () => {
      const dispatch = useDispatch();
      const navigate = useNavigate();
      const isLogin = useSelector(
           (state: StoreState) => state.authSlice.isLogin
      );
-
+     const renderPraimaryBackground = useSelector(
+          (state: StoreState) => state.headerSlice.renderPraimaryBackground
+     );
      useEffect(() => {
           if (isLogin) navigate("/home");
      }, [isLogin]);
@@ -34,20 +38,24 @@ const App: React.FC = () => {
 
      if (isLogin)
           return (
-               <>
+               <StyleAppContainer
+                    renderPraimaryBackground={renderPraimaryBackground}
+               >
                     <BackgroundAnimation />
                     <PageSharedTamplate />
                     <ReactQueryDevtools initialIsOpen={false} />
-               </>
+               </StyleAppContainer>
           );
      return (
-          <>
+          <StyleAppContainer
+               renderPraimaryBackground={renderPraimaryBackground}
+          >
                <BackgroundAnimation />
                <Routes>
                     <Route element={<Navigate to="/login" />} path="/*" />
                     <Route element={<Login />} path="/login" />
                </Routes>
-          </>
+          </StyleAppContainer>
      );
 };
 

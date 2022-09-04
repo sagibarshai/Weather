@@ -81,6 +81,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
      transform: ${(props) => props.transform};
      padding: ${(props) => props.padding};
      flex-basis: ${(props) => props.flexBasis};
+     align-self: ${(props) => props.alignSelf};
      @media ${cssBreakPoints.bigDesktop} {
           ${(props) => props.displayOnlyOnMobile === true && "display:none"}
      }
@@ -91,7 +92,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
           ${(props) =>
                props.mobileWidthWithCalc &&
                css`
-                    width: calc(${props.mobileWidth} + 48px);
+                    width: calc(${props.mobileWidthWithCalc} + 48px);
                `}
           width:${(props) => props.mobileWidth};
      }

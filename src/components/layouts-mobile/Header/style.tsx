@@ -21,7 +21,7 @@ export const StyledMenuButton = styled.button`
      @media ${cssBreakPoints.mobile} {
           display: inline-block;
      }
-     position: absolute;
+     position: fixed;
      top: 59px;
      right: 30px;
      transform: translate(-50%, -50%);
@@ -35,7 +35,8 @@ export const StyledMenu = styled.div<Props>`
      display: none;
      width: calc(100vw - 30px);
      height: 415px;
-     z-index: 1;
+     z-index: 3;
+     position: relative;
      ${(props) =>
           props.display
                ? css`
@@ -48,7 +49,7 @@ export const StyledMenu = styled.div<Props>`
      padding: 40px 0 0 30px;
      box-shadow: 0 -7px 30px 0 rgba(0, 0, 0, 0.16);
      margin: 0;
-     position: absolute;
+     position: fixed;
      bottom: -5px;
      border-radius: 20px 20px 0 0;
      @media ${cssBreakPoints.laptop} {

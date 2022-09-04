@@ -3,11 +3,11 @@ import themes from "../../shared/themes/themes";
 import cssBreakPoints from "../../shared/cssBreakPoints/cssBreakPoints";
 export const StyledMobileSearchBoxContainer = styled.div`
      display: none;
-     height: 90vh;
+     height: 80vh;
      width: 100vw;
      background-color: #fcfcfc;
      position: fixed;
-     z-index: 2;
+     z-index: 100;
      bottom: 0;
      border-radius: 30px 30px 0 0;
      @media ${cssBreakPoints.mobile} {
@@ -18,12 +18,12 @@ export const StyledMobileSearchBoxContainer = styled.div`
      }
 `;
 export const StyledResultDiv = styled.div`
-     height: 83vh;
+     height: 70vh;
      display: flex;
      flex-direction: column;
      width: 100%;
      align-items: center;
-     overflow-y: auto;
+     overflow-y: scroll;
 `;
 export const StyledText = styled.p`
      width: 270px;

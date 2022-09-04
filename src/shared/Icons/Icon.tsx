@@ -14,8 +14,10 @@ type StyledIconProps = {
      marginRight?: string;
      displayMobile?: boolean;
      displayOnlyOnMobile?: boolean;
-     mobileWidth?:string;
-     mobileHeight?:string
+     mobileWidth?: string;
+     mobileHeight?: string;
+     mobileLeft?: string;
+     transformMobile?: string;
 };
 export const StyledIcon = styled.i<StyledIconProps>`
      width: ${(props) => props.width || "auto"};
@@ -37,7 +39,9 @@ export const StyledIcon = styled.i<StyledIconProps>`
      }
      @media ${cssBreakPoints.mobile} {
           display: ${(props) => props.displayMobile === false && "none"};
-          width: ${props => props.mobileWidth};
-          height:${props => props.mobileHeight};
+          width: ${(props) => props.mobileWidth};
+          height: ${(props) => props.mobileHeight};
+          left: ${(props) => props.mobileLeft};
+          transform: ${(props) => props.transformMobile};
      }
 `;

@@ -16,5 +16,6 @@ export type SharedPageProps = {
           noResultAndEnter: boolean;
           setCurrentPage: (x: string) => void;
           locationIsOpen?: boolean;
+          setLocationIsOpen: (x: boolean) => void;
      };
 };

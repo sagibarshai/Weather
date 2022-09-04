@@ -30,4 +30,5 @@ export interface StyledButtonProps {
      left?: string;
      padding?: string;
      flexBasis?: string;
+     alignSelf?: string;
 }

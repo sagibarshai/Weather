@@ -7,10 +7,9 @@ import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./GlobalStyle";
 import themes from "./shared/themes/themes";
 import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import store from "./redux/store";
+import { Provider, useSelector } from "react-redux";
+import store, { StoreState } from "./redux/store";
 import { QueryClient, QueryClientProvider } from "react-query";
-
 import "./react-query-types.d.ts";
 const root = ReactDOM.createRoot(
      document.getElementById("root") as HTMLElement

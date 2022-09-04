@@ -18,4 +18,5 @@ export type Props = {
      mobileHeigt?: string;
      mobileBottom?: string;
      animation?: boolean;
+     mobileTransform?: string;
 };

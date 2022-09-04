@@ -46,16 +46,22 @@ const PageSharedTamplate: React.FC = () => {
           (state: StoreState) => state.headerSlice.openMap
      );
      useEffect(() => {
-          navigator.geolocation.getCurrentPosition((position) => {
-               localStorage.setItem(
-                    "coords",
-                    JSON.stringify({
-                         lat: position.coords.latitude,
-                         lng: position.coords.longitude,
-                    })
-               );
-               setLocationIsOpen(true);
-          });
+          // renderLaptopAnDesktop &&
+          //      navigator.geolocation.getCurrentPosition(
+          //           (position) => {
+          //                localStorage.setItem(
+          //                     "coords",
+          //                     JSON.stringify({
+          //                          lat: position.coords.latitude,
+          //                          lng: position.coords.longitude,
+          //                     })
+          //                );
+          //                setLocationIsOpen(true);
+          //           }
+          // () => {
+          //      setLocationIsOpen(true);
+          // }
+          // );
      }, []);
      useEffect(() => {
           let position = localStorage.getItem("coords");
@@ -81,6 +87,7 @@ const PageSharedTamplate: React.FC = () => {
           coords,
           setCurrentPage,
           locationIsOpen,
+          setLocationIsOpen,
      };
      useEffect(() => {
           if (location.pathname === "/home") setCurrentPage("/home");
