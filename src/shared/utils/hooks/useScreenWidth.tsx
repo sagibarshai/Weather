@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { jsBreakPoints } from "../../jsBreakPoints/jsBreakPoints";
-function getWindowSize() {
+const getWindowSize = () => {
      const { innerWidth } = window;
      return innerWidth;
-}
+};
 export const useScreenWidth = () => {
      const [windowSize, setWindowSize] = useState(getWindowSize());
      const [devicesList, setDevicesList] = useState<string[] | []>([]);

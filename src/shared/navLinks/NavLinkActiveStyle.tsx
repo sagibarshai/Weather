@@ -1,10 +1,7 @@
 import themes from "../themes/themes";
-type ObjectTypes = {
-     textDecoration?: string;
-     color?: string;
-     position?: string;
-};
-const NavLinkActiveStyle: ObjectTypes = {
+import { NavLinkActiveStyleType } from "./types";
+
+const NavLinkActiveStyle: NavLinkActiveStyleType = {
      textDecoration: "none",
      color: themes.white,
      position: "relative",

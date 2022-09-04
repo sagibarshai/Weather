@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Login from "./pages/Login/Login";
 import BackgroundAnimation from "./shared/backgroundAnimation/BackgroundAnimation";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import Favorites from "./pages/Favorites";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "./redux/store";
+import { StoreState } from "./redux/store";
 import { checkToken } from "./shared/utils/Services/Abra-Server/checkToken";
 import { logout } from "./redux/authSlice";
-import PageSharedTamplate from "./pages/PageSharedTamplate";
+import PageSharedTamplate from "./pages/SharedTemplate/PageSharedTamplate";
 const App: React.FC = () => {
-     const [lat, setLat] = useState<number>();
-     const [lng, setLng] = useState<number>();
      const dispatch = useDispatch();
      const navigate = useNavigate();
-     const isLogin = useSelector((state: RootState) => state.authSlice.isLogin);
+     const isLogin = useSelector(
+          (state: StoreState) => state.authSlice.isLogin
+     );
 
      useEffect(() => {
           if (isLogin) navigate("/home");

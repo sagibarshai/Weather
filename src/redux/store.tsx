@@ -5,6 +5,6 @@ import authSlice from "./authSlice";
 const store = configureStore({
      reducer: { headerSlice, authSlice },
 });
-export type RootState = ReturnType<typeof store.getState>;
+export type StoreState = ReturnType<typeof store.getState>;
 
 export default store;

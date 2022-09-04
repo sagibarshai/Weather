@@ -1,6 +1,6 @@
-import { CityObj, Result } from "../SearchBox";
+import { CityObj, Result } from "../SearchBox/types";
 import { DeggresType } from "../../shared/utils/Functions/toggleDeggres";
-import { FavoriteType } from "../../pages/Favorites";
+import { FavoriteType } from "../../pages/Favorites/types";
 export type SelectedCityType = {
      existingCity: CityObj | null;
      selectedCityDataFromFavorites?: CityObj | null;

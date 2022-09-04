@@ -4,16 +4,16 @@ import {
      StyledColumnDiv,
      StyledText,
      StyleSimpleButton,
-} from "../HomePageDisplayCity/StyledHomePageDisplayCity";
+} from "../HomePageDisplayCity/style";
 import { StyledIcon } from "../../shared/Icons/Icon";
-import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon";
+import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon/DiscoverIcon";
 import { epochConverter } from "../../shared/utils/Times/epochConverter";
 import { ReactComponent as IconArrowWind } from "../../shared/svg/arrow-wind.svg";
 import { ReactComponent as IconArrowLeft } from "../../shared/svg/arrow-square-left.svg";
 import { scrollBarHandlerXAxis } from "../../shared/utils/Functions/scrollbarHandler";
 import { toggleDeggres } from "../../shared/utils/Functions/toggleDeggres";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { StoreState } from "../../redux/store";
 import { forcast12HoursType } from "../HomePageDisplayCity/types";
 type Props = {
      forcast12Hours: forcast12HoursType;
@@ -24,7 +24,7 @@ type Props = {
 };
 const DisplayDailyData: React.FC<Props> = (props) => {
      const degressType = useSelector(
-          (state: RootState) => state.headerSlice.degressType
+          (state: StoreState) => state.headerSlice.degressType
      );
      return (
           <>

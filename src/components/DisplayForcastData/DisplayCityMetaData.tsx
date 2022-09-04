@@ -5,21 +5,21 @@ import {
      StyledMinTemperatureText,
      StyledTempratureSpan,
      StyledDate,
-} from "../HomePageDisplayCity/StyledHomePageDisplayCity";
-import DiscoverDescription from "../../shared/utils/Components/DiscoverDescription";
-import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon";
+} from "../HomePageDisplayCity/style";
+import DiscoverDescription from "../../shared/utils/Components/DiscoverDescription/DiscoverDescription";
+import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon/DiscoverIcon";
 import { toggleDeggres } from "../../shared/utils/Functions/toggleDeggres";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { StoreState } from "../../redux/store";
 import { StyledButton } from "../../shared/UIElements/Button/Button";
 import { StyledIcon } from "../../shared/Icons/Icon";
 import { ReactComponent as IconFavroiteOutline } from "../../shared/svg/fav-outline.svg";
-import { CityObj } from "../SearchBox";
+import { CityObj } from "../SearchBox/types";
 import {
      forcast12HoursType,
      DailyForecastsType,
 } from "../HomePageDisplayCity/types";
-import { FavoriteType } from "../../pages/Favorites";
+import { FavoriteType } from "../../pages/Favorites/types";
 type Props = {
      renderMobile: boolean | undefined;
      renderLaptopAnDesktop: boolean | undefined;
@@ -33,7 +33,7 @@ type Props = {
 };
 const DisplayCityMetaData: React.FC<Props> = (props) => {
      const degressType = useSelector(
-          (state: RootState) => state.headerSlice.degressType
+          (state: StoreState) => state.headerSlice.degressType
      );
      return (
           <>

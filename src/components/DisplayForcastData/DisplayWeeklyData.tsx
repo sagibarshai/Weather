@@ -5,14 +5,14 @@ import {
      StyledText,
      StyledMaxTemperatureText,
      StyledMinTemperatureText,
-} from "../HomePageDisplayCity/StyledHomePageDisplayCity";
+} from "../HomePageDisplayCity/style";
 import { StyledButton } from "../../shared/UIElements/Button/Button";
-import DiscoverDescription from "../../shared/utils/Components/DiscoverDescription";
-import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon";
+import DiscoverDescription from "../../shared/utils/Components/DiscoverDescription/DiscoverDescription";
+import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon/DiscoverIcon";
 import { returnShortDayFromDate } from "../../shared/utils/Dates/returnShortDayFromDate";
 import { toggleDeggres } from "../../shared/utils/Functions/toggleDeggres";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { StoreState } from "../../redux/store";
 import { DailyForecastsType } from "../HomePageDisplayCity/types";
 type Props = {
      forcasst5Days: { DailyForecasts: DailyForecastsType[] };
@@ -22,7 +22,7 @@ type Props = {
 };
 const DisplayWeeklyData: React.FC<Props> = (props) => {
      const degressType = useSelector(
-          (state: RootState) => state.headerSlice.degressType
+          (state: StoreState) => state.headerSlice.degressType
      );
      return (
           <>

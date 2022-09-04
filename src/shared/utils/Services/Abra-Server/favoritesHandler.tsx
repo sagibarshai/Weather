@@ -1,5 +1,5 @@
 import { axiosAbraInstence } from "./axiosAbraInstence";
-import { FavoriteType } from "../../../../pages/Favorites";
+import { FavoriteType } from "../../../../pages/Favorites/types";
 export const favoritesHandler = async (data: FavoriteType) => {
      const token = localStorage.getItem("token");
      try {

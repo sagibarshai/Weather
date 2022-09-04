@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "styled-components";
-import GlobalStyle from "./GolbalStyle";
+import GlobalStyle from "./GlobalStyle";
 import themes from "./shared/themes/themes";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
