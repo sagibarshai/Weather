@@ -29,19 +29,20 @@ const DisplayMap: React.FC<Props> = (props) => {
           id: "google-map-script",
           googleMapsApiKey: "AIzaSyAgLCyxSADazy6Orz55RLmosWpVRjQeFcs",
      });
-     const [position, setPosition] = React.useState<any>(
-          props.coords || JSON.parse(localStorage.getItem("coords"))
-     );
+     const [position, setPosition] = React.useState<any>(props.coords);
      const degressType: DeggresType = useSelector(
           (state: StoreState) => state.headerSlice.degressType
      );
+     let coordsFromLocalStorage = localStorage.getItem("coords");
+     if (coordsFromLocalStorage)
+          coordsFromLocalStorage = JSON.parse(coordsFromLocalStorage);
      if (!isLoaded) return <></>;
      else if (props.coords && location.pathname === "/home")
           return (
                <GoogleMap
                     id="map"
                     mapContainerStyle={containerStyle}
-                    center={props.center || position}
+                    center={props.center || position || coordsFromLocalStorage}
                     zoom={props.zoom || 10}
                     onClick={(e) => {
                          const coords: Coords = {
@@ -71,7 +72,7 @@ const DisplayMap: React.FC<Props> = (props) => {
                <GoogleMap
                     id="map"
                     mapContainerStyle={containerStyle}
-                    center={props.center || position}
+                    center={props.center || position || coordsFromLocalStorage}
                     zoom={props.zoom || 10}
                >
                     {props.markerCoordsArray.map((fav, index) => (

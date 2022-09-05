@@ -18,7 +18,6 @@ export const StyledLoginContainer = styled.form<Props>`
      left:50%;
      transform:translate(-50%,-50%);
      border-radius: 30px;
-     /* margin:168px auto 168px auto; */
      padding:54px;
      display: flex;
      justify-content: center;
@@ -34,7 +33,7 @@ export const StyledLoginContainer = styled.form<Props>`
           background-color: #fff;
           display: inline-block;
           border-radius: 30px 30px 0 0 ;
-          height: 80vh;
+          height: 75vh;
           top:unset;
           position: fixed;
           bottom: 0;
@@ -43,7 +42,7 @@ export const StyledLoginContainer = styled.form<Props>`
           ${(props) =>
                props.mobileServerError === true &&
                css`
-                    height: 777px;
+                    height: 82.5vh;
                `};
      }
 `;

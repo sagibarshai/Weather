@@ -29,14 +29,14 @@ export const StyledMenuButton = styled.button`
      background-color: transparent;
      border: none;
      cursor: pointer;
-     z-index: 2;
+     z-index: 4;
 `;
 export const StyledMenu = styled.div<Props>`
      backdrop-filter: blur(0rem);
      display: none;
      width: calc(100vw - 30px);
      height: 415px;
-     z-index: 3;
+     z-index: 4;
      position: relative;
      ${(props) =>
           props.display

@@ -10,7 +10,11 @@ import {
      StyledTextNotFoundCity,
 } from "./style";
 import { StoreState } from "../../redux/store";
-import { closeMobileMenu, togglePopup } from "../../redux/headerSlice";
+import {
+     closeMobileMenu,
+     toggleMap,
+     togglePopup,
+} from "../../redux/headerSlice";
 import Popup from "../../components/Popup/Popup";
 import { StyledIcon } from "../../shared/Icons/Icon";
 import { ReactComponent as IconLocation } from "../../shared/svg/location.svg";
@@ -43,6 +47,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const openMap = useSelector(
           (state: StoreState) => state.headerSlice.openMap
      );
+
      useEffect(() => {
           if (location.state) {
                if (location.state.noResultAndEnter) {
@@ -191,6 +196,12 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                                                        pageProps.setLocationIsOpen(
                                                             true
                                                        );
+                                                       pageProps.setCoords({
+                                                            lat: position.coords
+                                                                 .latitude,
+                                                            lng: position.coords
+                                                                 .longitude,
+                                                       });
                                                   },
                                                   () => {
                                                        pageProps.setLocationIsOpen(
@@ -221,7 +232,10 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                     </StyledPageContainer>
                </>
           );
-     else return <></>;
+     else {
+          console.log("else");
+          return <></>;
+     }
 };
 
 export default Home;

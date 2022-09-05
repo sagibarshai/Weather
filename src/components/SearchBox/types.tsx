@@ -25,4 +25,5 @@ export type Props = {
      color?: string;
      setExistingCity?: (x: CityObj) => void;
      existingCity?: CityObj | null;
+     searchIsLoading?: boolean;
 };

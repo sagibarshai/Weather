@@ -15,6 +15,7 @@ export const StyledBigContainer = styled.div<Props>`
      z-index: 5;
      padding: 12px 0;
      max-height: 372px;
+     min-height: 200px;
      height: ${(props) => props.height};
 `;
 export const StyledResultContainer = styled.div<Props>`

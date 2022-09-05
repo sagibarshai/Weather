@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import HashLoading from "../../shared/Loaing-elements/HashLoading";
 import { selectCity } from "../../shared/utils/Services/Accuweather-Api/selectCity";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { convertDateToText } from "../../shared/utils/Dates/convertDateToText";
@@ -64,24 +65,31 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                else setItemIsOnFavorites(false);
           }
      }, [props.existingCity, favoritesList]);
-     useQuery("favorites", getFromFavorites, {
-          cacheTime: Infinity,
-          staleTime: Infinity,
-          refetchOnMount: true,
-          refetchOnReconnect: true,
-          onSuccess: (data: { data: { results: FavoriteType[] | [] } }) => {
-               setFavoritesList(data.data.results);
-          },
-          onError: (e: any) => {
-               console.log(e);
-          },
-     });
+     const { isLoading: getFromFavoritesLoading } = useQuery(
+          "favorites",
+          getFromFavorites,
+          {
+               cacheTime: Infinity,
+               staleTime: Infinity,
+               refetchOnMount: true,
+               refetchOnReconnect: true,
+               onSuccess: (data: {
+                    data: { results: FavoriteType[] | [] };
+               }) => {
+                    console.log(data);
+                    setFavoritesList(data.data.results);
+               },
+               onError: (e: any) => {
+                    console.log(e);
+               },
+          }
+     );
      const degressType: DeggresType = useSelector(
           (state: StoreState) => state.headerSlice.degressType
      );
      const [open5daysForcastMobile, setOpen5daysForcastMobile] =
           useState<boolean>(false);
-     const { data: forcasst5Days } = useQuery(
+     const { data: forcasst5Days, isLoading: forcast5DaysLoading } = useQuery(
           ["5daysForcast", props?.existingCity?.key],
           () => selectCity(props?.existingCity?.key),
           { cacheTime: twelveHours, staleTime: twelveHours, enabled }
@@ -90,11 +98,16 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      setInterval(() => {
           setNow(convertDateToText());
      }, 1000 * 60);
-     const { data: forcast12Hours } = useQuery(
-          ["forcast12Hours", props?.existingCity?.key],
-          () => getForcastFor12Hours(props?.existingCity?.key),
-          { cacheTime: twelveHours / 6, staleTime: twelveHours / 6, enabled }
-     ) as forcast12HoursTypeData;
+     const { data: forcast12Hours, isLoading: forcast12HoursLoading } =
+          useQuery(
+               ["forcast12Hours", props?.existingCity?.key],
+               () => getForcastFor12Hours(props?.existingCity?.key),
+               {
+                    cacheTime: twelveHours / 6,
+                    staleTime: twelveHours / 6,
+                    enabled,
+               }
+          ) as forcast12HoursTypeData;
      const forcast5daystemperatureDay: number[] = [];
      const forcast5daystemperatureNight: number[] = [];
      const forcast5daysLablesDays: string[] = [];
@@ -105,8 +118,15 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           forcast5daysLablesDates,
           forcast5daysLablesDays,
      };
+
      return (
           <>
+               <HashLoading
+                    loading={forcast5DaysLoading || forcast12HoursLoading}
+                    color="#fffff"
+                    fixedCenter={true}
+                    size={40}
+               />
                {props.existingCity && forcasst5Days && forcast12Hours && (
                     <>
                          {forcasst5Days.DailyForecasts.map((day) => {
@@ -242,13 +262,11 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                             lng: 35.201315,
                                                        })
                                                   );
-                                                  props.setLocationIsOpen &&
-                                                       props.setLocationIsOpen(
-                                                            true
-                                                       );
-                                                  props.setLocationIsOpen(true);
-                                                  dispatch(toggleMap());
-                                                  setErrorNotification(false);
+                                                  localStorage.setItem(
+                                                       "openOnMap",
+                                                       "true"
+                                                  );
+                                                  window.location.reload();
                                              }
                                         }}
                                         mobileTransform={
@@ -283,8 +301,8 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                                               ? "removed from"
                                                               : "add to"
                                                     } favorites `
-                                                  : `We having some issues to get your location, please check out your device setting and allow location,
-                                                  if you want to continue with random location click on this popup.`
+                                                  : `We having some issues to get your location, please check your device setting and allow location,
+                                                       if you want to continue with random location click on this popup.`
                                         }
                                         icon={
                                              showAddToFavoritesNotification ? (

@@ -91,7 +91,17 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           setCurrentPage,
           locationIsOpen,
           setLocationIsOpen,
+          setCoords,
      };
+     useEffect(() => {
+          let coordsFromLocalStorge = localStorage.getItem("coords");
+          if (localStorage.getItem("openOnMap") && coordsFromLocalStorge) {
+               localStorage.removeItem("openOnMap");
+               pageProps.setLocationIsOpen(true);
+               setCoords(JSON.parse(coordsFromLocalStorge));
+               dispatch(toggleMap());
+          }
+     }, []);
      useEffect(() => {
           if (location.pathname === "/home") setCurrentPage("/home");
           else if (location.pathname === "/favorites")
@@ -114,6 +124,8 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                     />
                )}
                {props.renderMobile && <MobileHeader />}
+               <MobileMenuBottom />
+
                <Routes>
                     {currentPage === "/home" && (
                          <Route

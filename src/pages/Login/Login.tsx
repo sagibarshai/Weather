@@ -24,6 +24,7 @@ import {
      StyledSpan,
      StyledContentContainer,
 } from "./style";
+import HashLoading from "../../shared/Loaing-elements/HashLoading";
 const Login = () => {
      const [email, setEmail] = useState<string>("");
      const [password, setPassword] = useState<string>("");
@@ -39,14 +40,11 @@ const Login = () => {
      const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
      const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
      const [serverError, setServerError] = useState<string | null>(null);
-     const onSubmitHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-          setServerError(null);
-          e.preventDefault();
-          try {
-               const res = await loginService(email, password);
-               dispatch(login(res.data.token));
-               return res;
-          } catch (err: any) {
+     const { mutate, isLoading: loginIsLoading } = useMutation(loginService, {
+          onSuccess: (data) => {
+               dispatch(login(data?.data?.token));
+          },
+          onError: (err: any) => {
                let errorMessage = "";
                const errorsObj = err.request.response;
                const parsesErrorsObj = JSON.parse(errorsObj);
@@ -58,7 +56,13 @@ const Login = () => {
                     } else console.log(error);
                }
                setServerError(errorMessage);
-          }
+          },
+     });
+     const onSubmitHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+          setServerError(null);
+          e.preventDefault();
+          const dataObj = { email, password };
+          mutate(dataObj);
      };
 
      useEffect(() => {
@@ -198,14 +202,26 @@ const Login = () => {
                               alignSelf="center"
                               mobileWidthWithCalc="324px"
                               margin="40px 0 0 0"
-                              disabled={!(emailIsValid && passwordIsValid)}
+                              disabled={
+                                   !(emailIsValid && passwordIsValid) ||
+                                   loginIsLoading
+                              }
                               variant={
                                    !(emailIsValid && passwordIsValid)
                                         ? "disabled"
                                         : "default"
                               }
                          >
-                              Log in
+                              {loginIsLoading ? (
+                                   <HashLoading
+                                        loading={loginIsLoading}
+                                        size={25}
+                                        color="#ffffff"
+                                        width="100%"
+                                   />
+                              ) : (
+                                   `Log in`
+                              )}
                          </StyledButton>
                          <StyledContainer margin="48px 54px 0">
                               <StyledHr />

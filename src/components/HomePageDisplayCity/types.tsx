@@ -17,11 +17,13 @@ export type DailyForecastsType = {
           Maximum: { Value: number; Unit: DeggresType };
      };
      Day: { IconPhrase: string; Icon: number };
+     isLoading?: boolean;
 };
 export type DataType = {
      data: {
           DailyForecasts: DailyForecastsType[];
      };
+     isLoading?: boolean;
 };
 export type forcast12HoursType = {
      EpochDateTime: number;
@@ -35,6 +37,8 @@ export type forcast12HoursType = {
      };
 }[];
 export type forcast12HoursTypeData = {
+     isLoading?: boolean;
+
      data: {
           EpochDateTime: number;
           DateTime: string;

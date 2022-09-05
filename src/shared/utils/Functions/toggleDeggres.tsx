@@ -4,8 +4,6 @@ export const toggleDeggres = (
      value: number,
      serverDegressType: DeggresType
 ) => {
-     if (isNaN(value)) return;
-     //  return value;
      if (userType === serverDegressType) return value;
      if (userType === "C") return Math.round((value - 32) * (5 / 9));
      else return Math.round((value * 9 + 160) / 5);

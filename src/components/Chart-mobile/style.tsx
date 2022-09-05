@@ -2,11 +2,11 @@ import styled from "styled-components";
 import themes from "../../shared/themes/themes";
 export const StyledMobileLineContainer = styled.div`
      width: 100vw;
-     height: 70vh;
+     height: 55vh;
      background-color: ${themes.white};
      position: fixed;
      bottom: 0;
-     z-index: 3;
+     z-index: 5;
      box-shadow: 0 -7px 30px 0 rgba(0, 0, 0, 0.16);
      border-radius: 30px 30px 0 0;
      overflow-y: scroll;

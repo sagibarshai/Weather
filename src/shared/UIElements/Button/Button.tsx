@@ -5,7 +5,7 @@ import { StyledButtonProps } from "./types";
 
 export const StyledButton = styled.button<StyledButtonProps>`
      position: relative;
-     z-index: 2;
+     z-index: 4;
      font-family: inherit;
      width: 402px;
      height: 54px;

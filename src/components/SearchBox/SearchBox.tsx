@@ -10,10 +10,28 @@ import { ReactComponent as IconCity } from "../../shared/svg/city.svg";
 import { StyledIcon } from "../../shared/Icons/Icon";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Props } from "./types";
+import HashLoading from "../../shared/Loaing-elements/HashLoading";
 const SearchBox: React.FC<Props> = (props) => {
      const navigate = useNavigate();
      const location = useLocation();
-     if (props.results?.length === 0 && !props.noResultAndEnter)
+     if (props.searchIsLoading) {
+          return (
+               <StyledBigContainer
+                    id="scroll"
+                    display={props.display}
+                    height="326px"
+               >
+                    <StyledResultContainer>
+                         <HashLoading
+                              color="#000000"
+                              loading={props.searchIsLoading}
+                              fixedCenter={true}
+                              size={30}
+                         />
+                    </StyledResultContainer>
+               </StyledBigContainer>
+          );
+     } else if (props.results?.length === 0 && !props.noResultAndEnter)
           return (
                <StyledBigContainer
                     id="scroll"

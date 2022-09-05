@@ -71,7 +71,7 @@ const Header: React.FC<Props> = (props) => {
           exact: true,
      });
      const debounce = useDebounce(searchInput, 300);
-     const { data } = useQuery(
+     const { data, isLoading: searchIsLoading } = useQuery(
           ["autoComplete", isCached ? searchInput : debounce],
           () => search(isCached ? searchInput : debounce),
           {
@@ -272,6 +272,7 @@ const Header: React.FC<Props> = (props) => {
                                    display={searchIsFocus && searchInput !== ""}
                                    results={searchResults}
                                    hoverIndexResult={hoverIndexResult}
+                                   searchIsLoading={searchIsLoading}
                               />
                          </Input>
                     </StyledDiv>
@@ -287,7 +288,18 @@ const Header: React.FC<Props> = (props) => {
                               position="relative"
                          >
                               <StyledWrapperButton
-                                   onClick={() => dispatch(toggleMap())}
+                                   onClick={() => {
+                                        if (!localStorage.getItem("coords")) {
+                                             localStorage.setItem(
+                                                  "coords",
+                                                  JSON.stringify({
+                                                       lat: 32.852247,
+                                                       lng: 35.201315,
+                                                  })
+                                             );
+                                        }
+                                        dispatch(toggleMap());
+                                   }}
                               >
                                    <StyledIcon width="30px" height="30px">
                                         {mapIsOpen ? (
