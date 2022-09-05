@@ -7,6 +7,7 @@ import { StyledIcon } from "../../shared/Icons/Icon";
 import { ReactComponent as IconFavWhiteFull } from "../../shared/svg/fav-full.svg";
 import { ReactComponent as IconFavWhite } from "../../shared/svg/fav-outline-white.svg";
 import { ReactComponent as IconMapBlack } from "../../shared/svg/map-black.svg";
+import { ReactComponent as IconError } from "../../shared/svg/info-circle.svg";
 import { returnShortDayFromDate } from "../../shared/utils/Dates/returnShortDayFromDate";
 import { getForcastFor12Hours } from "../../shared/utils/Services/Accuweather-Api/getForcastFor12Hours";
 import LineChart from "../Chart/LineChart";
@@ -40,6 +41,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      const [now, setNow] = useState<string>(convertDateToText());
      const [showAddToFavoritesNotification, setShowAddToFavoritesNotification] =
           useState<boolean>(false);
+     const [errorNotification, setErrorNotification] = useState<boolean>(false);
      const [selected, setSelected] = useState<number>(0);
      const { mutate } = useMutation(favoritesHandler, {
           onSuccess: (data: { status: number }) => {
@@ -205,7 +207,22 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         width="114px"
                                         margin="60px auto 0 auto"
                                         fontWeight="bold"
-                                        onClick={() => dispatch(toggleMap())}
+                                        onClick={() => {
+                                             if (
+                                                  localStorage.getItem("coords")
+                                             ) {
+                                                  dispatch(toggleMap());
+                                             } else {
+                                                  setErrorNotification(true);
+                                                  setTimeout(
+                                                       () =>
+                                                            setErrorNotification(
+                                                                 false
+                                                            ),
+                                                       8000
+                                                  );
+                                             }
+                                        }}
                                    >
                                         <StyledIcon marginRight="8px">
                                              <IconMapBlack />
@@ -213,21 +230,74 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                                         Map
                                    </StyledButton>
                               )}
-                              {showAddToFavoritesNotification && (
+                              {(showAddToFavoritesNotification ||
+                                   errorNotification) && (
                                    <Notification
-                                        mobileTransform="translate(-50%, -100%)"
-                                        variant="success"
+                                        onClick={() => {
+                                             if (errorNotification) {
+                                                  localStorage.setItem(
+                                                       "coords",
+                                                       JSON.stringify({
+                                                            lat: 32.852247,
+                                                            lng: 35.201315,
+                                                       })
+                                                  );
+                                                  props.setLocationIsOpen &&
+                                                       props.setLocationIsOpen(
+                                                            true
+                                                       );
+                                                  props.setLocationIsOpen(true);
+                                                  dispatch(toggleMap());
+                                                  setErrorNotification(false);
+                                             }
+                                        }}
+                                        mobileTransform={
+                                             showAddToFavoritesNotification
+                                                  ? "translate(-50%, -100%)"
+                                                  : "translate(0%, -100%)"
+                                        }
+                                        variant={
+                                             showAddToFavoritesNotification
+                                                  ? "success"
+                                                  : "error"
+                                        }
                                         animation={true}
-                                        mobileWidth="300px"
-                                        mobileHeigt="50px"
-                                        message={`${
-                                             props.existingCity.LocalizedName
-                                        } has ${
-                                             !itemIsOnFavorites
-                                                  ? "removed from"
-                                                  : "add to"
-                                        } favorites `}
-                                        icon={<IconSuccses />}
+                                        animationTime={8000}
+                                        mobileWidth={
+                                             showAddToFavoritesNotification
+                                                  ? "300px"
+                                                  : "325px"
+                                        }
+                                        mobileHeigt={
+                                             showAddToFavoritesNotification
+                                                  ? "70px"
+                                                  : "85px"
+                                        }
+                                        message={
+                                             showAddToFavoritesNotification
+                                                  ? `${
+                                                         props.existingCity
+                                                              .LocalizedName
+                                                    } has ${
+                                                         !itemIsOnFavorites
+                                                              ? "removed from"
+                                                              : "add to"
+                                                    } favorites `
+                                                  : `We having some issues to get your location, please check out your device setting and allow location,
+                                                  if you want to continue with random location click on this popup.`
+                                        }
+                                        icon={
+                                             showAddToFavoritesNotification ? (
+                                                  <IconSuccses />
+                                             ) : (
+                                                  <IconError />
+                                             )
+                                        }
+                                        positionFixiedBottom={
+                                             showAddToFavoritesNotification
+                                                  ? false
+                                                  : true
+                                        }
                                    />
                               )}
                          </StyledContainer>

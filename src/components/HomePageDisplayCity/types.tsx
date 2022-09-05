@@ -8,6 +8,7 @@ export type SelectedCityType = {
      renderMobile?: boolean;
      renderLaptopAnDesktop?: boolean;
      selectedCityDataFromMap?: CityObj | null;
+     setLocationIsOpen?: (x: boolean) => void;
 };
 export type DailyForecastsType = {
      Date: Date;

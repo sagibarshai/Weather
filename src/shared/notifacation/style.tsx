@@ -15,7 +15,6 @@ export const StyledNotificationContainer = styled.div<Props>`
                background-color: rgba(0, 0, 0, 0.8);
                position: fixed;
                bottom: 54px;
-               mobile-bottom: 128px;
                left: 50%;
                transform: translate(-50%, 0%);
                gap: 5px;
@@ -37,7 +36,9 @@ export const StyledNotificationContainer = styled.div<Props>`
           `};
      gap: ${(props) => props.gap};
      transition: all 4s;
-     animation: ${(props) => props.animation && `lowerOpacity 4s infinite`};
+     animation: ${(props) =>
+          props.animation &&
+          `lowerOpacity ${props.animationTime || "5s"} infinite`};
      @keyframes lowerOpacity {
           0% {
                opacity: 1;
@@ -59,6 +60,14 @@ export const StyledNotificationContainer = styled.div<Props>`
           left: 50%;
           transform: ${(props) => props.mobileTransform};
           padding: 11px 16px;
+          ${(props) =>
+               props.positionFixiedBottom &&
+               css`
+                    position: fixed;
+                    bottom: 150px;
+                    left: 50%;
+                    transform: translate(-50%, -100%);
+               `}
      }
 `;
 export const StyledSpan = styled.span<Props>`

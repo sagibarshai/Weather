@@ -19,4 +19,6 @@ export type Props = {
      mobileBottom?: string;
      animation?: boolean;
      mobileTransform?: string;
+     positionFixiedBottom?: boolean;
+     animationTime?: number;
 };

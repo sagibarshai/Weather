@@ -16,6 +16,7 @@ import { StyledButton } from "../../shared/UIElements/Button/Button";
 import { toggleMap } from "../../redux/headerSlice";
 import { StyledIcon } from "../../shared/Icons/Icon";
 import { ReactComponent as IconLayout } from "../../shared/svg/layout.svg";
+import { Props } from "./types";
 export const StyledButtonText = styled.span`
      font-family: inherit;
      font-size: 1.8rem;
@@ -23,15 +24,12 @@ export const StyledButtonText = styled.span`
      color: black;
 `;
 
-const PageSharedTamplate: React.FC = () => {
+const PageSharedTamplate: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      const location = useLocation();
      const deviceValue = useScreenWidth()[0];
      const [currentPage, setCurrentPage] = useState<string>("/home");
      const [notFoundCityName, setNotFoundCityName] = useState<string>("");
-     const [renderMobile, setRenderMobile] = useState<boolean>(true);
-     const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
-          useState<boolean>(true);
      const [existingCity, setExistingCity] = useState<null | CityObj>(null);
      const [noResultAndEnter, setNoResultAndEnter] = useState<boolean>(false);
      const [openSearchBoxMobile, setOpenSearchBoxMobile] =
@@ -46,23 +44,28 @@ const PageSharedTamplate: React.FC = () => {
           (state: StoreState) => state.headerSlice.openMap
      );
      useEffect(() => {
-          // renderLaptopAnDesktop &&
-          //      navigator.geolocation.getCurrentPosition(
-          //           (position) => {
-          //                localStorage.setItem(
-          //                     "coords",
-          //                     JSON.stringify({
-          //                          lat: position.coords.latitude,
-          //                          lng: position.coords.longitude,
-          //                     })
-          //                );
-          //                setLocationIsOpen(true);
-          //           }
-          // () => {
-          //      setLocationIsOpen(true);
-          // }
-          // );
-     }, []);
+          if (props.renderLaptopAnDesktop) {
+               console.log(props.renderLaptopAnDesktop);
+               navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                         localStorage.setItem(
+                              "coords",
+                              JSON.stringify({
+                                   lat: position.coords.latitude,
+                                   lng: position.coords.longitude,
+                              })
+                         );
+                         setLocationIsOpen(true);
+                    },
+                    () => {
+                         setLocationIsOpen(false);
+                         throw new Error(
+                              `cannot accses location,please get to setting and enabled to chrome your location.. `
+                         );
+                    }
+               );
+          }
+     }, [props.renderLaptopAnDesktop, props.renderMobile]);
      useEffect(() => {
           let position = localStorage.getItem("coords");
           if (position) {
@@ -74,8 +77,8 @@ const PageSharedTamplate: React.FC = () => {
      const pageProps = {
           notFoundCityName,
           setNotFoundCityName,
-          renderLaptopAnDesktop,
-          renderMobile,
+          renderLaptopAnDesktop: props.renderLaptopAnDesktop,
+          renderMobile: props.renderMobile,
           existingCity,
           setExistingCity,
           noResultAndEnter,
@@ -95,21 +98,12 @@ const PageSharedTamplate: React.FC = () => {
                setCurrentPage("/favorites");
      }, [location]);
      useEffect(() => {
-          if (deviceValue === "bigDesktop" || deviceValue === "laptop") {
-               setRenderLaptopAnDesktop(true);
-               setRenderMobile(false);
-          } else {
-               setRenderLaptopAnDesktop(false);
-               setRenderMobile(true);
-          }
-     }, [deviceValue]);
-     useEffect(() => {
           selectedCityDataFromFavorites &&
                setExistingCity(selectedCityDataFromFavorites);
      }, [selectedCityDataFromFavorites, location]);
      return (
           <>
-               {renderLaptopAnDesktop && (
+               {props.renderLaptopAnDesktop && (
                     <Header
                          setNotFoundCityName={setNotFoundCityName}
                          existingCity={existingCity}
@@ -119,7 +113,7 @@ const PageSharedTamplate: React.FC = () => {
                          currentPage={currentPage}
                     />
                )}
-               {renderMobile && <MobileHeader />}
+               {props.renderMobile && <MobileHeader />}
                <Routes>
                     {currentPage === "/home" && (
                          <Route
@@ -134,7 +128,7 @@ const PageSharedTamplate: React.FC = () => {
                          />
                     )}
                </Routes>
-               {renderMobile && mapIsOpen && (
+               {props.renderMobile && mapIsOpen && (
                     <StyledButton
                          variant="white"
                          position="absolute"

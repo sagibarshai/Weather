@@ -8,6 +8,7 @@ type Props = {
 export const StyledMobileMenuContainer = styled.div<Props>`
      display: none;
      z-index: 5;
+     position: relative;
      @media ${cssBreakPoints.mobile} {
           ${(props) =>
                props.display === false

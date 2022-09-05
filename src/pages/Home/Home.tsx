@@ -86,7 +86,63 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                     </StyledPageContainer>
                </>
           );
-     else if (!pageProps.locationIsOpen)
+     else if (pageProps.noResultAndEnter)
+          return (
+               <>
+                    <StyledPageContainer
+                         openMobileMenu={openMobileMenu}
+                         renderPraimaryBackground={renderPraimaryBackground}
+                         onClick={onClickHandler}
+                         openPopup={openPopup}
+                    >
+                         <StyledNotFoundCityDiv>
+                              <StyledIcon>
+                                   <IconCity />
+                              </StyledIcon>
+                              <StyledTextNotFoundCity>
+                                   We couldn’t find any city named "
+                                   {pageProps.notFoundCityName}", <br />
+                                   please try again.
+                              </StyledTextNotFoundCity>
+                         </StyledNotFoundCityDiv>
+                    </StyledPageContainer>
+               </>
+          );
+     else if (pageProps.existingCity) {
+          return (
+               <>
+                    <StyledPageContainer
+                         openMobileMenu={openMobileMenu}
+                         renderPraimaryBackground={renderPraimaryBackground}
+                         onClick={onClickHandler}
+                         openPopup={openPopup}
+                    >
+                         <HomePageDisplayCity
+                              setLocationIsOpen={pageProps.setLocationIsOpen}
+                              selectedCityDataFromMap={selectedCityDataFromMap}
+                              existingCity={pageProps.existingCity}
+                              renderMobile={pageProps.renderMobile}
+                              renderLaptopAnDesktop={
+                                   pageProps.renderLaptopAnDesktop
+                              }
+                              selectedCityDataFromFavorites={
+                                   pageProps.selectedCityDataFromFavorites
+                              }
+                         />
+                    </StyledPageContainer>
+                    {openPopup && (
+                         <Popup
+                              message="You about to log out from WeatherApp.
+                                   Are you sure you want to log out?"
+                              cancelMessage="I want to stay"
+                              continueButtonText="Yes, log out"
+                              title="Log Out"
+                              callback={() => dispatch(logout())}
+                         />
+                    )}
+               </>
+          );
+     } else if (!pageProps.locationIsOpen)
           return (
                <>
                     <StyledPageContainer
@@ -137,9 +193,12 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                                                        );
                                                   },
                                                   () => {
-                                                       // pageProps.setLocationIsOpen(
-                                                       //      true
-                                                       // );
+                                                       pageProps.setLocationIsOpen(
+                                                            false
+                                                       );
+                                                       throw new Error(
+                                                            `cannot accses location,please gt to setting and enabled to sefari your location.. `
+                                                       );
                                                   }
                                              );
                                    }}
@@ -152,6 +211,9 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    mobileWidth="63.7vw"
                                    height="54px"
                                    displayOnlyOnMobile={true}
+                                   onClick={() =>
+                                        pageProps.setOpenSearchBoxMobile(true)
+                                   }
                               >
                                    Search city
                               </StyledButton>
@@ -159,61 +221,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                     </StyledPageContainer>
                </>
           );
-     else if (pageProps.noResultAndEnter)
-          return (
-               <>
-                    <StyledPageContainer
-                         openMobileMenu={openMobileMenu}
-                         renderPraimaryBackground={renderPraimaryBackground}
-                         onClick={onClickHandler}
-                         openPopup={openPopup}
-                    >
-                         <StyledNotFoundCityDiv>
-                              <StyledIcon>
-                                   <IconCity />
-                              </StyledIcon>
-                              <StyledTextNotFoundCity>
-                                   We couldn’t find any city named "
-                                   {pageProps.notFoundCityName}", <br />
-                                   please try again.
-                              </StyledTextNotFoundCity>
-                         </StyledNotFoundCityDiv>
-                    </StyledPageContainer>
-               </>
-          );
-     else
-          return (
-               <>
-                    <StyledPageContainer
-                         openMobileMenu={openMobileMenu}
-                         renderPraimaryBackground={renderPraimaryBackground}
-                         onClick={onClickHandler}
-                         openPopup={openPopup}
-                    >
-                         <HomePageDisplayCity
-                              selectedCityDataFromMap={selectedCityDataFromMap}
-                              existingCity={pageProps.existingCity}
-                              renderMobile={pageProps.renderMobile}
-                              renderLaptopAnDesktop={
-                                   pageProps.renderLaptopAnDesktop
-                              }
-                              selectedCityDataFromFavorites={
-                                   pageProps.selectedCityDataFromFavorites
-                              }
-                         />
-                    </StyledPageContainer>
-                    {openPopup && (
-                         <Popup
-                              message="You about to log out from WeatherApp.
-                                   Are you sure you want to log out?"
-                              cancelMessage="I want to stay"
-                              continueButtonText="Yes, log out"
-                              title="Log Out"
-                              callback={() => dispatch(logout())}
-                         />
-                    )}
-               </>
-          );
+     else return <></>;
 };
 
 export default Home;

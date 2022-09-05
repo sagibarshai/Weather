@@ -19,3 +19,7 @@ export type SharedPageProps = {
           setLocationIsOpen: (x: boolean) => void;
      };
 };
+export type Props = {
+     renderMobile: boolean;
+     renderLaptopAnDesktop: boolean;
+};

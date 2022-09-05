@@ -29,14 +29,15 @@ const DisplayMap: React.FC<Props> = (props) => {
           id: "google-map-script",
           googleMapsApiKey: "AIzaSyAgLCyxSADazy6Orz55RLmosWpVRjQeFcs",
      });
-     const [position, setPosition] = React.useState<any>(props.coords);
+     const [position, setPosition] = React.useState<any>(
+          props.coords || JSON.parse(localStorage.getItem("coords"))
+     );
      const degressType: DeggresType = useSelector(
           (state: StoreState) => state.headerSlice.degressType
      );
      if (!isLoaded) return <></>;
      else if (props.coords && location.pathname === "/home")
           return (
-               // <div style={{ position: "relative", zIndex: 1000 }}>
                <GoogleMap
                     id="map"
                     mapContainerStyle={containerStyle}
@@ -60,7 +61,6 @@ const DisplayMap: React.FC<Props> = (props) => {
                               .catch((err) => console.log(err));
                     }}
                />
-               // </div>
           );
      else if (
           props.markerCoordsArray &&
@@ -93,36 +93,43 @@ const DisplayMap: React.FC<Props> = (props) => {
                                    <StyledContainer>
                                         <StyledText>
                                              {props.citiesHourlyForcast &&
+                                                  props?.citiesHourlyForcast[
+                                                       index
+                                                  ]?.data?.temp &&
                                                   toggleDeggres(
                                                        degressType,
                                                        props
-                                                            .citiesHourlyForcast[
+                                                            ?.citiesHourlyForcast[
                                                             index
                                                        ]?.data?.temp,
                                                        props
-                                                            .citiesHourlyForcast[
+                                                            ?.citiesHourlyForcast[
                                                             index
                                                        ]?.data?.unit
                                                   )}
                                              °
                                         </StyledText>
                                         <StyledIcon width="35px" height="35px">
-                                             {props.citiesHourlyForcast && (
-                                                  <DiscoverIcon
-                                                       IconPhrase={
-                                                            props
-                                                                 .citiesHourlyForcast[
-                                                                 index
-                                                            ]?.data?.iconParshe
-                                                       }
-                                                       Icon={
-                                                            props
-                                                                 .citiesHourlyForcast[
-                                                                 index
-                                                            ]?.data?.icon
-                                                       }
-                                                  />
-                                             )}
+                                             {props.citiesHourlyForcast &&
+                                                  props?.citiesHourlyForcast[
+                                                       index
+                                                  ]?.data?.icon && (
+                                                       <DiscoverIcon
+                                                            IconPhrase={
+                                                                 props
+                                                                      ?.citiesHourlyForcast[
+                                                                      index
+                                                                 ]?.data
+                                                                      ?.iconParshe
+                                                            }
+                                                            Icon={
+                                                                 props
+                                                                      ?.citiesHourlyForcast[
+                                                                      index
+                                                                 ]?.data?.icon
+                                                            }
+                                                       />
+                                                  )}
                                         </StyledIcon>
                                    </StyledContainer>
                               </InfoWindow>

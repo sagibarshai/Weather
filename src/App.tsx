@@ -9,16 +9,31 @@ import { checkToken } from "./shared/utils/Services/Abra-Server/checkToken";
 import { logout } from "./redux/authSlice";
 import PageSharedTamplate from "./pages/SharedTemplate/PageSharedTamplate";
 import { StyleAppContainer } from "./GlobalStyle";
+import { useScreenWidth } from "./shared/utils/hooks/useScreenWidth";
 
 const App: React.FC = () => {
      const dispatch = useDispatch();
      const navigate = useNavigate();
+     const deviceValue = useScreenWidth()[0];
+     const [renderMobile, setRenderMobile] = useState<boolean>(false);
+     const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
+          useState<boolean>(false);
+
      const isLogin = useSelector(
           (state: StoreState) => state.authSlice.isLogin
      );
      const renderPraimaryBackground = useSelector(
           (state: StoreState) => state.headerSlice.renderPraimaryBackground
      );
+     useEffect(() => {
+          if (deviceValue === "bigDesktop" || deviceValue === "laptop") {
+               setRenderLaptopAnDesktop(true);
+               setRenderMobile(false);
+          } else {
+               setRenderLaptopAnDesktop(false);
+               setRenderMobile(true);
+          }
+     }, [deviceValue]);
      useEffect(() => {
           if (isLogin) navigate("/home");
      }, [isLogin]);
@@ -41,8 +56,14 @@ const App: React.FC = () => {
                <StyleAppContainer
                     renderPraimaryBackground={renderPraimaryBackground}
                >
-                    <BackgroundAnimation />
-                    <PageSharedTamplate />
+                    <BackgroundAnimation
+                         renderLaptopAnDesktop={renderLaptopAnDesktop}
+                         renderMobile={renderMobile}
+                    />
+                    <PageSharedTamplate
+                         renderLaptopAnDesktop={renderLaptopAnDesktop}
+                         renderMobile={renderMobile}
+                    />
                     <ReactQueryDevtools initialIsOpen={false} />
                </StyleAppContainer>
           );
@@ -50,7 +71,10 @@ const App: React.FC = () => {
           <StyleAppContainer
                renderPraimaryBackground={renderPraimaryBackground}
           >
-               <BackgroundAnimation />
+               <BackgroundAnimation
+                    renderLaptopAnDesktop={renderLaptopAnDesktop}
+                    renderMobile={renderMobile}
+               />
                <Routes>
                     <Route element={<Navigate to="/login" />} path="/*" />
                     <Route element={<Login />} path="/login" />
