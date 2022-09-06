@@ -120,6 +120,7 @@ const Login = () => {
                                         icon={<IconNotification />}
                                         message={serverError}
                                         mobileHeigt="63px"
+                                        mobileTransform="translateX(-50%)"
                                    />
                               )}
                               <Input

@@ -6,8 +6,10 @@ import {
 } from "./style";
 import { StyledIcon } from "../../../shared/Icons/Icon";
 import { ReactComponent as IconFavorite } from "../../../shared/svg/fav-outline-white.svg";
+import { ReactComponent as IconFavoriteFull } from "../../../shared/svg/fav-full.svg";
 import { ReactComponent as IconSearch } from "../../../shared/svg/search-white.svg";
 import { ReactComponent as IconHome } from "../../../shared/svg/home-outline.svg";
+import { ReactComponent as IconHomeFull } from "../../../shared/svg/home-full.svg";
 import { ReactComponent as IconFavoriteOutline } from "../../../shared/svg/fav-outline.svg";
 import { ReactComponent as IconSearchOutline } from "../../../shared/svg/search-dark.svg";
 import { ReactComponent as IconHomeOutline } from "../../../shared/svg/home-outline-dark.svg";
@@ -33,6 +35,8 @@ const FooterMobile: React.FC<Props> = (props) => {
                          <StyledIcon>
                               {mapIsOpen ? (
                                    <IconFavoriteOutline />
+                              ) : location.pathname === "/favorites" ? (
+                                   <IconFavoriteFull />
                               ) : (
                                    <IconFavorite />
                               )}
@@ -70,7 +74,13 @@ const FooterMobile: React.FC<Props> = (props) => {
                >
                     <StyledLink to="/home">
                          <StyledIcon>
-                              {mapIsOpen ? <IconHomeOutline /> : <IconHome />}{" "}
+                              {mapIsOpen ? (
+                                   <IconHomeOutline />
+                              ) : location.pathname === "/home" ? (
+                                   <IconHomeFull />
+                              ) : (
+                                   <IconHome />
+                              )}{" "}
                          </StyledIcon>
                     </StyledLink>
                     <StyledText

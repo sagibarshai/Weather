@@ -16,8 +16,9 @@ import { logout } from "../../redux/authSlice";
 import { useLocation } from "react-router-dom";
 import DisplayMap from "../../components/Map/Map";
 import { SharedPageProps } from "../SharedTemplate/types";
-
+import Notification from "../../shared/notifacation/Notification";
 import { CityObj, SearchResult } from "../../components/SearchBox/types";
+import { ReactComponent as IconLogo } from "../../shared/svg/logo-small.svg";
 
 import {
      StyledPageContainer,
@@ -34,7 +35,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
 
      const [selectedCityDataFromMap, setSelectedCityDataFromMap] =
           useState<CityObj | null>(null);
-
+     const [showInfo, setShowInfo] = useState<boolean>(false);
      const dispatch = useDispatch();
      const renderPraimaryBackground = useSelector(
           (state: StoreState) => state.headerSlice.renderPraimaryBackground
@@ -88,7 +89,13 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
      };
-     if (openMap)
+     useEffect(() => {
+          if (openMap) {
+               setShowInfo(true);
+               setTimeout(() => setShowInfo(false), 5000);
+          }
+     }, [openMap]);
+     if (openMap) {
           return (
                <>
                     <StyledPageContainer
@@ -103,10 +110,23 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    setSelectedCityDataFromMap
                               }
                          />
+                         {showInfo && (
+                              <Notification
+                                   variant="success"
+                                   animationTime={5000}
+                                   animation={true}
+                                   backgroundColor="#FFD130"
+                                   mobileWidth="80vw"
+                                   message="Click anywhere and get real time forecast"
+                                   icon={<IconLogo />}
+                                   position="fixed"
+                                   mobileBottom="70%"
+                              />
+                         )}
                     </StyledPageContainer>
                </>
           );
-     else if (pageProps.noResultAndEnter)
+     } else if (pageProps.noResultAndEnter)
           return (
                <>
                     <StyledPageContainer

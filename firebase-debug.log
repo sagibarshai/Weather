@@ -1,0 +1,32 @@
+[debug] [2022-09-06T22:32:19.046Z] ----------------------------------------------------------------------
+[debug] [2022-09-06T22:32:19.052Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Sagi Barshai\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2022-09-06T22:32:19.054Z] CLI Version:   11.2.1
+[debug] [2022-09-06T22:32:19.054Z] Platform:      win32
+[debug] [2022-09-06T22:32:19.055Z] Node Version:  v16.15.1
+[debug] [2022-09-06T22:32:19.067Z] Time:          Wed Sep 07 2022 01:32:19 GMT+0300 (שעון ישראל (קיץ))
+[debug] [2022-09-06T22:32:19.070Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-09-06T22:32:19.355Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-09-06T22:32:19.360Z] > authorizing via signed-in user (sagibarshai1@gmail.com)
+[debug] [2022-09-06T22:32:19.361Z] [iam] checking project weather-91c3b for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-09-06T22:32:19.369Z] > refreshing access token with scopes: []
+[debug] [2022-09-06T22:32:19.378Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2022-09-06T22:32:19.379Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2022-09-06T22:32:19.761Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2022-09-06T22:32:19.762Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2022-09-06T22:32:19.799Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/weather-91c3b:testIamPermissions [none]
+[debug] [2022-09-06T22:32:19.800Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/weather-91c3b:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-09-06T22:32:22.471Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/weather-91c3b:testIamPermissions 200
+[debug] [2022-09-06T22:32:22.472Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/weather-91c3b:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2022-09-06T22:32:22.476Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/weather-91c3b [none]
+[debug] [2022-09-06T22:32:24.662Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/weather-91c3b 200
+[debug] [2022-09-06T22:32:24.662Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/weather-91c3b {"projectId":"weather-91c3b","projectNumber":"991007300163","displayName":"Weather","name":"projects/weather-91c3b","resources":{"hostingSite":"weather-91c3b"},"state":"ACTIVE","etag":"1_8b1397d9-205a-46d0-8477-e492d7a83bb4"}
+[info] 
+[info] === Deploying to 'weather-91c3b'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2022-09-06T22:32:24.674Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/weather-91c3b [none]
+[debug] [2022-09-06T22:32:25.294Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/weather-91c3b 200
+[debug] [2022-09-06T22:32:25.295Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/weather-91c3b {"projectId":"weather-91c3b","projectNumber":"991007300163","displayName":"Weather","name":"projects/weather-91c3b","resources":{"hostingSite":"weather-91c3b"},"state":"ACTIVE","etag":"1_8b1397d9-205a-46d0-8477-e492d7a83bb4"}
+[debug] [2022-09-06T22:32:25.302Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/991007300163/sites/weather-91c3b/versions [none]
+[debug] [2022-09-06T22:32:25.303Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/991007300163/sites/weather-91c3b/versions {"config":{"rewrites":[{"glob":"**","path":"/index.html"}]},"labels":{"deployment-tool":"cli-firebase"}}

@@ -39,6 +39,8 @@ export const StyledButtonFooter = styled.button<StyledProps>`
 `;
 export const StyledLink = styled(Link)`
      text-decoration: none;
+     position: relative;
+     z-index: 10;
 `;
 export const StyledText = styled.span<StyledProps>`
      color: ${(props) => props.color || themes.white};

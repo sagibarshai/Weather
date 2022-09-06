@@ -5,6 +5,7 @@ import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/
 import { useLocation } from "react-router-dom";
 import { StyledIcon } from "../../shared/Icons/Icon";
 import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon/DiscoverIcon";
+import Notification from "../../shared/notifacation/Notification";
 import {
      toggleDeggres,
      DeggresType,
@@ -27,7 +28,7 @@ const DisplayMap: React.FC<Props> = (props) => {
      const location = useLocation();
      const { isLoaded } = useJsApiLoader({
           id: "google-map-script",
-          googleMapsApiKey: "AIzaSyAgLCyxSADazy6Orz55RLmosWpVRjQeFcs",
+          googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY || "",
      });
      const [position, setPosition] = useState<any>(props.coords);
      const degressType: DeggresType = useSelector(
@@ -89,70 +90,91 @@ const DisplayMap: React.FC<Props> = (props) => {
                     center={props.center || center}
                     zoom={props.zoom || 10}
                >
-                    {props.markerCoordsArray.map((fav, index) => (
-                         <Marker
-                              position={
-                                   {
-                                        lat: fav.data?.lat,
-                                        lng: fav.data?.lng,
-                                   } as { lat: number; lng: number }
-                              }
-                              key={index}
-                         >
-                              <InfoWindow
-                                   position={{
-                                        lat: Number(fav.data?.lat),
-                                        lng: Number(fav.data?.lng),
-                                   }}
-                              >
-                                   <StyledContainer>
-                                        <StyledText>
-                                             {props.citiesHourlyForcast &&
-                                                  props?.citiesHourlyForcast[
-                                                       index
-                                                  ]?.data?.temp &&
-                                                  toggleDeggres(
-                                                       degressType,
-                                                       props
-                                                            ?.citiesHourlyForcast[
-                                                            index
-                                                       ]?.data?.temp,
-                                                       props
-                                                            ?.citiesHourlyForcast[
-                                                            index
-                                                       ]?.data?.unit
-                                                  )}
-                                             °
-                                        </StyledText>
-                                        <StyledIcon width="35px" height="35px">
-                                             {props.citiesHourlyForcast &&
-                                                  props?.citiesHourlyForcast[
-                                                       index
-                                                  ]?.data?.icon && (
-                                                       <DiscoverIcon
-                                                            IconPhrase={
+                    {props.markerCoordsArray.map(
+                         (fav, index) =>
+                              fav.data?.lat &&
+                              fav.data?.lng && (
+                                   <Marker
+                                        position={
+                                             {
+                                                  lat: fav.data?.lat,
+                                                  lng: fav.data?.lng,
+                                             } as { lat: number; lng: number }
+                                        }
+                                        key={index}
+                                   >
+                                        <InfoWindow
+                                             position={{
+                                                  lat: Number(fav.data?.lat),
+                                                  lng: Number(fav.data?.lng),
+                                             }}
+                                        >
+                                             <StyledContainer>
+                                                  <StyledText>
+                                                       {props.citiesHourlyForcast &&
+                                                            props
+                                                                 ?.citiesHourlyForcast[
+                                                                 index
+                                                            ]?.data?.temp &&
+                                                            toggleDeggres(
+                                                                 degressType,
                                                                  props
                                                                       ?.citiesHourlyForcast[
                                                                       index
-                                                                 ]?.data
-                                                                      ?.iconParshe
-                                                            }
-                                                            Icon={
+                                                                 ]?.data?.temp,
                                                                  props
                                                                       ?.citiesHourlyForcast[
                                                                       index
-                                                                 ]?.data?.icon
-                                                            }
-                                                       />
-                                                  )}
-                                        </StyledIcon>
-                                   </StyledContainer>
-                              </InfoWindow>
-                         </Marker>
-                    ))}
+                                                                 ]?.data?.unit
+                                                            )}
+                                                       °
+                                                  </StyledText>
+                                                  <StyledIcon
+                                                       width="35px"
+                                                       height="35px"
+                                                  >
+                                                       {props.citiesHourlyForcast &&
+                                                            props
+                                                                 ?.citiesHourlyForcast[
+                                                                 index
+                                                            ]?.data?.icon && (
+                                                                 <DiscoverIcon
+                                                                      IconPhrase={
+                                                                           props
+                                                                                ?.citiesHourlyForcast[
+                                                                                index
+                                                                           ]
+                                                                                ?.data
+                                                                                ?.iconParshe
+                                                                      }
+                                                                      Icon={
+                                                                           props
+                                                                                ?.citiesHourlyForcast[
+                                                                                index
+                                                                           ]
+                                                                                ?.data
+                                                                                ?.icon
+                                                                      }
+                                                                 />
+                                                            )}
+                                                  </StyledIcon>
+                                             </StyledContainer>
+                                        </InfoWindow>
+                                   </Marker>
+                              )
+                    )}
                </GoogleMap>
           );
-     return <></>;
+     return (
+          <>
+               <GoogleMap
+                    id="map"
+                    mapContainerStyle={containerStyle}
+                    center={props.center || position || coordsFromLocalStorage}
+                    zoom={props.zoom || 10}
+               />
+          </>
+     );
 };
 
 export default DisplayMap;

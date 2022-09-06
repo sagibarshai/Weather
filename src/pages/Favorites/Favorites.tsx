@@ -4,9 +4,10 @@ import { ReactComponent as IconSearchWhite } from "../../shared/svg/search-white
 import { ReactComponent as IconStars } from "../../shared/svg/stars.svg";
 import { ReactComponent as IconFavoriteFull } from "../../shared/svg/fav-full.svg";
 import { ReactComponent as IconSuccses } from "../../shared/svg/check-v.svg";
-import { togglePopup } from "../../redux/headerSlice";
+import { toggleMobileMenu, togglePopup } from "../../redux/headerSlice";
 import { useDispatch } from "react-redux";
-import Notification from "../../shared/notifacation/Notification";
+import { ReactComponent as IconLogo } from "../../shared/svg/logo-small.svg";
+
 import Popup from "../../components/Popup/Popup";
 import { logout } from "../../redux/authSlice";
 import {
@@ -36,6 +37,9 @@ import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/
 import { getHourlyForcast } from "../../shared/utils/Services/Accuweather-Api/getHourlyForcast";
 import { FavoriteType } from "./types";
 import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
+
+import Notification from "../../shared/notifacation/Notification";
+import themes from "../../shared/themes/themes";
 const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      const queryClient = useQueryClient();
      const dispatch = useDispatch();
@@ -59,6 +63,13 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      );
      const [openPopupRemoveFavorites, setOpenPopupRemoveFavorites] =
           useState<boolean>(false);
+     const [showInfo, setShowInfo] = useState<boolean>(false);
+     useEffect(() => {
+          if (markerCoordsArray.length === 0) {
+               setShowInfo(true);
+               setTimeout(() => setShowInfo(false), 5000);
+          }
+     }, []);
      useEffect(() => {
           if (pageProps.noResultAndEnter) {
                navigate("/home", {
@@ -180,11 +191,17 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                };
           })
      );
+     console.log(markerCoordsArray.length);
+
+     const openMenuMobile = useSelector(
+          (state: StoreState) => state.headerSlice.openMobileMenu
+     );
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openPopupRemoveFavorites) setOpenPopupRemoveFavorites(false);
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
+          if (openMenuMobile) dispatch(toggleMobileMenu());
      };
      if (isLoading)
           return (
@@ -204,7 +221,18 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                          coords={pageProps.coords}
                          zoom={4}
                          center={markerCoordsArray[0]?.data}
-                    />
+                    />{" "}
+                    {markerCoordsArray.length === 0 && showInfo && (
+                         <Notification
+                              variant="success"
+                              backgroundColor={themes.fadeText}
+                              mobileWidth="80vw"
+                              position="fixed"
+                              mobileBottom="70%"
+                              icon={<IconLogo />}
+                              message="add cites to your favorites and watch their forecast on map"
+                         />
+                    )}
                     {openPopup && (
                          <Popup
                               message="You about to log out from WeatherApp.

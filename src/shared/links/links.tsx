@@ -13,7 +13,7 @@ const links: LinksType[] = [
      },
      {
           to: "/favorites",
-          name: "Favorite",
+          name: "Favorites",
           activeIcon: <IconFavoriteFull />,
           defaultIcon: <IconFavoriteOutlineWhite />,
      },

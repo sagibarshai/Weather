@@ -217,6 +217,7 @@ export const StyledMobileAddToFavButton = styled.button`
      top: 59px;
      left: 30px;
      transform: translate(-50%, -50%);
+     z-index: 10;
 `;
 export const StyledTempratureSpan = styled.span<StyledProps>`
      font-size: ${(props) => props.fontSize};
