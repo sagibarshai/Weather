@@ -6,7 +6,7 @@ import { ReactComponent as IconCity } from "../../shared/svg/city.svg";
 import { StyledIcon } from "../../shared/Icons/Icon";
 import Input from "../../shared/UIElements/Inputs/Input/Input";
 import { search } from "../../shared/utils/Services/Accuweather-Api/search";
-import { Result } from "../SearchBox/types";
+import { SearchResult } from "../SearchBox/types";
 import { useQuery, useQueryClient } from "react-query";
 import useDebounce from "../../shared/utils/hooks/useDebouncedSearch";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -24,7 +24,9 @@ import {
 const SearchBoxMobile: React.FC<Props> = (props) => {
      const location = useLocation();
      const navigate = useNavigate();
-     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
+     const [searchResults, setSearchResults] = useState<[] | SearchResult[]>(
+          []
+     );
      const [searchInput, setSearchInput] = useState<string>("");
 
      const [noResults, setNoResults] = useState<boolean>(false);

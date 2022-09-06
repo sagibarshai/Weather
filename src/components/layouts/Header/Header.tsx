@@ -39,7 +39,7 @@ import { ReactComponent as IconSunDark } from "../../../shared/svg/sun-dark.svg"
 import { ReactComponent as IconLogout } from "../../../shared/svg/log-out.svg";
 import { ReactComponent as IconC } from "../../../shared/svg/c_.svg";
 import { ReactComponent as IconF } from "../../../shared/svg/f_.svg";
-import { Result } from "../../SearchBox/types";
+import { SearchResult } from "../../SearchBox/types";
 import useDebounce from "../../../shared/utils/hooks/useDebouncedSearch";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Props } from "./types";
@@ -51,7 +51,9 @@ const Header: React.FC<Props> = (props) => {
           location.pathname
      );
      const [searchInput, setSearchInput] = useState<string>("");
-     const [searchResults, setSearchResults] = useState<[] | Result[]>([]);
+     const [searchResults, setSearchResults] = useState<[] | SearchResult[]>(
+          []
+     );
      const [searchIsFocus, setSearchIsFocus] = useState<boolean>(false);
      const [hoverIndexResult, setHoverIndexResult] = useState<number>(-1);
      const currentIcon: NavLinkActiveStyleType | undefined = links.find(

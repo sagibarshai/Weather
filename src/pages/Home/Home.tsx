@@ -17,7 +17,7 @@ import { useLocation } from "react-router-dom";
 import DisplayMap from "../../components/Map/Map";
 import { SharedPageProps } from "../SharedTemplate/types";
 
-import { CityObj } from "../../components/SearchBox/types";
+import { CityObj, SearchResult } from "../../components/SearchBox/types";
 
 import {
      StyledPageContainer,
@@ -27,6 +27,8 @@ import {
      StyledNotFoundCityDiv,
      StyledTextNotFoundCity,
 } from "./style";
+import { useMutation } from "react-query";
+import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/searchCityByCoords";
 const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const location = useLocation() as any;
 
@@ -46,7 +48,15 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const openMap = useSelector(
           (state: StoreState) => state.headerSlice.openMap
      );
-
+     const { mutate } = useMutation(searchCityByCoords, {
+          onSuccess: (data: SearchResult) => {
+               console.log(data);
+               pageProps.setExistingCity({ ...data, key: data?.Key });
+          },
+          onError: (err: any) => {},
+          staleTime: 1000 * 60 * 60,
+          cacheTime: 1000 * 60 * 60,
+     });
      useEffect(() => {
           if (location.state) {
                if (location.state.noResultAndEnter) {
@@ -65,6 +75,12 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           selectedCityDataFromMap &&
                pageProps.setExistingCity(selectedCityDataFromMap);
      }, [selectedCityDataFromMap]);
+     useEffect(() => {
+          if (!pageProps.existingCity && pageProps.coords) {
+               mutate(pageProps.coords);
+               console.log("happend");
+          }
+     }, [location, pageProps.coords]);
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openMobileMenu) dispatch(closeMobileMenu());

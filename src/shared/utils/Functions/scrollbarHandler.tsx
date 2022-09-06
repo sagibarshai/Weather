@@ -1,7 +1,7 @@
-import { Result } from "../../../components/SearchBox/types";
+import { SearchResult } from "../../../components/SearchBox/types";
 export const scrollBarHandlerYAxis = (
      parantId: string,
-     list: [] | Result[],
+     list: [] | SearchResult[],
      currentIndex: number,
      setIndex: (x: number) => void
 ) => {

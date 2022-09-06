@@ -1,11 +1,11 @@
-import { CityObj, Result } from "../SearchBox/types";
+import { CityObj, SearchResult } from "../SearchBox/types";
 import { DeggresType } from "../../shared/utils/Functions/toggleDeggres";
 import { FavoriteType } from "../../pages/Favorites/types";
 import { Coords } from "../Map/types";
 export type SelectedCityType = {
      existingCity: CityObj | null;
      selectedCityDataFromFavorites?: CityObj | null;
-     searchResults?: Result[] | [];
+     searchResults?: SearchResult[] | [];
      renderMobile?: boolean;
      renderLaptopAnDesktop?: boolean;
      selectedCityDataFromMap?: CityObj | null;

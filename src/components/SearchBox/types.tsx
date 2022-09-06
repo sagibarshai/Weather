@@ -1,4 +1,4 @@
-export type Result = {
+export type SearchResult = {
      LocalizedName: string;
      Country: { LocalizedName: string };
      Key: number;
@@ -10,7 +10,7 @@ export type CityObj = {
 };
 export type Props = {
      display?: boolean;
-     results?: Result[] | [];
+     results?: SearchResult[] | [];
      noResultAndEnter?: boolean;
      hoverIndexResult?: number;
      index?: number;

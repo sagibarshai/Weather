@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const key = "e92fab503e7882cf036a92fa156ba435";
+const key = process.env.REACT_APP_GEO_LOCATION_API_KEY;
 export const getCoordsOfCity = async (cityName: string | undefined) => {
      if (!cityName) return;
      try {
