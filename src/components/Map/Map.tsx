@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { Marker, InfoWindow } from "@react-google-maps/api";
-import { CityObj, Result } from "../SearchBox/types";
 import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/searchCityByCoords";
 import { useLocation } from "react-router-dom";
 import { StyledIcon } from "../../shared/Icons/Icon";
@@ -30,10 +29,11 @@ const DisplayMap: React.FC<Props> = (props) => {
           id: "google-map-script",
           googleMapsApiKey: "AIzaSyAgLCyxSADazy6Orz55RLmosWpVRjQeFcs",
      });
-     const [position, setPosition] = React.useState<any>(props.coords);
+     const [position, setPosition] = useState<any>(props.coords);
      const degressType: DeggresType = useSelector(
           (state: StoreState) => state.headerSlice.degressType
      );
+     const [center, setCenter] = useState<Coords | undefined>(undefined);
      let coordsFromLocalStorage = localStorage.getItem("coords");
      if (coordsFromLocalStorage)
           coordsFromLocalStorage = JSON.parse(coordsFromLocalStorage);
@@ -49,6 +49,14 @@ const DisplayMap: React.FC<Props> = (props) => {
                console.log(err);
           },
      });
+     useEffect(() => {
+          if (
+               props.markerCoordsArray &&
+               Array.isArray(props.markerCoordsArray)
+          ) {
+               setCenter(props.markerCoordsArray[0]?.data);
+          }
+     }, [props.markerCoordsArray]);
      if (!isLoaded) return <></>;
      else if (props.coords && location.pathname === "/home")
           return (
@@ -71,13 +79,14 @@ const DisplayMap: React.FC<Props> = (props) => {
      else if (
           props.markerCoordsArray &&
           props.citiesHourlyForcast &&
-          location.pathname === "/favorites"
+          location.pathname === "/favorites" &&
+          center
      )
           return (
                <GoogleMap
                     id="map"
                     mapContainerStyle={containerStyle}
-                    center={props.center || position || coordsFromLocalStorage}
+                    center={center}
                     zoom={props.zoom || 10}
                >
                     {props.markerCoordsArray.map((fav, index) => (

@@ -174,12 +174,13 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    };
                               })
                               .catch((err) => console.log(err)),
-                    staleTime: Infinity,
-                    cacheTime: Infinity,
+                    staleTime: 1000 * 60 * 60,
+                    cacheTime: 1000 * 60 * 60,
                     enabled,
                };
           })
      );
+     console.log(markerCoordsArray);
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openPopupRemoveFavorites) setOpenPopupRemoveFavorites(false);
@@ -202,7 +203,8 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                          citiesHourlyForcast={citiesHourlyForcast}
                          markerCoordsArray={markerCoordsArray}
                          coords={pageProps.coords}
-                         zoom={5}
+                         zoom={4}
+                         center={markerCoordsArray[0]?.data}
                     />
                     {openPopup && (
                          <Popup

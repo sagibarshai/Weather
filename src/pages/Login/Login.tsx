@@ -108,7 +108,6 @@ const Login = () => {
                </StyledIcon>
                <StyledLoginContainer
                     onSubmit={(e: any) => onSubmitHandler(e)}
-                    height={serverError ? "737px" : "639px"}
                     mobileServerError={serverError ? true : false}
                     serverError={serverError}
                >

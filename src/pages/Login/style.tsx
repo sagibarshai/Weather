@@ -33,17 +33,13 @@ export const StyledLoginContainer = styled.form<Props>`
           background-color: #fff;
           display: inline-block;
           border-radius: 30px 30px 0 0 ;
-          height: 75vh;
-          top:unset;
+          top:175px;
           position: fixed;
           bottom: 0;
           transform:translate(-50%,0);
-          padding: 0;
-          ${(props) =>
-               props.mobileServerError === true &&
-               css`
-                    height: 82.5vh;
-               `};
+          padding: 24px 0 ;
+          overflow-y: auto;
+          
      }
 `;
 export const StyledTitle = styled.h3`
@@ -66,6 +62,7 @@ export const StyledInputsContainer = styled.div`
      gap: 32px;
      width: fit-content;
      margin: 0 auto;
+     height: auto;
 `;
 export const StyledContainer = styled.div<Props>`
      text-align: center;
@@ -99,5 +96,6 @@ export const StyledContentContainer = styled.div`
      justify-content: center;
      /* margin: 54px 54px 54px 0; */
      width: 100%;
-     height: 100%;
+     /* height: 100%; */
+     overflow-y: auto;
 `;
