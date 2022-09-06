@@ -1,22 +1,25 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { Route, useLocation, Routes } from "react-router-dom";
+
 import Header from "../../components/layouts/Header/Header";
 import MobileHeader from "../../components/layouts-mobile/Header/MobileHeader";
-import { useScreenWidth } from "../../shared/utils/hooks/useScreenWidth";
-import { Route, useLocation, Routes } from "react-router-dom";
-import Home from "../Home/Home";
 import Favorites from "../Favorites/Favorites";
 import FooterMobile from "../../components/layouts-mobile/Footer/FooterMobile";
+import { useScreenWidth } from "../../shared/utils/hooks/useScreenWidth";
+import Home from "../Home/Home";
 import { MobileMenuBottom } from "../../components/layouts-mobile/Header/MobileHeader";
 import SearchBoxMobile from "../../components/SearchBox-mobile/SearchBoxMobile";
 import { CityObj } from "../../components/SearchBox/types";
-import { useSelector, useDispatch } from "react-redux";
 import { StoreState } from "../../redux/store";
 import { StyledButton } from "../../shared/UIElements/Button/Button";
 import { toggleMap } from "../../redux/headerSlice";
 import { StyledIcon } from "../../shared/Icons/Icon";
 import { ReactComponent as IconLayout } from "../../shared/svg/layout.svg";
+
 import { Props } from "./types";
+
 export const StyledButtonText = styled.span`
      font-family: inherit;
      font-size: 1.8rem;
@@ -27,7 +30,6 @@ export const StyledButtonText = styled.span`
 const PageSharedTamplate: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      const location = useLocation();
-     const deviceValue = useScreenWidth()[0];
      const [currentPage, setCurrentPage] = useState<string>("/home");
      const [notFoundCityName, setNotFoundCityName] = useState<string>("");
      const [existingCity, setExistingCity] = useState<null | CityObj>(null);

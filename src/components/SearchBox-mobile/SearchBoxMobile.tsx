@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import HashLoading from "../../shared/Loaing-elements/HashLoading";
+import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
 import { ReactComponent as IconArrowLeft } from "../../shared/svg/arrow-left.svg";
 import { ReactComponent as IconSearch } from "../../shared/svg/search-dark.svg";
 import { ReactComponent as IconCity } from "../../shared/svg/city.svg";

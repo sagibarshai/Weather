@@ -24,7 +24,7 @@ import {
      StyledSpan,
      StyledContentContainer,
 } from "./style";
-import HashLoading from "../../shared/Loaing-elements/HashLoading";
+import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
 const Login = () => {
      const [email, setEmail] = useState<string>("");
      const [password, setPassword] = useState<string>("");

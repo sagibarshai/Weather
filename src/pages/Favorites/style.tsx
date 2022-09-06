@@ -59,8 +59,8 @@ export const StyledContentContainer = styled.div`
           margin: 80px 50px auto 50px;
      }
      @media ${cssBreakPoints.mobile} {
-          width: 100vw;
-          margin: 40px 28px 0 28px;
+          width: 90vw;
+          margin: 40px auto 0 auto;
      } ;
 `;
 export const StyledPageTitle = styled.h2<StyleProps>`
@@ -95,7 +95,7 @@ export const StyledInputContainer = styled.div`
      width: fit-content;
 `;
 export const StyledSearchInput = styled.input`
-     width: 324px;
+     max-width: 324px;
      height: 30px;
      display: flex;
      align-items: center;

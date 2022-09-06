@@ -7,6 +7,7 @@ export const StyledNotificationContainer = styled.div<Props>`
      align-items: center;
      justify-content: center;
      border-radius: 10px;
+     position: relative;
      ${(props) =>
           props.variant === "success" &&
           css`
@@ -19,7 +20,7 @@ export const StyledNotificationContainer = styled.div<Props>`
                transform: translate(-50%, 0%);
                gap: 5px;
           `};
-     z-index: 3;
+     z-index: 10;
      ${(props) =>
           props.variant === "error" &&
           css`

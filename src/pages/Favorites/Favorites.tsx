@@ -35,7 +35,7 @@ import { Coords } from "../../components/Map/types";
 import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/searchCityByCoords";
 import { getHourlyForcast } from "../../shared/utils/Services/Accuweather-Api/getHourlyForcast";
 import { FavoriteType } from "./types";
-import HashLoading from "../../shared/Loaing-elements/HashLoading";
+import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
 const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      const queryClient = useQueryClient();
      const dispatch = useDispatch();
@@ -180,7 +180,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                };
           })
      );
-     console.log(markerCoordsArray);
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openPopupRemoveFavorites) setOpenPopupRemoveFavorites(false);

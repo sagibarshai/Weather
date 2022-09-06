@@ -16,6 +16,9 @@ type StyledHeaderProps = {
      filterBlur?: boolean;
 };
 export const StyledHeader = styled.header<StyledHeaderProps>`
+     position: sticky;
+     top: 0;
+     z-index: 10;
      width: 100vw;
      height: 94px;
      background-color: ${(props) => {

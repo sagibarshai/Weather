@@ -2,9 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 type State = {
      isLogin: boolean | null | string;
 };
-type Payload = {
-     token?: string;
-};
+
 let initialState: State = {
      isLogin: localStorage.getItem("token"),
 };

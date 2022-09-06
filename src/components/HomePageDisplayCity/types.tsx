@@ -21,7 +21,7 @@ export type DailyForecastsType = {
      Day: { IconPhrase: string; Icon: number };
      isLoading?: boolean;
 };
-export type DataType = {
+export type DataDailyForecastsType = {
      data: {
           DailyForecasts: DailyForecastsType[];
      };

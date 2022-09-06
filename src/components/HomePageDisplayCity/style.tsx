@@ -213,7 +213,7 @@ export const StyledColumnDiv = styled.div<StyledProps>`
 export const StyledMobileAddToFavButton = styled.button`
      border: none;
      background-color: transparent;
-     position: absolute;
+     position: fixed;
      top: 59px;
      left: 30px;
      transform: translate(-50%, -50%);

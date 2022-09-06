@@ -33,7 +33,7 @@ const DisplayMap: React.FC<Props> = (props) => {
      const degressType: DeggresType = useSelector(
           (state: StoreState) => state.headerSlice.degressType
      );
-     const [center, setCenter] = useState<Coords | undefined>(undefined);
+     const [center, setCenter] = useState<any>(undefined);
      let coordsFromLocalStorage = localStorage.getItem("coords");
      if (coordsFromLocalStorage)
           coordsFromLocalStorage = JSON.parse(coordsFromLocalStorage);
@@ -86,7 +86,7 @@ const DisplayMap: React.FC<Props> = (props) => {
                <GoogleMap
                     id="map"
                     mapContainerStyle={containerStyle}
-                    center={center}
+                    center={props.center || center}
                     zoom={props.zoom || 10}
                >
                     {props.markerCoordsArray.map((fav, index) => (

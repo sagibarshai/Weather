@@ -5,7 +5,7 @@ export const StyledCloud = styled.i<Props>`
      transform: translate(-50%, -50%);
      background-image: url("/images/cloud-s.png");
      background-repeat: no-repeat;
-     position: absolute;
+     position: fixed;
      top: ${(props) => props.top};
      right: ${(props) => props.right};
      left: ${(props) => props.left};

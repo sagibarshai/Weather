@@ -1,24 +1,6 @@
 import styled from "styled-components";
 import cssBreakPoints from "../cssBreakPoints/cssBreakPoints";
-type StyledIconProps = {
-     width?: string;
-     height?: string;
-     margin?: string | number;
-     position?: string;
-     top?: string;
-     right?: string;
-     left?: string;
-     bottom?: string;
-     transform?: string;
-     zIndex?: number;
-     marginRight?: string;
-     displayMobile?: boolean;
-     displayOnlyOnMobile?: boolean;
-     mobileWidth?: string;
-     mobileHeight?: string;
-     mobileLeft?: string;
-     transformMobile?: string;
-};
+import { StyledIconProps } from "./types";
 export const StyledIcon = styled.i<StyledIconProps>`
      width: ${(props) => props.width || "auto"};
      height: ${(props) => props.height || "auto"};

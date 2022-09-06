@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import HashLoading from "../../shared/Loaing-elements/HashLoading";
+import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
 import { selectCity } from "../../shared/utils/Services/Accuweather-Api/selectCity";
 import { useQuery, useQueryClient, useMutation } from "react-query";
 import { convertDateToText } from "../../shared/utils/Dates/convertDateToText";
@@ -27,7 +27,11 @@ import {
 } from "../../shared/utils/Functions/toggleDeggres";
 import { FavoriteType } from "../../pages/Favorites/types";
 import { getFromFavorites } from "../../shared/utils/Services/Abra-Server/getFromFavorites";
-import { DataType, SelectedCityType, forcast12HoursTypeData } from "./types";
+import {
+     DataDailyForecastsType,
+     SelectedCityType,
+     forcast12HoursTypeData,
+} from "./types";
 import { toggleMap } from "../../redux/headerSlice";
 import DisplayWeeklyData from "../DisplayForcastData/DisplayWeeklyData";
 import DisplayCityMetaData from "../DisplayForcastData/DisplayCityMetaData";
@@ -92,7 +96,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           ["5daysForcast", props?.existingCity?.key],
           () => selectCity(props?.existingCity?.key),
           { cacheTime: twelveHours, staleTime: twelveHours, enabled }
-     ) as DataType;
+     ) as DataDailyForecastsType;
 
      setInterval(() => {
           setNow(convertDateToText());

@@ -1,13 +1,6 @@
 import { HashLoader } from "react-spinners";
 import React from "react";
-type Props = {
-     loading: boolean;
-     color?: string;
-     size?: number;
-     marginTop?: string;
-     width?: string;
-     fixedCenter?: boolean;
-};
+import { Props } from "./types";
 const HashLoading: React.FC<Props> = (props) => {
      return (
           <HashLoader

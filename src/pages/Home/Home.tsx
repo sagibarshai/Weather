@@ -1,6 +1,24 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+import { ReactComponent as IconLocation } from "../../shared/svg/location.svg";
+import { ReactComponent as IconCity } from "../../shared/svg/city.svg";
+import { ReactComponent as IconApp } from "../../shared/svg/logo-large.svg";
+
+import { StoreState } from "../../redux/store";
+import { closeMobileMenu, togglePopup } from "../../redux/headerSlice";
+import Popup from "../../components/Popup/Popup";
+import { StyledIcon } from "../../shared/Icons/Icon";
+import { StyledButton } from "../../shared/UIElements/Button/Button";
+import themes from "../../shared/themes/themes";
+import HomePageDisplayCity from "../../components/HomePageDisplayCity/HomePageDisplayCity";
+import { logout } from "../../redux/authSlice";
+import { useLocation } from "react-router-dom";
+import DisplayMap from "../../components/Map/Map";
+import { SharedPageProps } from "../SharedTemplate/types";
+
+import { CityObj } from "../../components/SearchBox/types";
+
 import {
      StyledPageContainer,
      StyledLocationTitle,
@@ -9,21 +27,6 @@ import {
      StyledNotFoundCityDiv,
      StyledTextNotFoundCity,
 } from "./style";
-import { StoreState } from "../../redux/store";
-import { closeMobileMenu, togglePopup } from "../../redux/headerSlice";
-import Popup from "../../components/Popup/Popup";
-import { StyledIcon } from "../../shared/Icons/Icon";
-import { ReactComponent as IconLocation } from "../../shared/svg/location.svg";
-import { ReactComponent as IconCity } from "../../shared/svg/city.svg";
-import { ReactComponent as IconApp } from "../../shared/svg/logo-large.svg";
-import { StyledButton } from "../../shared/UIElements/Button/Button";
-import themes from "../../shared/themes/themes";
-import HomePageDisplayCity from "../../components/HomePageDisplayCity/HomePageDisplayCity";
-import { logout } from "../../redux/authSlice";
-import { useLocation } from "react-router-dom";
-import DisplayMap from "../../components/Map/Map";
-import { SharedPageProps } from "../SharedTemplate/types";
-import { CityObj } from "../../components/SearchBox/types";
 const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const location = useLocation() as any;
 
