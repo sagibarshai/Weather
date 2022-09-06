@@ -45,7 +45,6 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
      );
      useEffect(() => {
           if (props.renderLaptopAnDesktop) {
-               console.log(props.renderLaptopAnDesktop);
                navigator.geolocation.getCurrentPosition(
                     (position) => {
                          localStorage.setItem(
@@ -56,6 +55,10 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                               })
                          );
                          setLocationIsOpen(true);
+                         setCoords({
+                              lat: position.coords.latitude,
+                              lng: position.coords.longitude,
+                         });
                     },
                     () => {
                          setLocationIsOpen(false);
@@ -121,10 +124,10 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                          setNoResultAndEnter={setNoResultAndEnter}
                          noResultAndEnter={noResultAndEnter}
                          currentPage={currentPage}
+                         setCoords={setCoords}
                     />
                )}
                {props.renderMobile && <MobileHeader />}
-               <MobileMenuBottom />
 
                <Routes>
                     {currentPage === "/home" && (

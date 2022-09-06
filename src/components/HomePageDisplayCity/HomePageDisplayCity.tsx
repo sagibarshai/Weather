@@ -76,7 +76,6 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                onSuccess: (data: {
                     data: { results: FavoriteType[] | [] };
                }) => {
-                    console.log(data);
                     setFavoritesList(data.data.results);
                },
                onError: (e: any) => {
@@ -118,12 +117,13 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           forcast5daysLablesDates,
           forcast5daysLablesDays,
      };
-
+     let isLoading = false;
+     if (forcast5DaysLoading || forcast12HoursLoading) isLoading = true;
      return (
           <>
                <HashLoading
-                    loading={forcast5DaysLoading || forcast12HoursLoading}
-                    color="#fffff"
+                    loading={isLoading}
+                    color="#FFFFFF"
                     fixedCenter={true}
                     size={40}
                />

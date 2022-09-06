@@ -19,9 +19,8 @@ const HashLoading: React.FC<Props> = (props) => {
                     zIndex: 1000,
                     justifySelf: "center",
                     color: "#fffff",
-                    // position: "fixed",
                     position: `${props.fixedCenter ? "fixed" : "relative"}`,
-                    top: `${props.fixedCenter ? "50%" : "unset"},`,
+                    top: `${props.fixedCenter === true ? "50%" : "unset"}`,
                     left: `${props.fixedCenter ? "50%" : "unset"}`,
                     transform: `${
                          props.fixedCenter ? "translate(-50%,-50%)" : "unset"

@@ -83,6 +83,7 @@ export const MobileMenuBottom = () => {
                     onClick={() => {
                          dispatch(togglePopup());
                          dispatch(toggleMobileMenu());
+                         console.log("trying to click me");
                     }}
                >
                     <StyledIcon width="30px" height="30px" marginRight="8px">

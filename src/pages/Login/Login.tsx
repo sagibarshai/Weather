@@ -40,8 +40,11 @@ const Login = () => {
      const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
      const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
      const [serverError, setServerError] = useState<string | null>(null);
+     type LoginResult = {
+          data: { token: string; a: 6 };
+     };
      const { mutate, isLoading: loginIsLoading } = useMutation(loginService, {
-          onSuccess: (data) => {
+          onSuccess: (data: LoginResult) => {
                dispatch(login(data?.data?.token));
           },
           onError: (err: any) => {

@@ -1,6 +1,7 @@
 import { CityObj, Result } from "../SearchBox/types";
 import { DeggresType } from "../../shared/utils/Functions/toggleDeggres";
 import { FavoriteType } from "../../pages/Favorites/types";
+import { Coords } from "../Map/types";
 export type SelectedCityType = {
      existingCity: CityObj | null;
      selectedCityDataFromFavorites?: CityObj | null;
@@ -9,6 +10,7 @@ export type SelectedCityType = {
      renderLaptopAnDesktop?: boolean;
      selectedCityDataFromMap?: CityObj | null;
      setLocationIsOpen?: (x: boolean) => void;
+     setCoords?: (x: Coords) => void;
 };
 export type DailyForecastsType = {
      Date: Date;
@@ -38,7 +40,6 @@ export type forcast12HoursType = {
 }[];
 export type forcast12HoursTypeData = {
      isLoading?: boolean;
-
      data: {
           EpochDateTime: number;
           DateTime: string;

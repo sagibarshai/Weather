@@ -297,6 +297,11 @@ const Header: React.FC<Props> = (props) => {
                                                        lng: 35.201315,
                                                   })
                                              );
+                                             props.setCoords &&
+                                                  props.setCoords({
+                                                       lat: 32.852247,
+                                                       lng: 35.201315,
+                                                  });
                                         }
                                         dispatch(toggleMap());
                                    }}

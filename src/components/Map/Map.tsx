@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { StyledContainer, StyledText } from "./style";
 import { Props } from "./types";
 import { Coords } from "./types";
+import { useMutation } from "react-query";
 const containerStyle = {
      width: "100vw",
      height: "100vh",
@@ -36,6 +37,18 @@ const DisplayMap: React.FC<Props> = (props) => {
      let coordsFromLocalStorage = localStorage.getItem("coords");
      if (coordsFromLocalStorage)
           coordsFromLocalStorage = JSON.parse(coordsFromLocalStorage);
+     const { mutate } = useMutation(searchCityByCoords, {
+          onSuccess: (data: any) => {
+               props.setSelectedCityDataFromMap &&
+                    props.setSelectedCityDataFromMap({
+                         ...data,
+                         key: Number(data.Key),
+                    });
+          },
+          onError: (err: any) => {
+               console.log(err);
+          },
+     });
      if (!isLoaded) return <></>;
      else if (props.coords && location.pathname === "/home")
           return (
@@ -51,15 +64,7 @@ const DisplayMap: React.FC<Props> = (props) => {
                          };
 
                          dispatch(toggleMap());
-                         searchCityByCoords(coords)
-                              .then((res) => {
-                                   props.setSelectedCityDataFromMap &&
-                                        props.setSelectedCityDataFromMap({
-                                             ...res,
-                                             key: Number(res.Key),
-                                        });
-                              })
-                              .catch((err) => console.log(err));
+                         mutate(coords);
                     }}
                />
           );

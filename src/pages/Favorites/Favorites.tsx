@@ -35,6 +35,7 @@ import { Coords } from "../../components/Map/types";
 import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/searchCityByCoords";
 import { getHourlyForcast } from "../../shared/utils/Services/Accuweather-Api/getHourlyForcast";
 import { FavoriteType } from "./types";
+import HashLoading from "../../shared/Loaing-elements/HashLoading";
 const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      const queryClient = useQueryClient();
      const dispatch = useDispatch();
@@ -138,6 +139,8 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    };
                               })
                               .catch((err) => console.log(err)),
+                    staleTime: Infinity,
+                    cacheTime: Infinity,
                     enabled,
                };
           })
@@ -150,6 +153,8 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                          searchCityByCoords(coords.data)
                               .then((res) => res.Key)
                               .catch((err) => console.log(err)),
+                    staleTime: Infinity,
+                    cacheTime: Infinity,
                     enabled,
                };
           })
@@ -169,6 +174,8 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    };
                               })
                               .catch((err) => console.log(err)),
+                    staleTime: Infinity,
+                    cacheTime: Infinity,
                     enabled,
                };
           })
@@ -179,7 +186,16 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
      };
-     if (openMap) {
+     if (isLoading)
+          return (
+               <HashLoading
+                    fixedCenter={true}
+                    loading={isLoading}
+                    size={30}
+                    color="#FFFFFFF"
+               />
+          );
+     else if (openMap) {
           return (
                <>
                     <DisplayMap
@@ -198,8 +214,11 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                     )}
                </>
           );
-     }
-     if (favoritesList && !favoritesList.length && favoritesSearch === "")
+     } else if (
+          favoritesList &&
+          !favoritesList.length &&
+          favoritesSearch === ""
+     )
           return (
                <>
                     <StyledFavoritePageContainer

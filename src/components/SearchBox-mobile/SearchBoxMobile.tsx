@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import HashLoading from "../../shared/Loaing-elements/HashLoading";
 import { ReactComponent as IconArrowLeft } from "../../shared/svg/arrow-left.svg";
 import { ReactComponent as IconSearch } from "../../shared/svg/search-dark.svg";
 import { ReactComponent as IconCity } from "../../shared/svg/city.svg";
@@ -33,7 +34,7 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
           exact: true,
      });
      const debounce = useDebounce(searchInput, 300);
-     const { data } = useQuery(
+     const { isLoading, data } = useQuery(
           ["autocomplete", isCached ? searchInput : debounce],
           () => search(isCached ? searchInput : debounce),
           {
@@ -75,65 +76,59 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
                          <IconSearch />
                     </StyledIcon>
                </Input>
+               <HashLoading
+                    loading={isLoading}
+                    fixedCenter={true}
+                    color="#000000"
+                    size={30}
+               />
                {Array.isArray(searchResults) && (
                     <StyledResultDiv>
-                         {Array.isArray(searchResults) && (
-                              <StyledResultList>
-                                   {searchResults.map(
-                                        (item: any, index: number) => (
-                                             <StyledResultItem
-                                                  key={index}
-                                                  onClick={() => {
-                                                       props.setOpenSearchBoxMobile(
-                                                            false
-                                                       );
-                                                       props.setExistingCity &&
-                                                            props.setExistingCity(
-                                                                 {
-                                                                      ...item,
-                                                                      key: item.Key,
-                                                                 }
-                                                            );
-                                                       {
-                                                            location.pathname !==
-                                                                 "/home" &&
-                                                                 navigate(
-                                                                      "/home",
+                         <StyledResultList>
+                              {searchResults.map((item: any, index: number) => (
+                                   <StyledResultItem
+                                        key={index}
+                                        onClick={() => {
+                                             props.setOpenSearchBoxMobile(
+                                                  false
+                                             );
+                                             props.setExistingCity &&
+                                                  props.setExistingCity({
+                                                       ...item,
+                                                       key: item.Key,
+                                                  });
+                                             {
+                                                  location.pathname !==
+                                                       "/home" &&
+                                                       navigate("/home", {
+                                                            state: {
+                                                                 selectedCityData:
                                                                       {
-                                                                           state: {
-                                                                                selectedCityData:
-                                                                                     {
-                                                                                          key: item.Key,
-                                                                                          LocalizedName:
-                                                                                               item.LocalizedName,
-                                                                                          Country: {
-                                                                                               LocalizedName:
-                                                                                                    item
-                                                                                                         .Country
-                                                                                                         .LocalizedName,
-                                                                                          },
-                                                                                     },
+                                                                           key: item.Key,
+                                                                           LocalizedName:
+                                                                                item.LocalizedName,
+                                                                           Country: {
+                                                                                LocalizedName:
+                                                                                     item
+                                                                                          .Country
+                                                                                          .LocalizedName,
                                                                            },
-                                                                      }
-                                                                 );
-                                                       }
-                                                  }}
-                                             >
-                                                  {item.LocalizedName},
-                                                  <StyledResultCountry>
-                                                       {" "}
-                                                       {
-                                                            item.Country
-                                                                 .LocalizedName
-                                                       }
-                                                  </StyledResultCountry>
-                                             </StyledResultItem>
-                                        )
-                                   )}
-                              </StyledResultList>
-                         )}
+                                                                      },
+                                                            },
+                                                       });
+                                             }
+                                        }}
+                                   >
+                                        {item.LocalizedName},
+                                        <StyledResultCountry>
+                                             {" "}
+                                             {item.Country.LocalizedName}
+                                        </StyledResultCountry>
+                                   </StyledResultItem>
+                              ))}
+                         </StyledResultList>
                          {!searchResults.length && (
-                              <StyledIcon margin="103px 0 0 0">
+                              <StyledIcon margin="20px 0 0 0">
                                    <IconCity />
                               </StyledIcon>
                          )}

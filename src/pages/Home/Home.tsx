@@ -10,11 +10,7 @@ import {
      StyledTextNotFoundCity,
 } from "./style";
 import { StoreState } from "../../redux/store";
-import {
-     closeMobileMenu,
-     toggleMap,
-     togglePopup,
-} from "../../redux/headerSlice";
+import { closeMobileMenu, togglePopup } from "../../redux/headerSlice";
 import Popup from "../../components/Popup/Popup";
 import { StyledIcon } from "../../shared/Icons/Icon";
 import { ReactComponent as IconLocation } from "../../shared/svg/location.svg";
@@ -123,6 +119,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          openPopup={openPopup}
                     >
                          <HomePageDisplayCity
+                              setCoords={pageProps.setCoords}
                               setLocationIsOpen={pageProps.setLocationIsOpen}
                               selectedCityDataFromMap={selectedCityDataFromMap}
                               existingCity={pageProps.existingCity}
@@ -233,8 +230,26 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                </>
           );
      else {
-          console.log("else");
-          return <></>;
+          return (
+               <>
+                    <StyledPageContainer
+                         openMobileMenu={openMobileMenu}
+                         renderPraimaryBackground={renderPraimaryBackground}
+                         onClick={onClickHandler}
+                         openPopup={openPopup}
+                    ></StyledPageContainer>
+                    {openPopup && (
+                         <Popup
+                              message="You about to log out from WeatherApp.
+                              Are you sure you want to log out?"
+                              cancelMessage="I want to stay"
+                              continueButtonText="Yes, log out"
+                              title="Log Out"
+                              callback={() => dispatch(logout())}
+                         />
+                    )}
+               </>
+          );
      }
 };
 
