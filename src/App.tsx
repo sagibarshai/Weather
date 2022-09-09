@@ -10,8 +10,10 @@ import { logout } from "./redux/authSlice";
 import PageSharedTamplate from "./pages/SharedTemplate/PageSharedTamplate";
 import { StyleAppContainer } from "./GlobalStyle";
 import { useScreenWidth } from "./shared/utils/hooks/useScreenWidth";
+import { useQueryClient } from "react-query";
 
 const App: React.FC = () => {
+     const queryClient = useQueryClient();
      const dispatch = useDispatch();
      const navigate = useNavigate();
      const deviceValue = useScreenWidth()[0];
@@ -41,6 +43,7 @@ const App: React.FC = () => {
           try {
                await checkToken();
           } catch (err) {
+               console.log(err);
                dispatch(logout());
           }
      };

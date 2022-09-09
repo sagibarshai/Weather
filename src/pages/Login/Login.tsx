@@ -25,6 +25,11 @@ import {
      StyledContentContainer,
 } from "./style";
 import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
+import LoginWithGoogle, {
+     clientIdGoogle,
+} from "../../shared/utils/Services/Google-Login/GoogleLogin";
+import { gapi } from "gapi-script";
+
 const Login = () => {
      const [email, setEmail] = useState<string>("");
      const [password, setPassword] = useState<string>("");
@@ -40,6 +45,7 @@ const Login = () => {
      const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
      const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
      const [serverError, setServerError] = useState<string | null>(null);
+     const [loginWithGoogle, setLoginWithGoogle] = useState<boolean>(false);
      type LoginResult = {
           data: { token: string; a: 6 };
      };
@@ -61,12 +67,15 @@ const Login = () => {
                setServerError(errorMessage);
           },
      });
-     const onSubmitHandler = async (e: ChangeEvent<HTMLInputElement>) => {
-          setServerError(null);
-          e.preventDefault();
-          const dataObj = { email, password };
-          mutate(dataObj);
-     };
+     // useEffect(() => {
+     //      const startLoginGoogle = () => {
+     //           gapi.client.init({
+     //                clientId: clientIdGoogle,
+     //                scope: "",
+     //           });
+     //      };
+     //      gapi.load("client:auth2", startLoginGoogle);
+     // });
 
      useEffect(() => {
           const checkPassword =
@@ -88,7 +97,12 @@ const Login = () => {
      const openMobileMenu = useSelector(
           (state: StoreState) => state.headerSlice.openMobileMenu
      );
-
+     const onSubmitHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+          setServerError(null);
+          e.preventDefault();
+          const dataObj = { email, password };
+          mutate(dataObj);
+     };
      return (
           <StyledLoginPageContainer
                renderPraimaryBackground={renderPraimaryBackground}
@@ -107,7 +121,6 @@ const Login = () => {
                     <IconApp />
                </StyledIcon>
                <StyledLoginContainer
-                    onSubmit={(e: any) => onSubmitHandler(e)}
                     mobileServerError={serverError ? true : false}
                     serverError={serverError}
                >
@@ -202,6 +215,8 @@ const Login = () => {
                               />
                          </StyledInputsContainer>
                          <StyledButton
+                              type="submit"
+                              onClick={(e: any) => onSubmitHandler(e)}
                               alignSelf="center"
                               mobileWidthWithCalc="324px"
                               margin="40px 0 0 0"
@@ -233,18 +248,32 @@ const Login = () => {
                          </StyledContainer>
 
                          <StyledContainer gap="16px" flexDeiraction="column">
-                              <StyledButton variant="linkWithImg">
+                              <StyledButton variant="linkWithImg" type="button">
                                    <StyledIcon marginRight="8px">
                                         <IconFacebook />
                                    </StyledIcon>
                                    Log in with facebook
                               </StyledButton>
-                              <StyledButton variant="linkWithImg">
+                              <LoginWithGoogle
+                                   setServerError={setServerError}
+                              />
+
+                              {/* <StyledButton
+                                   className="g-signin2"
+                                   data-onsuccess={() => console.log()}
+                                   data-theme="dark"
+                                   id="login-google-button"
+                                   type="button"
+                                   variant="linkWithImg"
+                                   onClick={() => {
+                                        setLoginWithGoogle(true);
+                                   }}
+                              >
                                    <StyledIcon marginRight="8px">
                                         <IconGoogle />
                                    </StyledIcon>
                                    Log in with google
-                              </StyledButton>
+                              </StyledButton> */}
                          </StyledContainer>
                     </StyledContentContainer>
                </StyledLoginContainer>

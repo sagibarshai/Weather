@@ -86,8 +86,18 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                setFilteredSearch(data.data.results);
                setFavoritesList(data.data.results);
           },
-          onError: () => {},
+          onError: (e) => {
+               console.log(e);
+          },
      });
+     useEffect(() => {
+          if (!queryClient.getQueryData("favorites")) {
+               queryClient
+                    .fetchQuery("favorites")
+                    .then((res) => setFavoritesList(res.data.results));
+          }
+     }, []);
+
      const { mutate } = useMutation(favoritesHandler, {
           onSuccess: () => {
                queryClient.invalidateQueries("favorites");
@@ -191,7 +201,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                };
           })
      );
-     console.log(markerCoordsArray.length);
 
      const openMenuMobile = useSelector(
           (state: StoreState) => state.headerSlice.openMobileMenu
@@ -238,7 +247,8 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                               message="You about to log out from WeatherApp.
                                        Are you sure you want to log out?"
                               cancelMessage="I want to stay"
-                              callback={() => logout()}
+                              callback={() => dispatch(logout())}
+                              continueButtonText="yes, log out"
                          />
                     )}
                </>
@@ -278,7 +288,9 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                               message="You about to log out from WeatherApp.
                         Are you sure you want to log out?"
                               cancelMessage="I want to stay"
-                              callback={() => logout()}
+                              callback={() => dispatch(logout())}
+                              title="Log out"
+                              continueButtonText="yes, log out"
                          />
                     )}
                </>

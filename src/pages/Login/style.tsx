@@ -90,12 +90,11 @@ export const StyledSpan = styled.span`
      white-space: nowrap;
 `;
 export const StyledContentContainer = styled.div`
-     /* display: none; */
      display: flex;
      flex-direction: column;
      justify-content: center;
-     /* margin: 54px 54px 54px 0; */
      width: 100%;
-     /* height: 100%; */
-     overflow-y: auto;
+     @media ${cssBreakPoints.mobile} {
+          overflow-y: scroll;
+     }
 `;

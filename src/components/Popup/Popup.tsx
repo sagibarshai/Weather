@@ -13,8 +13,10 @@ import {
      StyledTitle,
      StyledXButton,
 } from "./style";
+import { useQueryClient } from "react-query";
 
 const Popup: React.FC<Props> = (props) => {
+     const queryClient = useQueryClient();
      const dispatch = useDispatch();
      return (
           <StyledPopupContainer>
@@ -46,8 +48,9 @@ const Popup: React.FC<Props> = (props) => {
                          height="54px"
                          onClick={() => {
                               dispatch(togglePopup());
-                              {
-                                   props.callback && props.callback();
+                              if (props.callback) {
+                                   props.callback();
+                                   queryClient.invalidateQueries();
                               }
                          }}
                     >

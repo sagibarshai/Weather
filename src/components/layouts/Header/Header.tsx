@@ -59,6 +59,7 @@ const Header: React.FC<Props> = (props) => {
      const currentIcon: NavLinkActiveStyleType | undefined = links.find(
           (link) => {
                if (link.to === location.pathname) return link;
+               else return links[0];
           }
      ) as NavLinkActiveStyleType;
      useEffect(() => {
@@ -68,6 +69,7 @@ const Header: React.FC<Props> = (props) => {
      const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
           currentIcon ? currentIcon.activeIcon : undefined
      );
+     console.log("active icon", activeIcon, currentIcon);
      const client = useQueryClient();
      const isCached = client.getQueryData(["autocomplete", searchInput], {
           exact: true,
@@ -115,6 +117,7 @@ const Header: React.FC<Props> = (props) => {
                setHoverIndexResult
           );
      }, [hoverIndexResult]);
+     console.log(activeIconId);
      return (
           <>
                <StyledHeader
