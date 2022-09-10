@@ -57,6 +57,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                else if (data.status === 200 || 201) setItemIsOnFavorites(true);
           },
           onError: (e: any) => console.log(e),
+          enabled: !localStorage.getItem("token"),
      });
      let enabled = false;
      if (props.existingCity) enabled = true;
@@ -85,6 +86,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                onError: (e: any) => {
                     console.log(e);
                },
+               enabled: !localStorage.getItem("token"),
           }
      );
      const degressType: DeggresType = useSelector(

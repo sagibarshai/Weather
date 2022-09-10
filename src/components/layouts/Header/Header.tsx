@@ -69,7 +69,6 @@ const Header: React.FC<Props> = (props) => {
      const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
           currentIcon ? currentIcon.activeIcon : undefined
      );
-     console.log("active icon", activeIcon, currentIcon);
      const client = useQueryClient();
      const isCached = client.getQueryData(["autocomplete", searchInput], {
           exact: true,
@@ -117,7 +116,6 @@ const Header: React.FC<Props> = (props) => {
                setHoverIndexResult
           );
      }, [hoverIndexResult]);
-     console.log(activeIconId);
      return (
           <>
                <StyledHeader

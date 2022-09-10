@@ -45,7 +45,6 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
      const mapIsOpen = useSelector(
           (state: StoreState) => state.headerSlice.openMap
      );
-     console.log(currentPage);
      useEffect(() => {
           if (props.renderLaptopAnDesktop) {
                navigator.geolocation.getCurrentPosition(

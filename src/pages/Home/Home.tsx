@@ -51,7 +51,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      );
      const { mutate } = useMutation(searchCityByCoords, {
           onSuccess: (data: SearchResult) => {
-               console.log(data);
                pageProps.setExistingCity({ ...data, key: data?.Key });
           },
           onError: (err: any) => {},
@@ -79,7 +78,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      useEffect(() => {
           if (!pageProps.existingCity && pageProps.coords) {
                mutate(pageProps.coords);
-               console.log("happend");
           }
      }, [location, pageProps.coords]);
      const onClickHandler = () => {
@@ -110,6 +108,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    setSelectedCityDataFromMap
                               }
                          />
+                         //Zuza1507pini
                          {showInfo && (
                               <Notification
                                    variant="success"

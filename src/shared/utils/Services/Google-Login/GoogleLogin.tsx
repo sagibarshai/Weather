@@ -7,26 +7,22 @@ import { StyledButton } from "../../../UIElements/Button/Button";
 import { loginGoogleService } from "../Abra-Server/loginGoogleService";
 import { Props } from "./types";
 import { ReactComponent as IconGoogle } from "../../../svg/logo-google.svg";
-import { useNavigate } from "react-router-dom";
 const LoginWithGoogle: React.FC<Props> = (props) => {
-     const navigate = useNavigate();
+     const dispatch = useDispatch();
      const googleLoginCustomButton = useGoogleLogin({
           onError: (err: any) => {
                console.log(err);
           },
           onSuccess: (e: any) => {
                mutate({
-                    id_token: e.tokenId,
                     access_token: e.access_token,
                });
           },
      });
 
-     const dispatch = useDispatch();
      const { mutate } = useMutation(loginGoogleService, {
           onSuccess: (data: any) => {
                dispatch(login(data.token.toString()));
-               navigate("/home");
           },
           onError: (err: any) => {
                let errorMessage = "";
@@ -37,7 +33,7 @@ const LoginWithGoogle: React.FC<Props> = (props) => {
                          for (let element of parsesErrorsObj[error]) {
                               errorMessage += element;
                          }
-                    } else console.log(error);
+                    } else console.log(err);
                }
                props.setServerError(errorMessage);
           },

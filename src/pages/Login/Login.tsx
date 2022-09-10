@@ -25,10 +25,8 @@ import {
      StyledContentContainer,
 } from "./style";
 import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
-import LoginWithGoogle, {
-     clientIdGoogle,
-} from "../../shared/utils/Services/Google-Login/GoogleLogin";
-import { gapi } from "gapi-script";
+import LoginWithGoogle from "../../shared/utils/Services/Google-Login/GoogleLogin";
+import LoginWithFacebook from "../../shared/utils/Services/Facebook-login/FacebookLogin";
 
 const Login = () => {
      const [email, setEmail] = useState<string>("");
@@ -47,7 +45,7 @@ const Login = () => {
      const [serverError, setServerError] = useState<string | null>(null);
      const [loginWithGoogle, setLoginWithGoogle] = useState<boolean>(false);
      type LoginResult = {
-          data: { token: string; a: 6 };
+          data: { token: string };
      };
      const { mutate, isLoading: loginIsLoading } = useMutation(loginService, {
           onSuccess: (data: LoginResult) => {
@@ -67,16 +65,6 @@ const Login = () => {
                setServerError(errorMessage);
           },
      });
-     // useEffect(() => {
-     //      const startLoginGoogle = () => {
-     //           gapi.client.init({
-     //                clientId: clientIdGoogle,
-     //                scope: "",
-     //           });
-     //      };
-     //      gapi.load("client:auth2", startLoginGoogle);
-     // });
-
      useEffect(() => {
           const checkPassword =
                password.length >= 6 &&
@@ -248,32 +236,12 @@ const Login = () => {
                          </StyledContainer>
 
                          <StyledContainer gap="16px" flexDeiraction="column">
-                              <StyledButton variant="linkWithImg" type="button">
-                                   <StyledIcon marginRight="8px">
-                                        <IconFacebook />
-                                   </StyledIcon>
-                                   Log in with facebook
-                              </StyledButton>
+                              <LoginWithFacebook
+                                   setServerError={setServerError}
+                              />
                               <LoginWithGoogle
                                    setServerError={setServerError}
                               />
-
-                              {/* <StyledButton
-                                   className="g-signin2"
-                                   data-onsuccess={() => console.log()}
-                                   data-theme="dark"
-                                   id="login-google-button"
-                                   type="button"
-                                   variant="linkWithImg"
-                                   onClick={() => {
-                                        setLoginWithGoogle(true);
-                                   }}
-                              >
-                                   <StyledIcon marginRight="8px">
-                                        <IconGoogle />
-                                   </StyledIcon>
-                                   Log in with google
-                              </StyledButton> */}
                          </StyledContainer>
                     </StyledContentContainer>
                </StyledLoginContainer>
