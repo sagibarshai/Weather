@@ -86,7 +86,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                setFilteredSearch(data.data.results);
                setFavoritesList(data.data.results);
           },
-          onError: (e) => {
+          onError: (e: any) => {
                console.log(e);
           },
      });
@@ -94,7 +94,9 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           if (!queryClient.getQueryData("favorites")) {
                queryClient
                     .fetchQuery("favorites")
-                    .then((res) => setFavoritesList(res.data.results));
+                    .then((res: { data: { results: FavoriteType[] } }) =>
+                         setFavoritesList(res.data.results)
+                    );
           }
      }, []);
 

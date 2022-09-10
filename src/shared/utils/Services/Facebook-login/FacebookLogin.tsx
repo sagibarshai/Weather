@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 const LoginWithFacebook: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      const { mutate } = useMutation(loginFacebookService, {
-          onSuccess: (data) => {
+          onSuccess: (data: { token: string }) => {
                dispatch(login(data.token.toString()));
           },
           onError: (err: any) => {
@@ -31,12 +31,9 @@ const LoginWithFacebook: React.FC<Props> = (props) => {
      return (
           <FacebookLogin
                appId="1488056924968675"
-               callback={(res) => {
-                    mutate({
-                         access_token: res.accessToken,
-                    });
-               }}
-               onClick={(e) => console.log(e)}
+               callback={(res: any) =>
+                    mutate({ access_token: res.accessToken })
+               }
                disableMobileRedirect={true}
                render={(renderProps) => {
                     return (
