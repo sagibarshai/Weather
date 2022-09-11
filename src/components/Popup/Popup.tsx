@@ -16,7 +16,7 @@ import {
 import { useQueryClient } from "react-query";
 
 const Popup: React.FC<Props> = (props) => {
-     const queryClient = useQueryClient();
+     const queryClient = new useQueryClient();
      const dispatch = useDispatch();
      return (
           <StyledPopupContainer>
@@ -50,7 +50,7 @@ const Popup: React.FC<Props> = (props) => {
                               dispatch(togglePopup());
                               if (props.callback) {
                                    props.callback();
-                                   queryClient.invalidateQueries();
+                                   queryClient.invalidateQueries("favorites");
                               }
                          }}
                     >

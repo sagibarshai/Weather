@@ -30,7 +30,7 @@ const LoginWithFacebook: React.FC<Props> = (props) => {
 
      return (
           <FacebookLogin
-               appId="1488056924968675"
+               appId={process.env.REACT_APP_FACEBOOK_LOGIN_APP_ID || ""}
                callback={(res: any) =>
                     mutate({ access_token: res.accessToken })
                }

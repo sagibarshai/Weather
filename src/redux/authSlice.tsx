@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 type State = {
-     isLogin: boolean | null | string;
+     isLogin: boolean;
      token: string | null;
 };
 
 let initialState: State = {
-     isLogin: localStorage.getItem("token"),
+     isLogin: localStorage.getItem("token") ? true : false,
      token: localStorage.getItem("token"),
 };
 const authSlice = createSlice({

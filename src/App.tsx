@@ -37,7 +37,9 @@ const App: React.FC = () => {
           }
      }, [deviceValue]);
      useEffect(() => {
-          if (isLogin) navigate("/home");
+          if (isLogin) {
+               navigate("/home");
+          }
      }, [isLogin]);
      const checkIfTokenIsValid = async () => {
           try {
@@ -78,6 +80,8 @@ const App: React.FC = () => {
                     renderLaptopAnDesktop={renderLaptopAnDesktop}
                     renderMobile={renderMobile}
                />
+               <ReactQueryDevtools initialIsOpen={false} />
+
                <Routes>
                     <Route element={<Navigate to="/login" />} path="/*" />
                     <Route element={<Login />} path="/login" />

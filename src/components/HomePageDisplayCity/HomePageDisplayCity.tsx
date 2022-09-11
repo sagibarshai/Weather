@@ -48,6 +48,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           useState<boolean>(false);
      const [errorNotification, setErrorNotification] = useState<boolean>(false);
      const [selected, setSelected] = useState<number>(0);
+     const token = useSelector((state: StoreState) => state.authSlice.token);
      const { mutate } = useMutation(favoritesHandler, {
           onSuccess: (data: { status: number }) => {
                queryClient.invalidateQueries("favorites");
@@ -57,7 +58,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                else if (data.status === 200 || 201) setItemIsOnFavorites(true);
           },
           onError: (e: any) => console.log(e),
-          enabled: !localStorage.getItem("token"),
+          enabled: !token,
      });
      let enabled = false;
      if (props.existingCity) enabled = true;
@@ -70,25 +71,17 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                else setItemIsOnFavorites(false);
           }
      }, [props.existingCity, favoritesList]);
-     const { isLoading: getFromFavoritesLoading } = useQuery(
-          "favorites",
-          getFromFavorites,
-          {
-               cacheTime: Infinity,
-               staleTime: Infinity,
-               refetchOnMount: true,
-               refetchOnReconnect: true,
-               onSuccess: (data: {
-                    data: { results: FavoriteType[] | [] };
-               }) => {
-                    setFavoritesList(data.data.results);
-               },
-               onError: (e: any) => {
-                    console.log(e);
-               },
-               enabled: !localStorage.getItem("token"),
-          }
-     );
+     useQuery("favorites", getFromFavorites, {
+          cacheTime: Infinity,
+          staleTime: Infinity,
+          onSuccess: (data: { data: { results: FavoriteType[] | [] } }) => {
+               setFavoritesList(data.data.results);
+          },
+          onError: (e: any) => {
+               console.log(e);
+          },
+          enabled: !token,
+     });
      const degressType: DeggresType = useSelector(
           (state: StoreState) => state.headerSlice.degressType
      );
@@ -108,8 +101,8 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                ["forcast12Hours", props?.existingCity?.key],
                () => getForcastFor12Hours(props?.existingCity?.key),
                {
-                    cacheTime: twelveHours / 6,
-                    staleTime: twelveHours / 6,
+                    cacheTime: twelveHours,
+                    staleTime: twelveHours,
                     enabled,
                }
           ) as forcast12HoursTypeData;

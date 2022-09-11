@@ -37,10 +37,10 @@ import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/
 import { getHourlyForcast } from "../../shared/utils/Services/Accuweather-Api/getHourlyForcast";
 import { FavoriteType } from "./types";
 import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
-
 import Notification from "../../shared/notifacation/Notification";
 import themes from "../../shared/themes/themes";
 const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
+     const token = useSelector((state: StoreState) => state.authSlice.token);
      const queryClient = useQueryClient();
      const dispatch = useDispatch();
      const navigate = useNavigate();
@@ -80,8 +80,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      const { data, isLoading } = useQuery("favorites", getFromFavorites, {
           cacheTime: Infinity,
           staleTime: Infinity,
-          refetchOnMount: true,
-          refetchOnReconnect: true,
           onSuccess: (data: { data: { results: [] | FavoriteType[] } }) => {
                setFilteredSearch(data.data.results);
                setFavoritesList(data.data.results);
@@ -89,6 +87,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           onError: (e: any) => {
                console.log(e);
           },
+          enabled: !token,
      });
      useEffect(() => {
           if (!queryClient.getQueryData("favorites")) {

@@ -43,7 +43,6 @@ const Login = () => {
      const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
      const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
      const [serverError, setServerError] = useState<string | null>(null);
-     const [loginWithGoogle, setLoginWithGoogle] = useState<boolean>(false);
      type LoginResult = {
           data: { token: string };
      };
