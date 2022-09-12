@@ -1,44 +1,50 @@
 import { useEffect, useState } from "react";
-import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
-import { selectCity } from "../../shared/utils/Services/Accuweather-Api/selectCity";
 import { useQuery, useQueryClient, useMutation } from "react-query";
-import { convertDateToText } from "../../shared/utils/Dates/convertDateToText";
+import { useDispatch, useSelector } from "react-redux";
+
+import { toggleMap } from "../../redux/headerSlice";
+
 import { StyledButton } from "../../shared/UIElements/Button/Button";
 import { StyledIcon } from "../../shared/Icons/Icon";
+import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
+import Notification from "../../shared/notifacation/Notification";
+import LineChart from "../Chart/LineChart";
+import LineChartMobile from "../Chart-mobile/LineChartMobile";
+import DisplayDailyData from "../DisplayForcastData/DisplayDailyData";
+import DisplayWeeklyData from "../DisplayForcastData/DisplayWeeklyData";
+import DisplayCityMetaData from "../DisplayForcastData/DisplayCityMetaData";
+
+import { selectCity } from "../../shared/utils/Services/Accuweather-Api/selectCity";
+import { getForcastFor12Hours } from "../../shared/utils/Services/Accuweather-Api/getForcastFor12Hours";
+import { getFromFavorites } from "../../shared/utils/Services/Abra-Server/getFromFavorites";
+import { favoritesHandler } from "../../shared/utils/Services/Abra-Server/favoritesHandler";
+
+import { convertDateToText } from "../../shared/utils/Dates/convertDateToText";
+import { getDayNumber } from "../../shared/utils/Dates/getDateNumber";
+
 import { ReactComponent as IconFavWhiteFull } from "../../shared/svg/fav-full.svg";
 import { ReactComponent as IconFavWhite } from "../../shared/svg/fav-outline-white.svg";
 import { ReactComponent as IconMapBlack } from "../../shared/svg/map-black.svg";
 import { ReactComponent as IconError } from "../../shared/svg/info-circle.svg";
 import { returnShortDayFromDate } from "../../shared/utils/Dates/returnShortDayFromDate";
-import { getForcastFor12Hours } from "../../shared/utils/Services/Accuweather-Api/getForcastFor12Hours";
-import LineChart from "../Chart/LineChart";
-import DisplayDailyData from "../DisplayForcastData/DisplayDailyData";
-import { getDayNumber } from "../../shared/utils/Dates/getDateNumber";
-import { StyledContainer, StyledMobileAddToFavButton } from "./style";
-import LineChartMobile from "../Chart-mobile/LineChartMobile";
-import { favoritesHandler } from "../../shared/utils/Services/Abra-Server/favoritesHandler";
-import Notification from "../../shared/notifacation/Notification";
 import { ReactComponent as IconSuccses } from "../../shared/svg/check-v.svg";
-import { useDispatch, useSelector } from "react-redux";
+
+import { StyledContainer, StyledMobileAddToFavButton } from "./style";
+
 import { StoreState } from "../../redux/store";
 import {
      DeggresType,
      toggleDeggres,
 } from "../../shared/utils/Functions/toggleDeggres";
 import { FavoriteType } from "../../pages/Favorites/types";
-import { getFromFavorites } from "../../shared/utils/Services/Abra-Server/getFromFavorites";
-import {
-     DataDailyForecastsType,
-     SelectedCityType,
-     forcast12HoursTypeData,
-} from "./types";
-import { toggleMap } from "../../redux/headerSlice";
-import DisplayWeeklyData from "../DisplayForcastData/DisplayWeeklyData";
-import DisplayCityMetaData from "../DisplayForcastData/DisplayCityMetaData";
+import { DataDailyForecastsType, Props, forcast12HoursTypeData } from "./types";
+
 const twelveHours = 1000 * 60 * 60 * 12;
-const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
+
+const HomePageDisplayCity: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      const queryClient = useQueryClient();
+
      const [itemIsOnFavorites, setItemIsOnFavorites] = useState<boolean>(false);
      const [favoritesList, setFavoritesList] = useState<
           null | [] | FavoriteType[]
@@ -48,7 +54,27 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           useState<boolean>(false);
      const [errorNotification, setErrorNotification] = useState<boolean>(false);
      const [selected, setSelected] = useState<number>(0);
+     const [open5daysForcastMobile, setOpen5daysForcastMobile] =
+          useState<boolean>(false);
+
      const token = useSelector((state: StoreState) => state.authSlice.token);
+     const degressType: DeggresType = useSelector(
+          (state: StoreState) => state.headerSlice.degressType
+     );
+     setInterval(() => {
+          setNow(convertDateToText());
+     }, 1000 * 60);
+
+     useEffect(() => {
+          if (favoritesList && props.existingCity) {
+               const favoriteItem = favoritesList?.find(
+                    (fav) => fav.key == props?.existingCity?.key
+               );
+               if (favoriteItem) setItemIsOnFavorites(true);
+               else setItemIsOnFavorites(false);
+          }
+     }, [props.existingCity, favoritesList]);
+
      const { mutate } = useMutation(favoritesHandler, {
           onSuccess: (data: { status: number }) => {
                queryClient.invalidateQueries("favorites");
@@ -62,15 +88,7 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
      });
      let enabled = false;
      if (props.existingCity) enabled = true;
-     useEffect(() => {
-          if (favoritesList && props.existingCity) {
-               const favoriteItem = favoritesList?.find(
-                    (fav) => fav.key == props?.existingCity?.key
-               );
-               if (favoriteItem) setItemIsOnFavorites(true);
-               else setItemIsOnFavorites(false);
-          }
-     }, [props.existingCity, favoritesList]);
+
      useQuery("favorites", getFromFavorites, {
           cacheTime: Infinity,
           staleTime: Infinity,
@@ -80,22 +98,13 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
           onError: (e: any) => {
                console.log(e);
           },
-          enabled: !token,
      });
-     const degressType: DeggresType = useSelector(
-          (state: StoreState) => state.headerSlice.degressType
-     );
-     const [open5daysForcastMobile, setOpen5daysForcastMobile] =
-          useState<boolean>(false);
      const { data: forcasst5Days, isLoading: forcast5DaysLoading } = useQuery(
           ["5daysForcast", props?.existingCity?.key],
           () => selectCity(props?.existingCity?.key),
           { cacheTime: twelveHours, staleTime: twelveHours, enabled }
      ) as DataDailyForecastsType;
 
-     setInterval(() => {
-          setNow(convertDateToText());
-     }, 1000 * 60);
      const { data: forcast12Hours, isLoading: forcast12HoursLoading } =
           useQuery(
                ["forcast12Hours", props?.existingCity?.key],
@@ -106,16 +115,19 @@ const HomePageDisplayCity: React.FC<SelectedCityType> = (props) => {
                     enabled,
                }
           ) as forcast12HoursTypeData;
+
      const forcast5daystemperatureDay: number[] = [];
      const forcast5daystemperatureNight: number[] = [];
      const forcast5daysLablesDays: string[] = [];
      const forcast5daysLablesDates: string[] = [];
+
      const lineChartData = {
           forcast5daystemperatureDay,
           forcast5daystemperatureNight,
           forcast5daysLablesDates,
           forcast5daysLablesDays,
      };
+
      let isLoading = false;
      if (forcast5DaysLoading || forcast12HoursLoading) isLoading = true;
      return (

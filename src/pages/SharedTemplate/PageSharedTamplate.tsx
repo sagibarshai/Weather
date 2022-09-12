@@ -1,35 +1,31 @@
 import { useState, useEffect } from "react";
-import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, useLocation, Routes } from "react-router-dom";
 
+import { toggleMap } from "../../redux/headerSlice";
+
+import { StyledIcon } from "../../shared/Icons/Icon";
+import { StyledButton } from "../../shared/UIElements/Button/Button";
+import { MobileMenuBottom } from "../../components/layouts-mobile/Header/MobileHeader";
 import Header from "../../components/layouts/Header/Header";
 import MobileHeader from "../../components/layouts-mobile/Header/MobileHeader";
 import Favorites from "../Favorites/Favorites";
 import FooterMobile from "../../components/layouts-mobile/Footer/FooterMobile";
-import { useScreenWidth } from "../../shared/utils/hooks/useScreenWidth";
 import Home from "../Home/Home";
-import { MobileMenuBottom } from "../../components/layouts-mobile/Header/MobileHeader";
 import SearchBoxMobile from "../../components/SearchBox-mobile/SearchBoxMobile";
-import { CityObj } from "../../components/SearchBox/types";
-import { StoreState } from "../../redux/store";
-import { StyledButton } from "../../shared/UIElements/Button/Button";
-import { toggleMap } from "../../redux/headerSlice";
-import { StyledIcon } from "../../shared/Icons/Icon";
+
 import { ReactComponent as IconLayout } from "../../shared/svg/layout.svg";
 
+import { CityObj } from "../../components/SearchBox/types";
+import { StoreState } from "../../redux/store";
 import { Props } from "./types";
 
-export const StyledButtonText = styled.span`
-     font-family: inherit;
-     font-size: 1.8rem;
-     font-weight: bold;
-     color: black;
-`;
+import { StyledButtonText } from "./style";
 
 const PageSharedTamplate: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      const location = useLocation();
+
      const [currentPage, setCurrentPage] = useState<string>("/home");
      const [notFoundCityName, setNotFoundCityName] = useState<string>("");
      const [existingCity, setExistingCity] = useState<null | CityObj>(null);
@@ -42,6 +38,7 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           localStorage.getItem("coords") ? true : false
      );
      const [coords, setCoords] = useState<any>();
+
      const mapIsOpen = useSelector(
           (state: StoreState) => state.headerSlice.openMap
      );
@@ -78,6 +75,24 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                setCoords(JSON.parse(position));
           }
      }, []);
+     useEffect(() => {
+          let coordsFromLocalStorge = localStorage.getItem("coords");
+          if (localStorage.getItem("openOnMap") && coordsFromLocalStorge) {
+               localStorage.removeItem("openOnMap");
+               pageProps.setLocationIsOpen(true);
+               setCoords(JSON.parse(coordsFromLocalStorge));
+               dispatch(toggleMap());
+          }
+     }, []);
+     useEffect(() => {
+          if (location.pathname === "/home") setCurrentPage("/home");
+          else if (location.pathname === "/favorites")
+               setCurrentPage("/favorites");
+     }, [location]);
+     useEffect(() => {
+          selectedCityDataFromFavorites &&
+               setExistingCity(selectedCityDataFromFavorites);
+     }, [selectedCityDataFromFavorites, location]);
 
      const pageProps = {
           notFoundCityName,
@@ -98,24 +113,7 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           setLocationIsOpen,
           setCoords,
      };
-     useEffect(() => {
-          let coordsFromLocalStorge = localStorage.getItem("coords");
-          if (localStorage.getItem("openOnMap") && coordsFromLocalStorge) {
-               localStorage.removeItem("openOnMap");
-               pageProps.setLocationIsOpen(true);
-               setCoords(JSON.parse(coordsFromLocalStorge));
-               dispatch(toggleMap());
-          }
-     }, []);
-     useEffect(() => {
-          if (location.pathname === "/home") setCurrentPage("/home");
-          else if (location.pathname === "/favorites")
-               setCurrentPage("/favorites");
-     }, [location]);
-     useEffect(() => {
-          selectedCityDataFromFavorites &&
-               setExistingCity(selectedCityDataFromFavorites);
-     }, [selectedCityDataFromFavorites, location]);
+
      return (
           <>
                {props.renderLaptopAnDesktop && (

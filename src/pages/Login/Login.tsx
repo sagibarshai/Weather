@@ -1,19 +1,28 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useMutation } from "react-query";
-import { login } from "../../redux/authSlice";
-import { closeMobileMenu } from "../../redux/headerSlice";
+
+import { StyledIcon } from "../../shared/Icons/Icon";
+import { StyledButton } from "../../shared/UIElements/Button/Button";
+
+import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
+import LoginWithGoogle from "../../shared/utils/Services/Google-Login/GoogleLogin";
+import LoginWithFacebook from "../../shared/utils/Services/Facebook-login/FacebookLogin";
 import Notification from "../../shared/notifacation/Notification";
 import Input from "../../shared/UIElements/Inputs/Input/Input";
+
+import { login } from "../../redux/authSlice";
+import { closeMobileMenu } from "../../redux/headerSlice";
+
 import { loginService } from "../../shared/utils/Services/Abra-Server/LoginService";
-import { StoreState } from "../../redux/store";
-import { InputProps } from "../../shared/UIElements/Inputs/Input/types";
-import { StyledButton } from "../../shared/UIElements/Button/Button";
-import { ReactComponent as IconFacebook } from "../../shared/svg/logo-facebook.svg";
-import { ReactComponent as IconGoogle } from "../../shared/svg/logo-google.svg";
+
 import { ReactComponent as IconNotification } from "../../shared/svg/info-circle.svg";
 import { ReactComponent as IconApp } from "../../shared/svg/logo-large.svg";
-import { StyledIcon } from "../../shared/Icons/Icon";
+
+import { StoreState } from "../../redux/store";
+import { InputProps } from "../../shared/UIElements/Inputs/Input/types";
+import { LoginResult } from "./types";
+
 import {
      StyledLoginPageContainer,
      StyledLoginContainer,
@@ -24,11 +33,10 @@ import {
      StyledSpan,
      StyledContentContainer,
 } from "./style";
-import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
-import LoginWithGoogle from "../../shared/utils/Services/Google-Login/GoogleLogin";
-import LoginWithFacebook from "../../shared/utils/Services/Facebook-login/FacebookLogin";
 
 const Login = () => {
+     const dispatch = useDispatch();
+
      const [email, setEmail] = useState<string>("");
      const [password, setPassword] = useState<string>("");
      const [passwordErrorMessage, setPasswordErrorMessage] =
@@ -43,9 +51,28 @@ const Login = () => {
      const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
      const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
      const [serverError, setServerError] = useState<string | null>(null);
-     type LoginResult = {
-          data: { token: string };
-     };
+
+     const renderPraimaryBackground = useSelector(
+          (state: StoreState) => state.headerSlice.renderPraimaryBackground
+     );
+     const openMobileMenu = useSelector(
+          (state: StoreState) => state.headerSlice.openMobileMenu
+     );
+
+     useEffect(() => {
+          const checkPassword =
+               password.length >= 6 &&
+               /[a-zA-Z]/.test(password) &&
+               /\d/.test(password);
+          const checkEmail =
+               email.length >= 6 &&
+               email.includes("@") &&
+               email.includes(".") &&
+               !email.endsWith(".");
+          setPasswordIsValid(checkPassword);
+          setEmailIsValid(checkEmail);
+     }, [email, password, emailIsFocus, passwordIsFocus]);
+
      const { mutate, isLoading: loginIsLoading } = useMutation(loginService, {
           onSuccess: (data: LoginResult) => {
                dispatch(login(data?.data?.token));
@@ -64,27 +91,8 @@ const Login = () => {
                setServerError(errorMessage);
           },
      });
-     useEffect(() => {
-          const checkPassword =
-               password.length >= 6 &&
-               /[a-zA-Z]/.test(password) &&
-               /\d/.test(password);
-          const checkEmail =
-               email.length >= 6 &&
-               email.includes("@") &&
-               email.includes(".") &&
-               !email.endsWith(".");
-          setPasswordIsValid(checkPassword);
-          setEmailIsValid(checkEmail);
-     }, [email, password, emailIsFocus, passwordIsFocus]);
-     const dispatch = useDispatch();
-     const renderPraimaryBackground = useSelector(
-          (state: StoreState) => state.headerSlice.renderPraimaryBackground
-     );
-     const openMobileMenu = useSelector(
-          (state: StoreState) => state.headerSlice.openMobileMenu
-     );
-     const onSubmitHandler = async (e: ChangeEvent<HTMLInputElement>) => {
+
+     const onSubmitHandler = (e: ChangeEvent<HTMLInputElement>) => {
           setServerError(null);
           e.preventDefault();
           const dataObj = { email, password };
@@ -101,7 +109,7 @@ const Login = () => {
                     position="absolute"
                     top="0"
                     mobileLeft="50%"
-                    left="0"
+                    left="25px"
                     transformMobile="translate(-50%,0)"
                     transform="translate(0,0)"
                >

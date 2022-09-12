@@ -5,7 +5,7 @@ import { Props } from "./types";
 export const StyledLoginPageContainer = styled.div<Props>`
      display: inline-block;
      width: 100vw;
-     min-height: 100vh;
+     height: 100vh;
 `;
 export const StyledLoginContainer = styled.form<Props>`
      background-color: ${themes.white};

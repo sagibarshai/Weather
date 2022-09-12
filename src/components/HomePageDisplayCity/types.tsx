@@ -2,7 +2,7 @@ import { CityObj, SearchResult } from "../SearchBox/types";
 import { DeggresType } from "../../shared/utils/Functions/toggleDeggres";
 import { FavoriteType } from "../../pages/Favorites/types";
 import { Coords } from "../Map/types";
-export type SelectedCityType = {
+export type Props = {
      existingCity: CityObj | null;
      selectedCityDataFromFavorites?: CityObj | null;
      searchResults?: SearchResult[] | [];

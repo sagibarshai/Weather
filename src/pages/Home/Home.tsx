@@ -1,24 +1,29 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useMutation } from "react-query";
+import { useLocation } from "react-router-dom";
+
+import Popup from "../../components/Popup/Popup";
+import HomePageDisplayCity from "../../components/HomePageDisplayCity/HomePageDisplayCity";
+import DisplayMap from "../../components/Map/Map";
+import Notification from "../../shared/notifacation/Notification";
+
+import { closeMobileMenu, togglePopup } from "../../redux/headerSlice";
+import { logout } from "../../redux/authSlice";
+import { StyledIcon } from "../../shared/Icons/Icon";
+import { StyledButton } from "../../shared/UIElements/Button/Button";
+import themes from "../../shared/themes/themes";
+
+import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/searchCityByCoords";
 
 import { ReactComponent as IconLocation } from "../../shared/svg/location.svg";
 import { ReactComponent as IconCity } from "../../shared/svg/city.svg";
 import { ReactComponent as IconApp } from "../../shared/svg/logo-large.svg";
+import { ReactComponent as IconLogo } from "../../shared/svg/logo-small.svg";
 
 import { StoreState } from "../../redux/store";
-import { closeMobileMenu, togglePopup } from "../../redux/headerSlice";
-import Popup from "../../components/Popup/Popup";
-import { StyledIcon } from "../../shared/Icons/Icon";
-import { StyledButton } from "../../shared/UIElements/Button/Button";
-import themes from "../../shared/themes/themes";
-import HomePageDisplayCity from "../../components/HomePageDisplayCity/HomePageDisplayCity";
-import { logout } from "../../redux/authSlice";
-import { useLocation } from "react-router-dom";
-import DisplayMap from "../../components/Map/Map";
 import { SharedPageProps } from "../SharedTemplate/types";
-import Notification from "../../shared/notifacation/Notification";
 import { CityObj, SearchResult } from "../../components/SearchBox/types";
-import { ReactComponent as IconLogo } from "../../shared/svg/logo-small.svg";
 
 import {
      StyledPageContainer,
@@ -28,15 +33,15 @@ import {
      StyledNotFoundCityDiv,
      StyledTextNotFoundCity,
 } from "./style";
-import { useMutation } from "react-query";
-import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/searchCityByCoords";
+
 const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const location = useLocation() as any;
+     const dispatch = useDispatch();
 
      const [selectedCityDataFromMap, setSelectedCityDataFromMap] =
           useState<CityObj | null>(null);
      const [showInfo, setShowInfo] = useState<boolean>(false);
-     const dispatch = useDispatch();
+
      const renderPraimaryBackground = useSelector(
           (state: StoreState) => state.headerSlice.renderPraimaryBackground
      );
@@ -49,22 +54,14 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const openMap = useSelector(
           (state: StoreState) => state.headerSlice.openMap
      );
-     const { mutate } = useMutation(searchCityByCoords, {
-          onSuccess: (data: SearchResult) => {
-               pageProps.setExistingCity({ ...data, key: data?.Key });
-          },
-          onError: (err: any) => {},
-          staleTime: 1000 * 60 * 60,
-          cacheTime: 1000 * 60 * 60,
-     });
+
      useEffect(() => {
           if (location.state) {
                if (location.state.noResultAndEnter) {
                     pageProps.setNoResultAndEnter(
                          location.state.noResultAndEnter
                     );
-               }
-               if (location.state.selectedCityData) {
+               } else if (location.state.selectedCityData) {
                     pageProps.setSelectedCityDataFromFavorites(
                          location.state.selectedCityData
                     );
@@ -80,6 +77,22 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                mutate(pageProps.coords);
           }
      }, [location, pageProps.coords]);
+     useEffect(() => {
+          if (openMap) {
+               setShowInfo(true);
+               setTimeout(() => setShowInfo(false), 5000);
+          }
+     }, [openMap]);
+
+     const { mutate } = useMutation(searchCityByCoords, {
+          onSuccess: (data: SearchResult) => {
+               pageProps.setExistingCity({ ...data, key: data?.Key });
+          },
+          onError: (err: any) => {},
+          staleTime: 1000 * 60 * 60,
+          cacheTime: 1000 * 60 * 60,
+     });
+
      const onClickHandler = () => {
           if (openPopup) dispatch(togglePopup());
           if (openMobileMenu) dispatch(closeMobileMenu());
@@ -87,12 +100,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
      };
-     useEffect(() => {
-          if (openMap) {
-               setShowInfo(true);
-               setTimeout(() => setShowInfo(false), 5000);
-          }
-     }, [openMap]);
      if (openMap) {
           return (
                <>

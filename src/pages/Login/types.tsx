@@ -7,3 +7,6 @@ export type Props = {
      serverError?: string | null;
      renderPraimaryBackground?: boolean;
 };
+export type LoginResult = {
+     data: { token: string };
+};
