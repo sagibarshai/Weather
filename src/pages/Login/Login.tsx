@@ -233,7 +233,7 @@ const Login = () => {
                               <StyledSpan>Or log in with</StyledSpan>
                               <StyledHr />
                          </StyledContainer>
-
+                         *
                          <StyledContainer gap="16px" flexDeiraction="column">
                               <LoginWithFacebook
                                    setServerError={setServerError}
