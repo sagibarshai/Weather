@@ -87,7 +87,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           onError: (e: any) => {
                console.log(e);
           },
-          enabled: !token,
+          // enabled: !token,
      });
      useEffect(() => {
           if (!queryClient.getQueryData("favorites")) {
