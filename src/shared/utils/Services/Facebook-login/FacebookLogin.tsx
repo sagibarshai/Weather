@@ -38,7 +38,6 @@ const LoginWithFacebook: React.FC<Props> = (props) => {
                callback={(res: any) => {
                     mutate({ access_token: res.accessToken });
                }}
-               autoLoad={true}
                disableMobileRedirect={true}
                render={(renderProps) => {
                     return (

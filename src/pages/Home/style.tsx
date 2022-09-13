@@ -8,11 +8,9 @@ type StyledHome = {
 };
 
 export const StyledPageContainer = styled.div<StyledHome>`
-     display: inline-block;
-     min-width: 100vw;
-     margin: 0;
-     overflow-x: hidden;
+     width: 100vw;
      min-height: 100vh;
+     display: flex;
      ${(props) => {
           if (props.openMobileMenu || props.openPopup) {
                return css`
@@ -20,6 +18,7 @@ export const StyledPageContainer = styled.div<StyledHome>`
                `;
           }
      }};
+     padding-bottom: 20px;
 `;
 export const StyledLocationDiv = styled.div`
      display: flex;

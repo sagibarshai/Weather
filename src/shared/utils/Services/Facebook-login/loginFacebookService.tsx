@@ -4,7 +4,6 @@ interface LoginFacebook {
      id_token?: string;
 }
 export const loginFacebookService = async (data: LoginFacebook) => {
-     console.log(data);
      const response = await axiosAbraInstence.post(
           "/auth/login/facebook/",
           data

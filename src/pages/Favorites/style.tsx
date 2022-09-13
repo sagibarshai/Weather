@@ -22,10 +22,6 @@ export const StyledFavoritePageContainer = styled.div<StyleProps>`
      width: 100vw;
      min-height: 100vh;
      display: flex;
-     background-image: ${(props) => {
-          if (props.renderPraimaryBackground) return themes.backgroundPraimary;
-          else return themes.darkBackground;
-     }};
      ${(props) => {
           if (props.openMobileMenu || props.openPopup) {
                return css`
@@ -33,7 +29,7 @@ export const StyledFavoritePageContainer = styled.div<StyleProps>`
                `;
           }
      }};
-     padding-bottom: 100px;
+     padding-bottom: 20px;
 `;
 export const StyledCenteredDiv = styled.div<StyleProps>`
      display: flex;

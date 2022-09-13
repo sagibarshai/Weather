@@ -1,4 +1,5 @@
 export type DeggresType = "C" | "F";
+
 export const toggleDeggres = (
      userType: DeggresType,
      value: number,

@@ -1,4 +1,7 @@
 import { SearchResult } from "../../../components/SearchBox/types";
+
+type Action = "+" | "-";
+
 export const scrollBarHandlerYAxis = (
      parantId: string,
      list: [] | SearchResult[],
@@ -20,7 +23,6 @@ export const scrollBarHandlerYAxis = (
           setIndex(-1);
      }
 };
-type Action = "+" | "-";
 export const scrollBarHandlerXAxis = (
      parantId: string,
      currentId: string,

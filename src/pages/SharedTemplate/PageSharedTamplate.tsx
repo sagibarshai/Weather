@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, useLocation, Routes } from "react-router-dom";
 
@@ -11,7 +11,6 @@ import { MobileMenuBottom } from "../../components/layouts-mobile/Header/MobileH
 import Popup from "../../components/Popup/Popup";
 import Header from "../../components/layouts/Header/Header";
 import MobileHeader from "../../components/layouts-mobile/Header/MobileHeader";
-import Favorites from "../Favorites/Favorites";
 import FooterMobile from "../../components/layouts-mobile/Footer/FooterMobile";
 import Home from "../Home/Home";
 import SearchBoxMobile from "../../components/SearchBox-mobile/SearchBoxMobile";
@@ -24,8 +23,11 @@ import { StyledButtonText } from "./style";
 import { CityObj } from "../../components/SearchBox/types";
 import { StoreState } from "../../redux/store";
 import { Props } from "./types";
+import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
 
 const PageSharedTamplate: React.FC<Props> = (props) => {
+     const Favorites = lazy(() => import("../Favorites/Favorites"));
+
      const dispatch = useDispatch();
      const location = useLocation();
 
@@ -148,7 +150,19 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                     )}
                     {currentPage === "/favorites" && (
                          <Route
-                              element={<Favorites pageProps={pageProps} />}
+                              element={
+                                   <Suspense
+                                        fallback={
+                                             <HashLoading
+                                                  loading={true}
+                                                  color="#FFFFFFF"
+                                                  fixedCenter={true}
+                                             />
+                                        }
+                                   >
+                                        <Favorites pageProps={pageProps} />
+                                   </Suspense>
+                              }
                               path="/favorites"
                          />
                     )}

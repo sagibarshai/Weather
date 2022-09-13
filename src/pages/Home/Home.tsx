@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useMutation } from "react-query";
 import { useLocation } from "react-router-dom";
 
-import Popup from "../../components/Popup/Popup";
 import HomePageDisplayCity from "../../components/HomePageDisplayCity/HomePageDisplayCity";
 import DisplayMap from "../../components/Map/Map";
 import Notification from "../../shared/notifacation/Notification";
@@ -33,8 +32,11 @@ import {
      StyledNotFoundCityDiv,
      StyledTextNotFoundCity,
 } from "./style";
+import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
 
 const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
+     // const DisplayMap = lazy(() => import("../../components/Map/Map"));
+
      const location = useLocation() as any;
      const dispatch = useDispatch();
 
@@ -113,6 +115,8 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          renderPraimaryBackground={renderPraimaryBackground}
                          openPopup={openPopup}
                     >
+                         {/* <Suspense fallback={<HashLoading loading={true} color="#FFFFFF"} />
+                         </Suspense> */}
                          <DisplayMap
                               setServerError={pageProps.setServerError}
                               coords={pageProps.coords}

@@ -17,9 +17,10 @@ export const useFilteredSearch = (
                                    item[filed]
                                         .toLowerCase()
                                         .includes(searchInput.toLowerCase())
-                              )
+                              ) {
                                    returnedArray.push(item);
-                              else continue;
+                                   break;
+                              } else continue;
                          }
                     } else {
                          if (

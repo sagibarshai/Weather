@@ -12,12 +12,11 @@ import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/
 import { StyledIcon } from "../../shared/Icons/Icon";
 import { useFilteredSearch } from "../../shared/utils/hooks/useFiteredSearch";
 import { toggleMobileMenu, togglePopup } from "../../redux/headerSlice";
-import { logout } from "../../redux/authSlice";
-import DisplayMap from "../../components/Map/Map";
 import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
 import themes from "../../shared/themes/themes";
 import Notification from "../../shared/notifacation/Notification";
 import Popup from "../../components/Popup/Popup";
+import DisplayMap from "../../components/Map/Map";
 
 import { ReactComponent as IconSearchWhite } from "../../shared/svg/search-white.svg";
 import { ReactComponent as IconStars } from "../../shared/svg/stars.svg";
@@ -156,8 +155,8 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                          getCoordsOfCity(fav.city)
                               .then((res) => {
                                    return {
-                                        lat: res[0].lat,
-                                        lng: res[0].lon,
+                                        lat: res[0]?.lat,
+                                        lng: res[0]?.lon,
                                    };
                               })
                               .catch((err) => {
@@ -175,7 +174,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                     queryKey: ["coords", coords],
                     queryFn: () =>
                          searchCityByCoords(coords.data)
-                              .then((res) => res.Key)
+                              .then((res) => res?.Key)
                               .catch((err) => {
                                    console.log(err);
                               }),
@@ -193,10 +192,10 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                          getHourlyForcast(cityKey.data)
                               .then((res) => {
                                    return {
-                                        temp: res[0].Temperature.Value,
-                                        unit: res[0].Temperature.Unit,
-                                        iconPhrase: res[0].IconPhrase,
-                                        icon: res[0].WeatherIcon,
+                                        temp: res[0]?.Temperature.Value,
+                                        unit: res[0]?.Temperature.Unit,
+                                        iconPhrase: res[0]?.IconPhrase,
+                                        icon: res[0]?.WeatherIcon,
                                    };
                               })
                               .catch((err) => {
@@ -239,7 +238,9 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      else if (openMap) {
           return (
                <StyledFavoritePageContainer
-                    openPopup={openPopup || openPopupRemoveFavorites}
+                    openPopup={
+                         openMenuMobile || openPopup || openPopupRemoveFavorites
+                    }
                >
                     <DisplayMap
                          setServerError={pageProps.setServerError}
@@ -248,7 +249,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                          coords={pageProps.coords}
                          zoom={4}
                          center={markerCoordsArray[0]?.data}
-                    />{" "}
+                    />
                     {markerCoordsArray.length === 0 && showInfo && (
                          <Notification
                               variant="success"
@@ -270,7 +271,11 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           return (
                <>
                     <StyledFavoritePageContainer
-                         openPopup={openPopup || openPopupRemoveFavorites}
+                         openPopup={
+                              openMenuMobile ||
+                              openPopup ||
+                              openPopupRemoveFavorites
+                         }
                          onClick={onClickHandler}
                          renderPraimaryBackground={renderPraimaryBackground}
                     >
@@ -300,7 +305,9 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                <StyledFavoritePageContainer
                     onClick={onClickHandler}
                     renderPraimaryBackground={renderPraimaryBackground}
-                    openPopup={openPopup || openPopupRemoveFavorites}
+                    openPopup={
+                         openMenuMobile || openPopup || openPopupRemoveFavorites
+                    }
                >
                     <StyledContentContainer>
                          <StyledPageTitle>Favorites</StyledPageTitle>

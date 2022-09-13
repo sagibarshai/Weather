@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { useSelector, useDispatch } from "react-redux";
 
 import Login from "./pages/Login/Login";
-import PageSharedTamplate from "./pages/SharedTemplate/PageSharedTamplate";
+import HashLoading from "./shared/Loaing-elements/HashLoading/HashLoading";
 import BackgroundAnimation from "./shared/backgroundAnimation/BackgroundAnimation";
 
 import { checkToken } from "./shared/utils/Services/Abra-Server/checkToken";
@@ -16,6 +16,10 @@ import { StyleAppContainer } from "./GlobalStyle";
 import { StoreState } from "./redux/store";
 
 const App: React.FC = () => {
+     const PageSharedTamplate = lazy(
+          () => import("./pages/SharedTemplate/PageSharedTamplate")
+     );
+
      const dispatch = useDispatch();
      const navigate = useNavigate();
 
@@ -71,10 +75,20 @@ const App: React.FC = () => {
                          renderLaptopAnDesktop={renderLaptopAnDesktop}
                          renderMobile={renderMobile}
                     />
-                    <PageSharedTamplate
-                         renderLaptopAnDesktop={renderLaptopAnDesktop}
-                         renderMobile={renderMobile}
-                    />
+                    <Suspense
+                         fallback={
+                              <HashLoading
+                                   loading={true}
+                                   color="#FFFFFFFF"
+                                   fixedCenter={true}
+                              />
+                         }
+                    >
+                         <PageSharedTamplate
+                              renderLaptopAnDesktop={renderLaptopAnDesktop}
+                              renderMobile={renderMobile}
+                         />
+                    </Suspense>
                     <ReactQueryDevtools initialIsOpen={false} />
                </StyleAppContainer>
           );
