@@ -10,26 +10,25 @@ const Checkbox: React.FC<Props> = (props) => {
           <StyledLabel
                htmlFor={props.htmlFor}
                onClick={props.onClick}
-               rotate={props.rotate}
+               rotate={props.rotate ? true : undefined}
           >
                <StyledInput
                     onClick={props.onClick}
                     type="checkbox"
                     id={props.id}
-                    checked={props.checked}
                />
                <StyledDivToggle>
                     <StyledIconState
                          style={{ left: "30%" }}
                          top={props.top}
-                         rotate={props.rotate}
+                         rotate={props.rotate ? true : undefined}
                     >
                          {props.LeftIcon}
                     </StyledIconState>
                     <StyledIconState
                          style={{ left: "72.5%" }}
                          top={props.top}
-                         rotate={props.rotate}
+                         rotate={props.rotate ? true : undefined}
                     >
                          {props.rightIcon}
                     </StyledIconState>

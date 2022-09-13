@@ -1,3 +1,4 @@
 export type Props = {
-     setServerError: (x: string) => void;
+     setServerErrorMessage: (x: string) => void;
+     setServerError: (x: boolean) => void;
 };

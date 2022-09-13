@@ -83,7 +83,10 @@ const HomePageDisplayCity: React.FC<Props> = (props) => {
                if (data.status === 204) setItemIsOnFavorites(false);
                else if (data.status === 200 || 201) setItemIsOnFavorites(true);
           },
-          onError: (e: any) => console.log(e),
+          onError: (e: any) => {
+               props.setServerError(true);
+               console.log(e);
+          },
           enabled: !token,
      });
      let enabled = false;
@@ -96,6 +99,7 @@ const HomePageDisplayCity: React.FC<Props> = (props) => {
                setFavoritesList(data.data.results);
           },
           onError: (e: any) => {
+               props.setServerError(true);
                console.log(e);
           },
      });

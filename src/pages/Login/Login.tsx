@@ -50,7 +50,10 @@ const Login = () => {
           useState<InputProps>("inactive");
      const [emailIsFocus, setEmailIsFocus] = useState<boolean>(false);
      const [passwordIsFocus, setPasswordIsFocus] = useState<boolean>(false);
-     const [serverError, setServerError] = useState<string | null>(null);
+     const [serverErrorMessage, setServerErrorMessage] = useState<
+          string | null
+     >(null);
+     const [serverError, setServerError] = useState<boolean>(false);
 
      const renderPraimaryBackground = useSelector(
           (state: StoreState) => state.headerSlice.renderPraimaryBackground
@@ -88,12 +91,12 @@ const Login = () => {
                          }
                     } else console.log(error);
                }
-               setServerError(errorMessage);
+               setServerErrorMessage(errorMessage);
           },
      });
 
      const onSubmitHandler = (e: ChangeEvent<HTMLInputElement>) => {
-          setServerError(null);
+          setServerErrorMessage(null);
           e.preventDefault();
           const dataObj = { email, password };
           mutate(dataObj);
@@ -116,17 +119,17 @@ const Login = () => {
                     <IconApp />
                </StyledIcon>
                <StyledLoginContainer
-                    mobileServerError={serverError ? true : false}
-                    serverError={serverError}
+                    mobileServerError={serverErrorMessage ? true : false}
+                    serverError={serverErrorMessage}
                >
                     <StyledContentContainer>
                          <StyledTitle>Log in</StyledTitle>
                          <StyledInputsContainer>
-                              {serverError && (
+                              {serverErrorMessage && (
                                    <Notification
                                         variant="error"
                                         icon={<IconNotification />}
-                                        message={serverError}
+                                        message={serverErrorMessage}
                                         mobileHeigt="63px"
                                         mobileTransform="translateX(-50%)"
                                    />
@@ -140,7 +143,7 @@ const Login = () => {
                                    placeHolder="example@example.com..."
                                    onChange={(e: any) => {
                                         setEmail(e.target.value);
-                                        setServerError(null);
+                                        setServerErrorMessage(null);
                                    }}
                                    onBlur={() => {
                                         setEmailIsFocus(false);
@@ -177,7 +180,7 @@ const Login = () => {
                                    errorMessage={passwordErrorMessage}
                                    onChange={(e: any) => {
                                         setPassword(e.target.value);
-                                        setServerError(null);
+                                        setServerErrorMessage(null);
                                    }}
                                    onBlur={() => {
                                         setPasswordIsFocus(false);
@@ -245,9 +248,11 @@ const Login = () => {
                          <StyledContainer gap="16px" flexDeiraction="column">
                               <LoginWithFacebook
                                    setServerError={setServerError}
+                                   setServerErrorMessage={setServerErrorMessage}
                               />
                               <LoginWithGoogle
                                    setServerError={setServerError}
+                                   setServerErrorMessage={setServerErrorMessage}
                               />
                          </StyledContainer>
                     </StyledContentContainer>

@@ -80,6 +80,10 @@ const Header: React.FC<Props> = (props) => {
           {
                cacheTime: Infinity,
                staleTime: Infinity,
+               onError: (err: any) => {
+                    props.setServerError(true);
+                    console.log(err);
+               },
           }
      );
      useEffect(() => {
@@ -108,6 +112,10 @@ const Header: React.FC<Props> = (props) => {
      const mapIsOpen = useSelector(
           (state: StoreState) => !state.headerSlice.openMap
      );
+
+     useEffect(() => {
+          setSearchInput("");
+     }, [props.existingCity]);
      useEffect(() => {
           scrollBarHandlerYAxis(
                "scroll",
@@ -272,7 +280,11 @@ const Header: React.FC<Props> = (props) => {
                                    existingCity={props.existingCity}
                                    noResultAndEnter={props.noResultAndEnter}
                                    searchInput={searchInput}
-                                   display={searchIsFocus && searchInput !== ""}
+                                   display={
+                                        searchIsFocus && searchInput !== ""
+                                             ? true
+                                             : false
+                                   }
                                    results={searchResults}
                                    hoverIndexResult={hoverIndexResult}
                                    searchIsLoading={searchIsLoading}
@@ -292,6 +304,7 @@ const Header: React.FC<Props> = (props) => {
                          >
                               <StyledWrapperButton
                                    onClick={() => {
+                                        props.setNoResultAndEnter(false);
                                         if (!localStorage.getItem("coords")) {
                                              localStorage.setItem(
                                                   "coords",
@@ -365,7 +378,7 @@ const Header: React.FC<Props> = (props) => {
                          />
                     </StyledDiv>
                     <StyledDiv
-                         marginLeft="72px"
+                         marginLeft="55px"
                          marginRight="70px"
                          orderLaptop={6}
                          marginLeftlaptop="32px"
@@ -373,7 +386,9 @@ const Header: React.FC<Props> = (props) => {
                     >
                          <StyledButton
                               onClick={() => {
-                                   dispatch(togglePopup());
+                                   dispatch(
+                                        togglePopup({ popupType: "logout" })
+                                   );
                               }}
                               variant="linkWithImg"
                               color={themes.white}

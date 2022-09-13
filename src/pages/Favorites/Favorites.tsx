@@ -97,12 +97,21 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      }, [pageProps.noResultAndEnter]);
      useEffect(() => {
           if (!queryClient.getQueryData("favorites")) {
-               queryClient
-                    .fetchQuery("favorites")
-                    .then((res: { data: { results: FavoriteType[] } }) => {
-                         setFavoritesList(res?.data?.results);
-                    })
-                    .catch((err: any) => console.log(err));
+               const queryGetFavoritesData = async () => {
+                    try {
+                         const queryResponse: {
+                              data: { results: FavoriteType[] };
+                         } = await queryClient.fetchQuery(
+                              "favorites",
+                              getFromFavorites
+                         );
+                         setFavoritesList(queryResponse?.data?.results);
+                    } catch (err) {
+                         pageProps.setServerError(true);
+                         console.log(err);
+                    }
+               };
+               queryGetFavoritesData();
           } else
                setFavoritesList(
                     queryClient.getQueryData("favorites").data.results
@@ -119,14 +128,20 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           },
           onError: (e: any) => {
                console.log(e);
+               pageProps.setServerError(true);
           },
      });
-
      const { mutate } = useMutation(favoritesHandler, {
           onSuccess: () => {
                queryClient.invalidateQueries("favorites");
+               setOpenNotification(true);
+               setTimeout(() => setOpenNotification(false), 4000);
+               setOpenPopupRemoveFavorites(false);
           },
-          onError: (e: any) => console.log(e),
+          onError: (e: any) => {
+               console.log(e);
+               pageProps.setServerError(true);
+          },
      });
 
      let enabledMapApisCalls = false;
@@ -145,7 +160,10 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                         lng: res[0].lon,
                                    };
                               })
-                              .catch((err) => console.log(err)),
+                              .catch((err) => {
+                                   pageProps.setServerError(true);
+                                   console.log(err);
+                              }),
                     staleTime: Infinity,
                     cacheTime: Infinity,
                     enabled: enabledMapApisCalls,
@@ -159,7 +177,10 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                     queryFn: () =>
                          searchCityByCoords(coords.data)
                               .then((res) => res.Key)
-                              .catch((err) => console.log(err)),
+                              .catch((err) => {
+                                   pageProps.setServerError(true);
+                                   console.log(err);
+                              }),
                     staleTime: Infinity,
                     cacheTime: Infinity,
                     enabled: enabledMapApisCalls,
@@ -180,7 +201,10 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                         icon: res[0].WeatherIcon,
                                    };
                               })
-                              .catch((err) => console.log(err)),
+                              .catch((err) => {
+                                   pageProps.setServerError(true);
+                                   console.log(err);
+                              }),
                     staleTime: 1000 * 60 * 60,
                     cacheTime: 1000 * 60 * 60,
                     enabled: enabledMapApisCalls,
@@ -190,9 +214,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
 
      const removeFromFavoritesHandler = async () => {
           if (exsistingItem) {
-               setOpenNotification(true);
-               setTimeout(() => setOpenNotification(false), 4000);
-               setOpenPopupRemoveFavorites(false);
                let favObj = {
                     key: Number(exsistingItem.key),
                     city: exsistingItem.city,
@@ -203,13 +224,12 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
      };
 
      const onClickHandler = () => {
-          if (openPopup) dispatch(togglePopup());
+          if (openPopup) dispatch(togglePopup({ popupType: "logout" }));
           if (openPopupRemoveFavorites) setOpenPopupRemoveFavorites(false);
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
           if (openMenuMobile) dispatch(toggleMobileMenu());
      };
-
      if (isLoading)
           return (
                <HashLoading
@@ -221,8 +241,11 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           );
      else if (openMap) {
           return (
-               <>
+               <StyledFavoritePageContainer
+                    openPopup={openPopup || openPopupRemoveFavorites}
+               >
                     <DisplayMap
+                         setServerError={pageProps.setServerError}
                          citiesHourlyForcast={citiesHourlyForcast}
                          markerCoordsArray={markerCoordsArray}
                          coords={pageProps.coords}
@@ -240,16 +263,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                               message="add cites to your favorites and watch their forecast on map"
                          />
                     )}
-                    {openPopup && (
-                         <Popup
-                              message="You about to log out from WeatherApp.
-                                       Are you sure you want to log out?"
-                              cancelMessage="I want to stay"
-                              callback={() => dispatch(logout())}
-                              continueButtonText="yes, log out"
-                         />
-                    )}
-               </>
+               </StyledFavoritePageContainer>
           );
      } else if (
           favoritesList &&
@@ -259,7 +273,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           return (
                <>
                     <StyledFavoritePageContainer
-                         openPopup={openPopup}
+                         openPopup={openPopup || openPopupRemoveFavorites}
                          onClick={onClickHandler}
                          renderPraimaryBackground={renderPraimaryBackground}
                     >
@@ -281,16 +295,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                               </StyledSubtitle>
                          </StyledCenteredDiv>
                     </StyledFavoritePageContainer>
-                    {openPopup && (
-                         <Popup
-                              message="You about to log out from WeatherApp.
-                        Are you sure you want to log out?"
-                              cancelMessage="I want to stay"
-                              callback={() => dispatch(logout())}
-                              title="Log out"
-                              continueButtonText="yes, log out"
-                         />
-                    )}
                </>
           );
 
@@ -299,7 +303,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                <StyledFavoritePageContainer
                     onClick={onClickHandler}
                     renderPraimaryBackground={renderPraimaryBackground}
-                    openPopup={openPopup}
+                    openPopup={openPopup || openPopupRemoveFavorites}
                >
                     <StyledContentContainer>
                          <StyledPageTitle>Favorites</StyledPageTitle>
@@ -367,9 +371,9 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                                                  setOpenPopupRemoveFavorites(
                                                                       true
                                                                  );
-                                                                 dispatch(
-                                                                      togglePopup()
-                                                                 );
+                                                                 // dispatch(
+                                                                 //      togglePopup()
+                                                                 // );
                                                             }
                                                        }}
                                                   >
@@ -424,18 +428,9 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                          />
                     )}
                </StyledFavoritePageContainer>
-               {openPopup && (
+               {openPopupRemoveFavorites && (
                     <Popup
-                         title="Log out"
-                         message="You about to log out from WeatherApp.
-                                  Are you sure you want to log out?"
-                         cancelMessage="I want to stay"
-                         callback={() => dispatch(logout())}
-                         continueButtonText="Yes, log out"
-                    />
-               )}
-               {openPopupRemoveFavorites && openPopup && (
-                    <Popup
+                         popupType="removeFromFavorites"
                          message={`Are you sure you want to remove ${exsistingItem?.city} from favorites list?`}
                          cancelMessage="Keep it"
                          title="Remove from favorites"

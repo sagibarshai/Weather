@@ -6,6 +6,7 @@ export const StyledLoginPageContainer = styled.div<Props>`
      display: inline-block;
      width: 100vw;
      height: 100vh;
+     overflow: hidden;
 `;
 export const StyledLoginContainer = styled.form<Props>`
      background-color: ${themes.white};

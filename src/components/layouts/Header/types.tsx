@@ -8,4 +8,5 @@ export type Props = {
      setNotFoundCityName: (x: string) => void;
      currentPage: string;
      setCoords?: (x: Coords) => void;
+     setServerError: (x: boolean) => void;
 };

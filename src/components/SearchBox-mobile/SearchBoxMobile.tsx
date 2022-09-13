@@ -40,10 +40,12 @@ const SearchBoxMobile: React.FC<Props> = (props) => {
           ["autocomplete", isCached ? searchInput : debounce],
           () => search(isCached ? searchInput : debounce),
           {
-               refetchOnmount: false,
-               refetchOnReconnect: false,
                cacheTime: Infinity,
                staleTime: Infinity,
+               onError: (err: any) => {
+                    console.log(err);
+                    props.setServerError(true);
+               },
           }
      );
      useEffect(() => {

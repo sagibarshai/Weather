@@ -18,12 +18,21 @@ import { useQueryClient } from "react-query";
 const Popup: React.FC<Props> = (props) => {
      const queryClient = new useQueryClient();
      const dispatch = useDispatch();
+
+     const togglePopupFunc = () => {
+          if (props.popupType) {
+               const payload = { popupType: props.popupType };
+               return dispatch(togglePopup(payload));
+          }
+          return dispatch(togglePopup({ popupType: "logout" }));
+     };
+
      return (
           <StyledPopupContainer>
                <StyledTitle>{props.title}</StyledTitle>
                <StyledXButton
                     onClick={() => {
-                         dispatch(togglePopup());
+                         togglePopupFunc();
                          props.cancelFunction && props.cancelFunction();
                     }}
                >
@@ -36,7 +45,7 @@ const Popup: React.FC<Props> = (props) => {
                     <StyledButton
                          variant="linkWithImg"
                          onClick={() => {
-                              dispatch(togglePopup());
+                              togglePopupFunc();
                               props.cancelFunction && props.cancelFunction();
                          }}
                     >
@@ -47,7 +56,7 @@ const Popup: React.FC<Props> = (props) => {
                          width="145px"
                          height="54px"
                          onClick={() => {
-                              dispatch(togglePopup());
+                              togglePopupFunc();
                               if (props.callback) {
                                    props.callback();
                                    queryClient.invalidateQueries("favorites");

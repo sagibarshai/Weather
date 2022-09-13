@@ -12,6 +12,7 @@ const LoginWithGoogle: React.FC<Props> = (props) => {
      const googleLoginCustomButton = useGoogleLogin({
           onError: (err: any) => {
                console.log(err);
+               props.setServerError(true);
           },
           onSuccess: (e: any) => {
                mutate({
@@ -35,7 +36,7 @@ const LoginWithGoogle: React.FC<Props> = (props) => {
                          }
                     } else console.log(err);
                }
-               props.setServerError(errorMessage);
+               props.setServerErrorMessage(errorMessage);
           },
      });
      return (

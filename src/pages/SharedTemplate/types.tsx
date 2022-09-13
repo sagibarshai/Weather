@@ -2,6 +2,7 @@ import { CityObj } from "../../components/SearchBox/types";
 import { Coords } from "../../components/Map/types";
 export type SharedPageProps = {
      pageProps: {
+          setServerError: (x: boolean) => void;
           coords: Coords;
           existingCity: CityObj | null;
           renderMobile?: boolean;

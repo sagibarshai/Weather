@@ -29,7 +29,9 @@ const MobileHeader: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      return (
           <>
-               <StyledMobileMenuContainer display={props.display}>
+               <StyledMobileMenuContainer
+                    display={props.display ? true : undefined}
+               >
                     <StyledMenuButton
                          onClick={() => dispatch(toggleMobileMenu())}
                     >
@@ -49,7 +51,7 @@ export const MobileMenuBottom = () => {
      );
      const dispatch = useDispatch();
      return (
-          <StyledMenu display={openMobileMenu}>
+          <StyledMenu display={openMobileMenu === true ? true : undefined}>
                <StyledTitle>Menu</StyledTitle>
                <StyledRowFlexContainer>
                     <StyledColumnContainer>
@@ -81,7 +83,7 @@ export const MobileMenuBottom = () => {
                     variant="linkWithImg"
                     color={themes.secondary}
                     onClick={() => {
-                         dispatch(togglePopup());
+                         dispatch(togglePopup({ popupType: "logout" }));
                          dispatch(toggleMobileMenu());
                     }}
                >

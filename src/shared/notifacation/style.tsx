@@ -8,6 +8,7 @@ export const StyledNotificationContainer = styled.div<Props>`
      justify-content: center;
      border-radius: 10px;
      position: relative;
+     text-align: center;
      ${(props) =>
           props.variant === "success" &&
           css`
@@ -35,7 +36,13 @@ export const StyledNotificationContainer = styled.div<Props>`
                justify-content: center;
                font-size:1.4rem;
           `};
+     width: ${(props) => props.width};
      gap: ${(props) => props.gap};
+     position: ${(props) => props.position};
+     transform: ${(props) => props.transform};
+     left: ${(props) => props.left};
+     bottom: ${(props) => props.bottom};
+     z-index: ${(props) => props.zIndex};
      transition: all 4s;
      animation: ${(props) =>
           props.animation &&

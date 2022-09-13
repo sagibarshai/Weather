@@ -3,10 +3,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { Route, useLocation, Routes } from "react-router-dom";
 
 import { toggleMap } from "../../redux/headerSlice";
+import { logout } from "../../redux/authSlice";
 
 import { StyledIcon } from "../../shared/Icons/Icon";
 import { StyledButton } from "../../shared/UIElements/Button/Button";
 import { MobileMenuBottom } from "../../components/layouts-mobile/Header/MobileHeader";
+import Popup from "../../components/Popup/Popup";
 import Header from "../../components/layouts/Header/Header";
 import MobileHeader from "../../components/layouts-mobile/Header/MobileHeader";
 import Favorites from "../Favorites/Favorites";
@@ -21,11 +23,13 @@ import { StoreState } from "../../redux/store";
 import { Props } from "./types";
 
 import { StyledButtonText } from "./style";
+import ApiError from "../../components/Errors/Api-Errors/ApiError";
 
 const PageSharedTamplate: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      const location = useLocation();
 
+     const [serverError, setServerError] = useState<boolean>(false);
      const [currentPage, setCurrentPage] = useState<string>("/home");
      const [notFoundCityName, setNotFoundCityName] = useState<string>("");
      const [existingCity, setExistingCity] = useState<null | CityObj>(null);
@@ -42,6 +46,10 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
      const mapIsOpen = useSelector(
           (state: StoreState) => state.headerSlice.openMap
      );
+     const openLogoutPopup = useSelector(
+          (state: StoreState) => state.headerSlice.openPopup
+     );
+
      useEffect(() => {
           if (props.renderLaptopAnDesktop) {
                navigator.geolocation.getCurrentPosition(
@@ -95,6 +103,7 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
      }, [selectedCityDataFromFavorites, location]);
 
      const pageProps = {
+          setServerError,
           notFoundCityName,
           setNotFoundCityName,
           renderLaptopAnDesktop: props.renderLaptopAnDesktop,
@@ -118,6 +127,7 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
           <>
                {props.renderLaptopAnDesktop && (
                     <Header
+                         setServerError={setServerError}
                          setNotFoundCityName={setNotFoundCityName}
                          existingCity={existingCity}
                          setExistingCity={setExistingCity}
@@ -143,6 +153,20 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                          />
                     )}
                </Routes>
+               {openLogoutPopup && (
+                    <Popup
+                         message="You about to log out from WeatherApp.
+                         Are you sure you want to log out?"
+                         cancelMessage="I want to stay"
+                         continueButtonText="Yes, log out"
+                         title="Log Out"
+                         callback={() => dispatch(logout())}
+                    />
+               )}
+               {serverError &&
+                    setTimeout(() => setServerError(false), 5000) && (
+                         <ApiError />
+                    )}
                {props.renderMobile && mapIsOpen && (
                     <StyledButton
                          variant="white"
@@ -166,6 +190,7 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
                          setExistingCity={setExistingCity}
                          existingCity={existingCity}
                          setOpenSearchBoxMobile={setOpenSearchBoxMobile}
+                         setServerError={setServerError}
                     />
                )}
                <FooterMobile setOpenSearchBoxMobile={setOpenSearchBoxMobile} />

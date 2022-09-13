@@ -5,6 +5,7 @@ export type Coords = {
      lng: number | undefined;
 };
 export type Props = {
+     setServerError: (x: boolean) => void;
      coords: Coords;
      setSelectedCityDataFromMap?: (x: CityObj) => void;
      markerCoordsArray?: { data: Coords }[];

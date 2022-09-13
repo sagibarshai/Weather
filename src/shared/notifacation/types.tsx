@@ -21,5 +21,6 @@ export type Props = {
      mobileTransform?: string;
      positionFixiedBottom?: boolean;
      animationTime?: number;
+     zIndex?: string;
      onClick?: (x: any) => any;
 };

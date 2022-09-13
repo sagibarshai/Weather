@@ -25,7 +25,7 @@ const LoginWithFacebook: React.FC<Props> = (props) => {
                          }
                     } else console.log(error);
                }
-               props.setServerError(errorMessage);
+               props.setServerErrorMessage(errorMessage);
           },
      });
 
@@ -40,7 +40,6 @@ const LoginWithFacebook: React.FC<Props> = (props) => {
                }}
                autoLoad={true}
                disableMobileRedirect={true}
-               onClick={(e) => console.log(e)}
                render={(renderProps) => {
                     return (
                          <StyledButton variant="linkWithImg" type="button">

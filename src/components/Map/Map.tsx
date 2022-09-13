@@ -5,7 +5,6 @@ import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/
 import { useLocation } from "react-router-dom";
 import { StyledIcon } from "../../shared/Icons/Icon";
 import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon/DiscoverIcon";
-import Notification from "../../shared/notifacation/Notification";
 import {
      toggleDeggres,
      DeggresType,
@@ -48,6 +47,7 @@ const DisplayMap: React.FC<Props> = (props) => {
           },
           onError: (err: any) => {
                console.log(err);
+               props.setServerError(true);
           },
      });
      useEffect(() => {

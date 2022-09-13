@@ -88,18 +88,22 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           onSuccess: (data: SearchResult) => {
                pageProps.setExistingCity({ ...data, key: data?.Key });
           },
-          onError: (err: any) => {},
+          onError: (err: any) => {
+               console.log(err);
+               pageProps.setServerError(true);
+          },
           staleTime: 1000 * 60 * 60,
           cacheTime: 1000 * 60 * 60,
      });
 
      const onClickHandler = () => {
-          if (openPopup) dispatch(togglePopup());
+          if (openPopup) dispatch(togglePopup({ popupType: "logout" }));
           if (openMobileMenu) dispatch(closeMobileMenu());
           if (pageProps.noResultAndEnter) pageProps.setNoResultAndEnter(false);
           if (pageProps.openSearchBoxMobile)
                pageProps.setOpenSearchBoxMobile(false);
      };
+
      if (openMap) {
           return (
                <>
@@ -110,18 +114,18 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          openPopup={openPopup}
                     >
                          <DisplayMap
+                              setServerError={pageProps.setServerError}
                               coords={pageProps.coords}
                               setSelectedCityDataFromMap={
                                    setSelectedCityDataFromMap
                               }
                          />
-                         //Zuza1507pini
                          {showInfo && (
                               <Notification
                                    variant="success"
                                    animationTime={5000}
                                    animation={true}
-                                   backgroundColor="#FFD130"
+                                   // backgroundColor="#FFD130"
                                    mobileWidth="80vw"
                                    message="Click anywhere and get real time forecast"
                                    icon={<IconLogo />}
@@ -164,6 +168,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          openPopup={openPopup}
                     >
                          <HomePageDisplayCity
+                              setServerError={pageProps.setServerError}
                               setCoords={pageProps.setCoords}
                               setLocationIsOpen={pageProps.setLocationIsOpen}
                               selectedCityDataFromMap={selectedCityDataFromMap}
@@ -177,16 +182,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                               }
                          />
                     </StyledPageContainer>
-                    {openPopup && (
-                         <Popup
-                              message="You about to log out from WeatherApp.
-                                   Are you sure you want to log out?"
-                              cancelMessage="I want to stay"
-                              continueButtonText="Yes, log out"
-                              title="Log Out"
-                              callback={() => dispatch(logout())}
-                         />
-                    )}
                </>
           );
      } else if (!pageProps.locationIsOpen)
@@ -276,24 +271,12 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           );
      else {
           return (
-               <>
-                    <StyledPageContainer
-                         openMobileMenu={openMobileMenu}
-                         renderPraimaryBackground={renderPraimaryBackground}
-                         onClick={onClickHandler}
-                         openPopup={openPopup}
-                    ></StyledPageContainer>
-                    {openPopup && (
-                         <Popup
-                              message="You about to log out from WeatherApp.
-                              Are you sure you want to log out?"
-                              cancelMessage="I want to stay"
-                              continueButtonText="Yes, log out"
-                              title="Log Out"
-                              callback={() => dispatch(logout())}
-                         />
-                    )}
-               </>
+               <StyledPageContainer
+                    openMobileMenu={openMobileMenu}
+                    renderPraimaryBackground={renderPraimaryBackground}
+                    onClick={onClickHandler}
+                    openPopup={openPopup}
+               />
           );
      }
 };

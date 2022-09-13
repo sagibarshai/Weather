@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PopupType } from "../components/Popup/types";
 import { DeggresType } from "../shared/utils/Functions/toggleDeggres";
 export type HeaderSliceState = {
      renderPraimaryBackground: boolean;
@@ -33,8 +34,10 @@ const headerSlice = createSlice({
           closeMobileMenu(state) {
                state.openMobileMenu = false;
           },
-          togglePopup(state) {
-               state.openPopup = !state.openPopup;
+          togglePopup(state, payload?: { payload: { popupType: PopupType } }) {
+               if (payload?.payload?.popupType === "removeFromFavorites") {
+                    state.openPopup = state.openPopup;
+               } else state.openPopup = !state.openPopup;
           },
           toggleMap(state) {
                state.openMap = !state.openMap;

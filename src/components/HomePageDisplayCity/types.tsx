@@ -11,6 +11,7 @@ export type Props = {
      selectedCityDataFromMap?: CityObj | null;
      setLocationIsOpen?: (x: boolean) => void;
      setCoords?: (x: Coords) => void;
+     setServerError: (x: boolean) => void;
 };
 export type DailyForecastsType = {
      Date: Date;

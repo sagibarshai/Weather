@@ -1,3 +1,4 @@
+export type PopupType = "removeFromFavorites" | "logout";
 export type Props = {
      cancelFunction?: () => any;
      callback?: () => any;
@@ -9,4 +10,5 @@ export type Props = {
      height?: string;
      marginTop?: string;
      gap?: string;
+     popupType?: PopupType;
 };
