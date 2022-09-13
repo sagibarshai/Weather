@@ -1,42 +1,57 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import { Marker, InfoWindow } from "@react-google-maps/api";
-import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/searchCityByCoords";
 import { useLocation } from "react-router-dom";
-import { StyledIcon } from "../../shared/Icons/Icon";
+import { useSelector, useDispatch } from "react-redux";
+import { Marker, InfoWindow } from "@react-google-maps/api";
+import { useMutation } from "react-query";
+
 import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon/DiscoverIcon";
+import { StyledIcon } from "../../shared/Icons/Icon";
+
+import { toggleMap } from "../../redux/headerSlice";
 import {
      toggleDeggres,
      DeggresType,
 } from "../../shared/utils/Functions/toggleDeggres";
-import { useSelector } from "react-redux";
-import { StoreState } from "../../redux/store";
-import { toggleMap } from "../../redux/headerSlice";
-import { useDispatch } from "react-redux";
+import { searchCityByCoords } from "../../shared/utils/Services/Accuweather-Api/searchCityByCoords";
+
 import { StyledContainer, StyledText } from "./style";
+
 import { Props } from "./types";
 import { Coords } from "./types";
-import { useMutation } from "react-query";
-const containerStyle = {
-     width: "100vw",
-     height: "100vh",
-};
+import { StoreState } from "../../redux/store";
+
+const containerStyle = { width: "100vw", height: "100vh" };
 
 const DisplayMap: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      const location = useLocation();
+
+     const [position, setPosition] = useState<any>(props.coords);
+     const [center, setCenter] = useState<any>(undefined);
+
+     const degressType: DeggresType = useSelector(
+          (state: StoreState) => state.headerSlice.degressType
+     );
+
      const { isLoaded } = useJsApiLoader({
           id: "google-map-script",
           googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY || "",
      });
-     const [position, setPosition] = useState<any>(props.coords);
-     const degressType: DeggresType = useSelector(
-          (state: StoreState) => state.headerSlice.degressType
-     );
-     const [center, setCenter] = useState<any>(undefined);
+
      let coordsFromLocalStorage = localStorage.getItem("coords");
      if (coordsFromLocalStorage)
           coordsFromLocalStorage = JSON.parse(coordsFromLocalStorage);
+
+     useEffect(() => {
+          if (
+               props.markerCoordsArray &&
+               Array.isArray(props.markerCoordsArray)
+          ) {
+               setCenter(props.markerCoordsArray[0]?.data);
+          }
+     }, [props.markerCoordsArray]);
+     
      const { mutate } = useMutation(searchCityByCoords, {
           onSuccess: (data: any) => {
                props.setSelectedCityDataFromMap &&
@@ -50,14 +65,6 @@ const DisplayMap: React.FC<Props> = (props) => {
                props.setServerError(true);
           },
      });
-     useEffect(() => {
-          if (
-               props.markerCoordsArray &&
-               Array.isArray(props.markerCoordsArray)
-          ) {
-               setCenter(props.markerCoordsArray[0]?.data);
-          }
-     }, [props.markerCoordsArray]);
      if (!isLoaded) return <></>;
      else if (props.coords && location.pathname === "/home")
           return (

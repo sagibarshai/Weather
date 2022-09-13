@@ -1,3 +1,10 @@
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { StyledIcon } from "../../shared/Icons/Icon";
+import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
+
+import { ReactComponent as IconCity } from "../../shared/svg/city.svg";
+
 import {
      StyledBigContainer,
      StyledContentWrapper,
@@ -6,11 +13,9 @@ import {
      StyledResultContainer,
      StyledText,
 } from "./style";
-import { ReactComponent as IconCity } from "../../shared/svg/city.svg";
-import { StyledIcon } from "../../shared/Icons/Icon";
-import { useLocation, useNavigate } from "react-router-dom";
+
 import { Props } from "./types";
-import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
+
 const SearchBox: React.FC<Props> = (props) => {
      const navigate = useNavigate();
      const location = useLocation();

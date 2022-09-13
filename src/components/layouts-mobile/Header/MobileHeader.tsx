@@ -1,5 +1,22 @@
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { StyledButton } from "../../../shared/UIElements/Button/Button";
+import { StyledIcon } from "../../../shared/Icons/Icon";
 import Checkbox from "../../../shared/UIElements/Inputs/Checkbox/Checkbox";
+import themes from "../../../shared/themes/themes";
+
+import {
+     toggleBackground,
+     toggleDegress,
+     toggleMobileMenu,
+     togglePopup,
+} from "../../../redux/headerSlice";
+
+import { ReactComponent as IconMenu } from "../../../shared/svg/menu.svg";
+import { ReactComponent as IconMoonDark } from "../../../shared/svg/moon-dark.svg";
+import { ReactComponent as IconSunDark } from "../../../shared/svg/sun-dark.svg";
+import { ReactComponent as IconLogoutOutline } from "../../../shared/svg/log-out-outline.svg";
+
 import {
      StyledMenuButton,
      StyledMobileMenuContainer,
@@ -9,29 +26,15 @@ import {
      StyledColumnContainer,
      StyledSubtitle,
 } from "./style";
-import { StyledButton } from "../../../shared/UIElements/Button/Button";
-import { StyledIcon } from "../../../shared/Icons/Icon";
-import { ReactComponent as IconMenu } from "../../../shared/svg/menu.svg";
-import { ReactComponent as IconMoonDark } from "../../../shared/svg/moon-dark.svg";
-import { ReactComponent as IconSunDark } from "../../../shared/svg/sun-dark.svg";
-import { ReactComponent as IconLogoutOutline } from "../../../shared/svg/log-out-outline.svg";
-import { useDispatch, useSelector } from "react-redux";
+
 import { StoreState } from "../../../redux/store";
-import {
-     toggleBackground,
-     toggleDegress,
-     toggleMobileMenu,
-     togglePopup,
-} from "../../../redux/headerSlice";
-import themes from "../../../shared/themes/themes";
 import { Props } from "./types";
+
 const MobileHeader: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      return (
           <>
-               <StyledMobileMenuContainer
-                    display={props.display ? true : undefined}
-               >
+               <StyledMobileMenuContainer display={props.display}>
                     <StyledMenuButton
                          onClick={() => dispatch(toggleMobileMenu())}
                     >
@@ -51,7 +54,7 @@ export const MobileMenuBottom = () => {
      );
      const dispatch = useDispatch();
      return (
-          <StyledMenu display={openMobileMenu === true ? true : undefined}>
+          <StyledMenu display={openMobileMenu}>
                <StyledTitle>Menu</StyledTitle>
                <StyledRowFlexContainer>
                     <StyledColumnContainer>

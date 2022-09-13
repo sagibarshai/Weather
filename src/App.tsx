@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
-import Login from "./pages/Login/Login";
-import BackgroundAnimation from "./shared/backgroundAnimation/BackgroundAnimation";
-import { ReactQueryDevtools } from "react-query/devtools";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { useSelector, useDispatch } from "react-redux";
-import { StoreState } from "./redux/store";
+
+import Login from "./pages/Login/Login";
+import PageSharedTamplate from "./pages/SharedTemplate/PageSharedTamplate";
+import BackgroundAnimation from "./shared/backgroundAnimation/BackgroundAnimation";
+
 import { checkToken } from "./shared/utils/Services/Abra-Server/checkToken";
 import { logout } from "./redux/authSlice";
-import PageSharedTamplate from "./pages/SharedTemplate/PageSharedTamplate";
-import { StyleAppContainer } from "./GlobalStyle";
 import { useScreenWidth } from "./shared/utils/hooks/useScreenWidth";
-import { useQueryClient } from "react-query";
+
+import { StyleAppContainer } from "./GlobalStyle";
+
+import { StoreState } from "./redux/store";
 
 const App: React.FC = () => {
-     const queryClient = useQueryClient();
      const dispatch = useDispatch();
      const navigate = useNavigate();
+
      const deviceValue = useScreenWidth()[0];
+
      const [renderMobile, setRenderMobile] = useState<boolean>(false);
      const [renderLaptopAnDesktop, setRenderLaptopAnDesktop] =
           useState<boolean>(false);
@@ -27,6 +31,19 @@ const App: React.FC = () => {
      const renderPraimaryBackground = useSelector(
           (state: StoreState) => state.headerSlice.renderPraimaryBackground
      );
+
+     const checkIfTokenIsValid = async () => {
+          try {
+               await checkToken();
+          } catch (err) {
+               console.log(err);
+               dispatch(logout());
+          }
+     };
+     setInterval(() => {
+          checkIfTokenIsValid();
+     }, 1000 * 60 * 30);
+
      useEffect(() => {
           if (deviceValue === "bigDesktop" || deviceValue === "laptop") {
                setRenderLaptopAnDesktop(true);
@@ -41,20 +58,9 @@ const App: React.FC = () => {
                navigate("/home");
           }
      }, [isLogin]);
-     const checkIfTokenIsValid = async () => {
-          try {
-               await checkToken();
-          } catch (err) {
-               console.log(err);
-               dispatch(logout());
-          }
-     };
      useEffect(() => {
           checkIfTokenIsValid();
      }, []);
-     setInterval(() => {
-          checkIfTokenIsValid();
-     }, 1000 * 60 * 30);
 
      if (isLogin)
           return (

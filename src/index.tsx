@@ -21,7 +21,7 @@ const client = new QueryClient();
 const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID_AUTH || "";
 root.render(
      <QueryClientProvider client={client}>
-          <GoogleOAuthProvider clientId="296961613534-v9q17t3j0mejcfhtrj6c07movtmqcvgu.apps.googleusercontent.com">
+          <GoogleOAuthProvider clientId={clientId}>
                <Provider store={store as any}>
                     <BrowserRouter>
                          <ThemeProvider theme={themes}>

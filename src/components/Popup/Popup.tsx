@@ -1,11 +1,13 @@
-import styled from "styled-components";
-import { StyledIcon } from "../../shared/Icons/Icon";
-import themes from "../../shared/themes/themes";
-import { ReactComponent as IconXButton } from "../../shared/svg/close-circle.svg";
-import { StyledButton } from "../../shared/UIElements/Button/Button";
-import { togglePopup } from "../../redux/headerSlice";
+import { useQueryClient } from "react-query";
 import { useDispatch } from "react-redux";
-import { Props } from "./types";
+
+import { StyledButton } from "../../shared/UIElements/Button/Button";
+import { StyledIcon } from "../../shared/Icons/Icon";
+
+import { ReactComponent as IconXButton } from "../../shared/svg/close-circle.svg";
+
+import { togglePopup } from "../../redux/headerSlice";
+
 import {
      StyledFlexDiv,
      StyledParagraph,
@@ -13,7 +15,8 @@ import {
      StyledTitle,
      StyledXButton,
 } from "./style";
-import { useQueryClient } from "react-query";
+
+import { Props } from "./types";
 
 const Popup: React.FC<Props> = (props) => {
      const queryClient = new useQueryClient();

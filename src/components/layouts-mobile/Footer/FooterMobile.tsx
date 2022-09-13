@@ -1,10 +1,9 @@
-import {
-     StyledFooterContainer,
-     StyledButtonFooter,
-     StyledLink,
-     StyledText,
-} from "./style";
+import { useSelector } from "react-redux";
+
 import { StyledIcon } from "../../../shared/Icons/Icon";
+
+import themes from "../../../shared/themes/themes";
+
 import { ReactComponent as IconFavorite } from "../../../shared/svg/fav-outline-white.svg";
 import { ReactComponent as IconFavoriteFull } from "../../../shared/svg/fav-full.svg";
 import { ReactComponent as IconSearch } from "../../../shared/svg/search-white.svg";
@@ -13,8 +12,14 @@ import { ReactComponent as IconHomeFull } from "../../../shared/svg/home-full.sv
 import { ReactComponent as IconFavoriteOutline } from "../../../shared/svg/fav-outline.svg";
 import { ReactComponent as IconSearchOutline } from "../../../shared/svg/search-dark.svg";
 import { ReactComponent as IconHomeOutline } from "../../../shared/svg/home-outline-dark.svg";
-import themes from "../../../shared/themes/themes";
-import { useSelector } from "react-redux";
+
+import {
+     StyledFooterContainer,
+     StyledButtonFooter,
+     StyledLink,
+     StyledText,
+} from "./style";
+
 import { StoreState } from "../../../redux/store";
 import { Props } from "./types";
 

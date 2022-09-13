@@ -15,15 +15,15 @@ import Favorites from "../Favorites/Favorites";
 import FooterMobile from "../../components/layouts-mobile/Footer/FooterMobile";
 import Home from "../Home/Home";
 import SearchBoxMobile from "../../components/SearchBox-mobile/SearchBoxMobile";
+import ApiError from "../../components/Errors/Api-Errors/ApiError";
 
 import { ReactComponent as IconLayout } from "../../shared/svg/layout.svg";
+
+import { StyledButtonText } from "./style";
 
 import { CityObj } from "../../components/SearchBox/types";
 import { StoreState } from "../../redux/store";
 import { Props } from "./types";
-
-import { StyledButtonText } from "./style";
-import ApiError from "../../components/Errors/Api-Errors/ApiError";
 
 const PageSharedTamplate: React.FC<Props> = (props) => {
      const dispatch = useDispatch();

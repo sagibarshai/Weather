@@ -1,26 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { useLocation, useNavigate, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { CSSProperties } from "styled-components";
 import { useQuery, useQueryClient } from "react-query";
-import { ReactComponent as IconLayoutWhite } from "../../../shared/svg/layout-white.svg";
-import Checkbox from "../../../shared/UIElements/Inputs/Checkbox/Checkbox";
+
 import { StyledButton } from "../../../shared/UIElements/Button/Button";
+import { StyledIcon } from "../../../shared/Icons/Icon";
 import Input from "../../../shared/UIElements/Inputs/Input/Input";
-import { search } from "../../../shared/utils/Services/Accuweather-Api/search";
-import { scrollBarHandlerYAxis } from "../../../shared/utils/Functions/scrollbarHandler";
+import Checkbox from "../../../shared/UIElements/Inputs/Checkbox/Checkbox";
 import SearchBox from "../../SearchBox/SearchBox";
+
+import { scrollBarHandlerYAxis } from "../../../shared/utils/Functions/scrollbarHandler";
 import { NavLinkActiveStyleType } from "../../../shared/navLinks/types";
-import NavLinkActiveStyle from "../../../shared/navLinks/NavLinkActiveStyle";
+import useDebounce from "../../../shared/utils/hooks/useDebouncedSearch";
 import links from "../../../shared/links/links";
+
+import { search } from "../../../shared/utils/Services/Accuweather-Api/search";
+import NavLinkActiveStyle from "../../../shared/navLinks/NavLinkActiveStyle";
 import themes from "../../../shared/themes/themes";
+
 import {
      toggleBackground,
      toggleDegress,
      togglePopup,
      toggleMap,
 } from "../../../redux/headerSlice";
-import { StoreState } from "../../../redux/store";
+
+import { ReactComponent as IconSearchDark } from "../../../shared/svg/search-dark.svg";
+import { ReactComponent as IconLayoutWhite } from "../../../shared/svg/layout-white.svg";
+import { ReactComponent as IconLogo } from "../../../shared/svg/logo-small.svg";
+import { ReactComponent as IconMap } from "../../../shared/svg/map.svg";
+import { ReactComponent as IconMoonDark } from "../../../shared/svg/moon-dark.svg";
+import { ReactComponent as IconSunDark } from "../../../shared/svg/sun-dark.svg";
+import { ReactComponent as IconLogout } from "../../../shared/svg/log-out.svg";
+import { ReactComponent as IconC } from "../../../shared/svg/c_.svg";
+import { ReactComponent as IconF } from "../../../shared/svg/f_.svg";
+
 import {
      StyledHeader,
      StyledDiv,
@@ -30,23 +44,18 @@ import {
      StyledTooltipText,
      StyledWrapperButton,
 } from "./style";
-import { StyledIcon } from "../../../shared/Icons/Icon";
-import { ReactComponent as IconSearchDark } from "../../../shared/svg/search-dark.svg";
-import { ReactComponent as IconLogo } from "../../../shared/svg/logo-small.svg";
-import { ReactComponent as IconMap } from "../../../shared/svg/map.svg";
-import { ReactComponent as IconMoonDark } from "../../../shared/svg/moon-dark.svg";
-import { ReactComponent as IconSunDark } from "../../../shared/svg/sun-dark.svg";
-import { ReactComponent as IconLogout } from "../../../shared/svg/log-out.svg";
-import { ReactComponent as IconC } from "../../../shared/svg/c_.svg";
-import { ReactComponent as IconF } from "../../../shared/svg/f_.svg";
+
 import { SearchResult } from "../../SearchBox/types";
-import useDebounce from "../../../shared/utils/hooks/useDebouncedSearch";
-import { useLocation, useNavigate } from "react-router-dom";
+import { StoreState } from "../../../redux/store";
 import { Props } from "./types";
+import { CSSProperties } from "styled-components";
+
 const Header: React.FC<Props> = (props) => {
+     const client = useQueryClient();
      const navigate = useNavigate();
      const location = useLocation();
      const dispatch = useDispatch();
+
      const [activeIconId, setActiveIconId] = useState<string>(
           location.pathname
      );
@@ -62,43 +71,10 @@ const Header: React.FC<Props> = (props) => {
                else return links[0];
           }
      ) as NavLinkActiveStyleType;
-     useEffect(() => {
-          setActiveIconId(location.pathname);
-     }, [location]);
-     useEffect(() => props.setNoResultAndEnter(false), [location.pathname]);
      const [activeIcon, setActiveIcon] = useState<JSX.Element | undefined>(
           currentIcon ? currentIcon.activeIcon : undefined
      );
-     const client = useQueryClient();
-     const isCached = client.getQueryData(["autocomplete", searchInput], {
-          exact: true,
-     });
-     const debounce = useDebounce(searchInput, 300);
-     const { data, isLoading: searchIsLoading } = useQuery(
-          ["autoComplete", isCached ? searchInput : debounce],
-          () => search(isCached ? searchInput : debounce),
-          {
-               cacheTime: Infinity,
-               staleTime: Infinity,
-               onError: (err: any) => {
-                    props.setServerError(true);
-                    console.log(err);
-               },
-          }
-     );
-     useEffect(() => {
-          setSearchResults(data);
-          props.setNoResultAndEnter(false);
-     }, [searchInput, data]);
-     const NavLinkStyleHandler = (
-          isActive: boolean,
-          link: NavLinkActiveStyleType
-     ) => {
-          if (isActive) {
-               return NavLinkActiveStyle;
-          }
-          return;
-     };
+
      const renderPraimaryBg = useSelector(
           (state: StoreState) => state.headerSlice.renderPraimaryBackground
      );
@@ -113,6 +89,44 @@ const Header: React.FC<Props> = (props) => {
           (state: StoreState) => !state.headerSlice.openMap
      );
 
+     const debounce = useDebounce(searchInput, 300);
+
+     const isCached = client.getQueryData(["autocomplete", searchInput], {
+          exact: true,
+     });
+     const { data, isLoading: searchIsLoading } = useQuery(
+          ["autoComplete", isCached ? searchInput : debounce],
+          () => search(isCached ? searchInput : debounce),
+          {
+               cacheTime: Infinity,
+               staleTime: Infinity,
+               onError: (err: any) => {
+                    props.setServerError(true);
+                    console.log(err);
+               },
+          }
+     );
+
+     const NavLinkStyleHandler = (
+          isActive: boolean,
+          link: NavLinkActiveStyleType
+     ) => {
+          if (isActive) {
+               return NavLinkActiveStyle;
+          }
+          return;
+     };
+
+     useEffect(() => {
+          setActiveIconId(location.pathname);
+     }, [location]);
+     useEffect(() => props.setNoResultAndEnter(false), [location.pathname]);
+
+     useEffect(() => {
+          setSearchResults(data);
+          props.setNoResultAndEnter(false);
+     }, [searchInput, data]);
+
      useEffect(() => {
           setSearchInput("");
      }, [props.existingCity]);
@@ -124,6 +138,7 @@ const Header: React.FC<Props> = (props) => {
                setHoverIndexResult
           );
      }, [hoverIndexResult]);
+
      return (
           <>
                <StyledHeader
