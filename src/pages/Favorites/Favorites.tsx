@@ -161,7 +161,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    };
                               })
                               .catch((err) => {
-                                   pageProps.setServerError(true);
                                    console.log(err);
                               }),
                     staleTime: Infinity,
@@ -178,7 +177,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                          searchCityByCoords(coords.data)
                               .then((res) => res.Key)
                               .catch((err) => {
-                                   pageProps.setServerError(true);
                                    console.log(err);
                               }),
                     staleTime: Infinity,
@@ -202,7 +200,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                                    };
                               })
                               .catch((err) => {
-                                   pageProps.setServerError(true);
                                    console.log(err);
                               }),
                     staleTime: 1000 * 60 * 60,

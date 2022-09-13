@@ -51,7 +51,7 @@ const DisplayMap: React.FC<Props> = (props) => {
                setCenter(props.markerCoordsArray[0]?.data);
           }
      }, [props.markerCoordsArray]);
-     
+
      const { mutate } = useMutation(searchCityByCoords, {
           onSuccess: (data: any) => {
                props.setSelectedCityDataFromMap &&
