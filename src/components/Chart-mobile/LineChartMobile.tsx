@@ -1,5 +1,7 @@
-import styled from "styled-components";
-import themes from "../../shared/themes/themes";
+import { memo } from "react";
+
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { Line } from "react-chartjs-2";
 import {
      Chart as ChartJS,
      CategoryScale,
@@ -10,14 +12,10 @@ import {
      Tooltip,
      Legend,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
-import ChartDataLabels from "chartjs-plugin-datalabels";
+
+import { StyledMobileLineContainer, StyledTitle } from "./style";
+
 import { Props } from "./types";
-import {
-     StyledMobileLineContainer,
-     StyledTitle,
-     StyledSelectedItem,
-} from "./style";
 
 const LineChartMobile: React.FC<Props> = ({ lineChartData }) => {
      ChartJS.register(
@@ -274,9 +272,8 @@ const LineChartMobile: React.FC<Props> = ({ lineChartData }) => {
                     height="140px"
                     plugins={pluginsBottom}
                />
-               {/* <StyledSelectedItem /> */}
           </StyledMobileLineContainer>
      );
 };
 
-export default LineChartMobile;
+export default memo(LineChartMobile);

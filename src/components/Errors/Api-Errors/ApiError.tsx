@@ -4,6 +4,7 @@ import { ReactComponent as IconError } from "../../../shared/svg/info-circle.svg
 const ApiError = () => {
      return (
           <Notification
+               icon={<IconError />}
                zIndex="101"
                variant="error"
                backgroundColor={themes.errorRed}
@@ -15,7 +16,6 @@ const ApiError = () => {
                left="50%"
                transform="translate(-50%,-50%)"
                message="Sorry, We having an issue on our server, please try again later."
-               icon={<IconError />}
                mobileHeigt="75px"
                mobileWidth="300px"
                mobileBottom="75px"

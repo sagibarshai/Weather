@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, memo } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,6 +20,7 @@ import { StyledContainer, StyledText } from "./style";
 import { Props } from "./types";
 import { Coords } from "./types";
 import { StoreState } from "../../redux/store";
+import { SearchResult } from "../SearchBox/types";
 
 const containerStyle = { width: "100vw", height: "100vh" };
 
@@ -27,8 +28,8 @@ const DisplayMap: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      const location = useLocation();
 
-     const [position, setPosition] = useState<any>(props.coords);
-     const [center, setCenter] = useState<any>(undefined);
+     const [position, setPosition] = useState<Coords | undefined>(props.coords);
+     const [center, setCenter] = useState<Coords | undefined>(undefined);
 
      const degressType: DeggresType = useSelector(
           (state: StoreState) => state.headerSlice.degressType
@@ -42,7 +43,6 @@ const DisplayMap: React.FC<Props> = (props) => {
      let coordsFromLocalStorage = localStorage.getItem("coords");
      if (coordsFromLocalStorage)
           coordsFromLocalStorage = JSON.parse(coordsFromLocalStorage);
-
      useEffect(() => {
           if (
                props.markerCoordsArray &&
@@ -51,9 +51,9 @@ const DisplayMap: React.FC<Props> = (props) => {
                setCenter(props.markerCoordsArray[0]?.data);
           }
      }, [props.markerCoordsArray]);
-     
+
      const { mutate } = useMutation(searchCityByCoords, {
-          onSuccess: (data: any) => {
+          onSuccess: (data: SearchResult) => {
                props.setSelectedCityDataFromMap &&
                     props.setSelectedCityDataFromMap({
                          ...data,
@@ -61,8 +61,8 @@ const DisplayMap: React.FC<Props> = (props) => {
                     });
           },
           onError: (err: any) => {
-               console.log(err);
                props.setServerError(true);
+               console.log(err);
           },
      });
      if (!isLoaded) return <></>;
@@ -184,4 +184,4 @@ const DisplayMap: React.FC<Props> = (props) => {
      );
 };
 
-export default DisplayMap;
+export default memo(DisplayMap);

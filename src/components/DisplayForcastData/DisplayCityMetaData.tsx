@@ -1,3 +1,15 @@
+import { memo } from "react";
+import { useSelector } from "react-redux";
+
+import DiscoverDescription from "../../shared/utils/Components/DiscoverDescription/DiscoverDescription";
+import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon/DiscoverIcon";
+import { StyledButton } from "../../shared/UIElements/Button/Button";
+import { StyledIcon } from "../../shared/Icons/Icon";
+
+import { toggleDeggres } from "../../shared/utils/Functions/toggleDeggres";
+
+import { ReactComponent as IconFavroiteOutline } from "../../shared/svg/fav-outline.svg";
+
 import {
      StyledCityName,
      StyledDivRow,
@@ -6,20 +18,15 @@ import {
      StyledTempratureSpan,
      StyledDate,
 } from "../HomePageDisplayCity/style";
-import DiscoverDescription from "../../shared/utils/Components/DiscoverDescription/DiscoverDescription";
-import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon/DiscoverIcon";
-import { toggleDeggres } from "../../shared/utils/Functions/toggleDeggres";
-import { useSelector } from "react-redux";
+
+import { FavoriteType } from "../../pages/Favorites/types";
 import { StoreState } from "../../redux/store";
-import { StyledButton } from "../../shared/UIElements/Button/Button";
-import { StyledIcon } from "../../shared/Icons/Icon";
-import { ReactComponent as IconFavroiteOutline } from "../../shared/svg/fav-outline.svg";
 import { CityObj } from "../SearchBox/types";
 import {
      forcast12HoursType,
      DailyForecastsType,
 } from "../HomePageDisplayCity/types";
-import { FavoriteType } from "../../pages/Favorites/types";
+
 type Props = {
      renderMobile: boolean | undefined;
      renderLaptopAnDesktop: boolean | undefined;
@@ -31,10 +38,12 @@ type Props = {
      itemIsOnFavorites: boolean;
      mutate: (x: FavoriteType) => any;
 };
+
 const DisplayCityMetaData: React.FC<Props> = (props) => {
      const degressType = useSelector(
           (state: StoreState) => state.headerSlice.degressType
      );
+
      return (
           <>
                <StyledCityName width="100%">
@@ -147,4 +156,4 @@ const DisplayCityMetaData: React.FC<Props> = (props) => {
      );
 };
 
-export default DisplayCityMetaData;
+export default memo(DisplayCityMetaData);

@@ -1,9 +1,6 @@
-import {
-     StyledChartBigContainer,
-     StyledChartContainer,
-     StyledTitle,
-     StyledSelectedItem,
-} from "./style";
+import { memo } from "react";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import { Line } from "react-chartjs-2";
 import {
      Chart as ChartJS,
      CategoryScale,
@@ -14,8 +11,14 @@ import {
      Tooltip,
      Legend,
 } from "chart.js";
-import ChartDataLabels from "chartjs-plugin-datalabels";
-import { Line } from "react-chartjs-2";
+
+import {
+     StyledChartBigContainer,
+     StyledChartContainer,
+     StyledTitle,
+     StyledSelectedItem,
+} from "./style";
+
 import { Props } from "./types";
 
 const LineChart: React.FC<Props> = ({ lineChartData }) => {
@@ -241,7 +244,6 @@ const LineChart: React.FC<Props> = ({ lineChartData }) => {
                     },
                     display: false,
                     ticks: {
-                         // padding: 100,
                          crossAlign: "start",
                     },
                },
@@ -317,4 +319,4 @@ const LineChart: React.FC<Props> = ({ lineChartData }) => {
      );
 };
 
-export default LineChart;
+export default memo(LineChart);

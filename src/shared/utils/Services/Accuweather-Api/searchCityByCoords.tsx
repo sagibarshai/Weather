@@ -5,8 +5,8 @@ export const searchCityByCoords = async (coords: Coords | undefined) => {
      if (!coords || !coords.lat || !coords.lng) return;
      else if (coords) {
           const { lat, lng } = coords;
-          if (lat && (lat < -90 || lat > 90)) return;
-          if (lng && (lng < -180 || lng > 180)) return;
+          if (!lat && (lat < -90 || lat > 90)) return;
+          if (!lng && (lng < -180 || lng > 180)) return;
      }
      let lat = coords.lat;
      let lng = coords.lng;

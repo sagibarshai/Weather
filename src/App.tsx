@@ -19,7 +19,6 @@ const App: React.FC = () => {
      const PageSharedTamplate = lazy(
           () => import("./pages/SharedTemplate/PageSharedTamplate")
      );
-
      const dispatch = useDispatch();
      const navigate = useNavigate();
 

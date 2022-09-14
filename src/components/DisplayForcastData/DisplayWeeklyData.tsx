@@ -1,4 +1,14 @@
-import React from "react";
+import { memo } from "react";
+
+import { useSelector } from "react-redux";
+import { StyledButton } from "../../shared/UIElements/Button/Button";
+
+import DiscoverDescription from "../../shared/utils/Components/DiscoverDescription/DiscoverDescription";
+import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon/DiscoverIcon";
+
+import { toggleDeggres } from "../../shared/utils/Functions/toggleDeggres";
+import { returnShortDayFromDate } from "../../shared/utils/Dates/returnShortDayFromDate";
+
 import {
      StyledDivRow,
      StyledColumnDiv,
@@ -6,14 +16,10 @@ import {
      StyledMaxTemperatureText,
      StyledMinTemperatureText,
 } from "../HomePageDisplayCity/style";
-import { StyledButton } from "../../shared/UIElements/Button/Button";
-import DiscoverDescription from "../../shared/utils/Components/DiscoverDescription/DiscoverDescription";
-import DiscoverIcon from "../../shared/utils/Components/DiscoverIcon/DiscoverIcon";
-import { returnShortDayFromDate } from "../../shared/utils/Dates/returnShortDayFromDate";
-import { toggleDeggres } from "../../shared/utils/Functions/toggleDeggres";
-import { useSelector } from "react-redux";
+
 import { StoreState } from "../../redux/store";
 import { DailyForecastsType } from "../HomePageDisplayCity/types";
+
 type Props = {
      forcasst5Days: { DailyForecasts: DailyForecastsType[] };
      renderMobile: boolean | undefined;
@@ -24,6 +30,7 @@ const DisplayWeeklyData: React.FC<Props> = (props) => {
      const degressType = useSelector(
           (state: StoreState) => state.headerSlice.degressType
      );
+
      return (
           <>
                <StyledDivRow
@@ -204,4 +211,4 @@ const DisplayWeeklyData: React.FC<Props> = (props) => {
      );
 };
 
-export default DisplayWeeklyData;
+export default memo(DisplayWeeklyData);

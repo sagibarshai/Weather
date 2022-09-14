@@ -125,8 +125,8 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           onSuccess: (data: { data: { results: [] | FavoriteType[] } }) => {
                setFavoritesList(data?.data?.results);
           },
-          onError: (e: any) => {
-               console.log(e);
+          onError: (err: any) => {
+               console.log(err);
                pageProps.setServerError(true);
           },
      });
@@ -137,8 +137,8 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                setTimeout(() => setOpenNotification(false), 4000);
                setOpenPopupRemoveFavorites(false);
           },
-          onError: (e: any) => {
-               console.log(e);
+          onError: (err: any) => {
+               console.log(err);
                pageProps.setServerError(true);
           },
      });
@@ -154,10 +154,12 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                     queryFn: () =>
                          getCoordsOfCity(fav.city)
                               .then((res) => {
-                                   return {
-                                        lat: res[0]?.lat,
-                                        lng: res[0]?.lon,
-                                   };
+                                   if (res && res[0]) {
+                                        return {
+                                             lat: res[0]?.lat,
+                                             lng: res[0]?.lon,
+                                        };
+                                   }
                               })
                               .catch((err) => {
                                    console.log(err);
@@ -191,12 +193,14 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                     queryFn: () =>
                          getHourlyForcast(cityKey.data)
                               .then((res) => {
-                                   return {
-                                        temp: res[0]?.Temperature.Value,
-                                        unit: res[0]?.Temperature.Unit,
-                                        iconPhrase: res[0]?.IconPhrase,
-                                        icon: res[0]?.WeatherIcon,
-                                   };
+                                   if (res && res[0]) {
+                                        return {
+                                             temp: res[0]?.Temperature?.Value,
+                                             unit: res[0]?.Temperature?.Unit,
+                                             iconPhrase: res[0]?.IconPhrase,
+                                             icon: res[0]?.WeatherIcon,
+                                        };
+                                   }
                               })
                               .catch((err) => {
                                    console.log(err);
@@ -299,7 +303,6 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                     </StyledFavoritePageContainer>
                </>
           );
-
      return (
           <>
                <StyledFavoritePageContainer

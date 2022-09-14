@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { StyleProps } from "./types";
 import themes from "../../../themes/themes";
+import cssBreakPoints from "../../../cssBreakPoints/cssBreakPoints";
 
 export const StyledLabel = styled.label<StyleProps>`
      width: 73px;
@@ -8,7 +9,7 @@ export const StyledLabel = styled.label<StyleProps>`
      border-radius: 100px;
      display: inline-block;
      cursor: pointer;
-     border: 1.5px solid #444e72;
+     border: 1px solid #444e72;
      ${(props) =>
           props.rotate === "true" &&
           css`

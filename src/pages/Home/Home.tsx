@@ -52,7 +52,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      const openMap = useSelector(
           (state: StoreState) => state.headerSlice.openMap
      );
-
      useEffect(() => {
           if (location.state) {
                if (location.state.noResultAndEnter) {

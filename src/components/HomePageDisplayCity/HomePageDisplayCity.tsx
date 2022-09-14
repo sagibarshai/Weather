@@ -83,9 +83,9 @@ const HomePageDisplayCity: React.FC<Props> = (props) => {
                if (data.status === 204) setItemIsOnFavorites(false);
                else if (data.status === 200 || 201) setItemIsOnFavorites(true);
           },
-          onError: (e: any) => {
+          onError: (err: any) => {
                props.setServerError(true);
-               console.log(e);
+               console.log(err);
           },
           enabled: !token,
      });
@@ -98,9 +98,9 @@ const HomePageDisplayCity: React.FC<Props> = (props) => {
           onSuccess: (data: { data: { results: FavoriteType[] | [] } }) => {
                setFavoritesList(data.data.results);
           },
-          onError: (e: any) => {
+          onError: (err: any) => {
                props.setServerError(true);
-               console.log(e);
+               console.log(err);
           },
      });
      const { data: forcasst5Days, isLoading: forcast5DaysLoading } = useQuery(

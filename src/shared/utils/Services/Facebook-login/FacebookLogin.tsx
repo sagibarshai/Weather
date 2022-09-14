@@ -28,20 +28,24 @@ const LoginWithFacebook: React.FC<Props> = (props) => {
                props.setServerErrorMessage(errorMessage);
           },
      });
-
      return (
           <FacebookLogin
-               appId={
-                    process.env.REACT_APP_FACEBOOK_LOGIN_APP_ID ||
-                    "3303782009865883"
-               }
+               appId={process.env.REACT_APP_FACEBOOK_LOGIN_APP_ID || ""}
                callback={(res: any) => {
+                    console.log(res);
                     mutate({ access_token: res.accessToken });
                }}
+               // version="v3.3"
+               xfbml={true}
+               cookie={true}
                disableMobileRedirect={true}
                render={(renderProps) => {
                     return (
-                         <StyledButton variant="linkWithImg" type="button">
+                         <StyledButton
+                              variant="linkWithImg"
+                              type="button"
+                              onClick={() => renderProps.onClick()}
+                         >
                               <StyledIcon marginRight="8px">
                                    <IconFacebook />
                               </StyledIcon>
