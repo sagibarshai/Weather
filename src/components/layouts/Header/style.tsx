@@ -9,7 +9,7 @@ type StyledDivProps = {
      marginRightLaptop?: string;
      gapLaptop?: string | number;
      orderLaptop?: string | number;
-     onHover?: boolean;
+     hover?: boolean;
 };
 type StyledHeaderProps = {
      renderPraimaryBg: boolean;
@@ -49,7 +49,7 @@ export const StyledDiv = styled.div<StyledDivProps>`
           order: ${(props) => props.orderLaptop};
           margin-right: ${(props) => props.marginRightLaptop};
           ${(props) =>
-               props.onHover
+               props.hover
                     ? css`
                            &:hover ${StyledTooltip} {
                                 display: flex;

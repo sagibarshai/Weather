@@ -44,6 +44,7 @@ export const StyledNotificationContainer = styled.div<Props>`
      bottom: ${(props) => props.bottom};
      z-index: ${(props) => props.zIndex};
      transition: all 4s;
+     padding: ${(props) => props.padding};
      animation: ${(props) =>
           props.animation &&
           `lowerOpacity ${props.animationTime || "5s"} infinite`};

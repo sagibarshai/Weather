@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useMutation } from "react-query";
 import { useLocation } from "react-router-dom";
@@ -8,7 +8,6 @@ import DisplayMap from "../../components/Map/Map";
 import Notification from "../../shared/notifacation/Notification";
 
 import { closeMobileMenu, togglePopup } from "../../redux/headerSlice";
-import { logout } from "../../redux/authSlice";
 import { StyledIcon } from "../../shared/Icons/Icon";
 import { StyledButton } from "../../shared/UIElements/Button/Button";
 import themes from "../../shared/themes/themes";
@@ -32,11 +31,8 @@ import {
      StyledNotFoundCityDiv,
      StyledTextNotFoundCity,
 } from "./style";
-import HashLoading from "../../shared/Loaing-elements/HashLoading/HashLoading";
 
 const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
-     // const DisplayMap = lazy(() => import("../../components/Map/Map"));
-
      const location = useLocation() as any;
      const dispatch = useDispatch();
 
@@ -115,8 +111,6 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          renderPraimaryBackground={renderPraimaryBackground}
                          openPopup={openPopup}
                     >
-                         {/* <Suspense fallback={<HashLoading loading={true} color="#FFFFFF"} />
-                         </Suspense> */}
                          <DisplayMap
                               setServerError={pageProps.setServerError}
                               coords={pageProps.coords}
@@ -126,10 +120,10 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
                          />
                          {showInfo && (
                               <Notification
+                                   padding="10px"
                                    variant="success"
                                    animationTime={5000}
                                    animation={true}
-                                   // backgroundColor="#FFD130"
                                    mobileWidth="80vw"
                                    message="Click anywhere and get real time forecast"
                                    icon={<IconLogo />}

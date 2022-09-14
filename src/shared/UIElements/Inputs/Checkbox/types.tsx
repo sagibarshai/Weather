@@ -1,7 +1,7 @@
-import {ReactEventHandler} from 'react'
+import { ReactEventHandler } from "react";
 export type StyleProps = {
      top?: string;
-     rotate?: boolean;
+     rotate?: string;
 };
 
 export type Props = {
@@ -13,5 +13,5 @@ export type Props = {
      htmlFor?: string;
      onClick?: ReactEventHandler;
      top?: string;
-     rotate?: boolean;
+     rotate?: string;
 };

@@ -29,7 +29,7 @@ export const StyledFavoritePageContainer = styled.div<StyleProps>`
                `;
           }
      }};
-     padding-bottom: 20px;
+     padding-bottom: 100px;
 `;
 export const StyledCenteredDiv = styled.div<StyleProps>`
      display: flex;

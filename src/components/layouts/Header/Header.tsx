@@ -298,7 +298,7 @@ const Header: React.FC<Props> = (props) => {
                                    display={
                                         searchIsFocus && searchInput !== ""
                                              ? true
-                                             : false
+                                             : undefined
                                    }
                                    results={searchResults}
                                    hoverIndexResult={hoverIndexResult}
@@ -307,7 +307,7 @@ const Header: React.FC<Props> = (props) => {
                          </Input>
                     </StyledDiv>
                     <StyledDiv
-                         onHover={true}
+                         hover={true}
                          marginLeft="124px"
                          orderLaptop={5}
                          marginLeftlaptop="96px"
@@ -316,44 +316,40 @@ const Header: React.FC<Props> = (props) => {
                               variant="linkWithImg"
                               color={themes.white}
                               position="relative"
+                              onClick={() => {
+                                   props.setNoResultAndEnter(false);
+                                   if (!localStorage.getItem("coords")) {
+                                        localStorage.setItem(
+                                             "coords",
+                                             JSON.stringify({
+                                                  lat: 32.852247,
+                                                  lng: 35.201315,
+                                             })
+                                        );
+                                        props.setCoords &&
+                                             props.setCoords({
+                                                  lat: 32.852247,
+                                                  lng: 35.201315,
+                                             });
+                                   }
+                                   dispatch(toggleMap());
+                              }}
                          >
-                              <StyledWrapperButton
-                                   onClick={() => {
-                                        props.setNoResultAndEnter(false);
-                                        if (!localStorage.getItem("coords")) {
-                                             localStorage.setItem(
-                                                  "coords",
-                                                  JSON.stringify({
-                                                       lat: 32.852247,
-                                                       lng: 35.201315,
-                                                  })
-                                             );
-                                             props.setCoords &&
-                                                  props.setCoords({
-                                                       lat: 32.852247,
-                                                       lng: 35.201315,
-                                                  });
-                                        }
-                                        dispatch(toggleMap());
-                                   }}
-                              >
-                                   <StyledIcon width="30px" height="30px">
-                                        {mapIsOpen ? (
-                                             <IconMap />
-                                        ) : (
-                                             <IconLayoutWhite
-                                                  width="22px"
-                                                  height="22px"
-                                             />
-                                        )}
-                                   </StyledIcon>
-                                   <StyledSpan>
-                                        {" "}
-                                        Switch to {mapIsOpen
-                                             ? "map"
-                                             : "layout"}{" "}
-                                   </StyledSpan>
-                              </StyledWrapperButton>
+                              <StyledIcon width="30px" height="30px">
+                                   {mapIsOpen ? (
+                                        <IconMap />
+                                   ) : (
+                                        <IconLayoutWhite
+                                             width="22px"
+                                             height="22px"
+                                        />
+                                   )}
+                              </StyledIcon>
+                              <StyledSpan>
+                                   {" "}
+                                   Switch to {mapIsOpen ? "map" : "layout"}{" "}
+                              </StyledSpan>
+                              {/* </StyledWrapperButton> */}
                               <StyledTooltip>
                                    <StyledTooltipText>
                                         Switch to {mapIsOpen ? "map" : "layout"}
@@ -373,8 +369,8 @@ const Header: React.FC<Props> = (props) => {
                               htmlFor="degrees"
                               id="degrees"
                               variant="checkbox"
-                              LeftIcon={<IconF />}
-                              rightIcon={<IconC />}
+                              rightIcon={<IconF />}
+                              LeftIcon={<IconC />}
                               top="55%"
                               checked={degressType === "F"}
                          />
@@ -385,10 +381,10 @@ const Header: React.FC<Props> = (props) => {
                               htmlFor="mode"
                               id="mode"
                               variant="checkbox"
-                              LeftIcon={<IconMoonDark />}
-                              rightIcon={<IconSunDark />}
-                              top="37.5%"
-                              rotate={true}
+                              rightIcon={<IconMoonDark />}
+                              LeftIcon={<IconSunDark />}
+                              top="38.5%"
+                              rotate={"true"}
                               checked={!renderPraimaryBg}
                          />
                     </StyledDiv>

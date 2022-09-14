@@ -3,7 +3,7 @@ import cssBreakPoints from "../../../shared/cssBreakPoints/cssBreakPoints";
 import themes from "../../../shared/themes/themes";
 
 type Props = {
-     display?: boolean;
+     display?: string;
 };
 export const StyledMobileMenuContainer = styled.div<Props>`
      display: none;
@@ -11,7 +11,7 @@ export const StyledMobileMenuContainer = styled.div<Props>`
      position: relative;
      @media ${cssBreakPoints.mobile} {
           ${(props) =>
-               props.display === false
+               props.display === "true"
                     ? "display:none"
                     : "display:inline-block"}
      }

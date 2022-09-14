@@ -22,5 +22,6 @@ export type Props = {
      positionFixiedBottom?: boolean;
      animationTime?: number;
      zIndex?: string;
+     padding?: string;
      onClick?: (x: any) => any;
 };

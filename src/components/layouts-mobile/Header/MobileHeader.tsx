@@ -34,7 +34,9 @@ const MobileHeader: React.FC<Props> = (props) => {
      const dispatch = useDispatch();
      return (
           <>
-               <StyledMobileMenuContainer display={props.display}>
+               <StyledMobileMenuContainer
+                    display={props.display ? "true" : undefined}
+               >
                     <StyledMenuButton
                          onClick={() => dispatch(toggleMobileMenu())}
                     >
@@ -49,12 +51,18 @@ const MobileHeader: React.FC<Props> = (props) => {
 export default MobileHeader;
 
 export const MobileMenuBottom = () => {
+     const degressType = useSelector(
+          (state: StoreState) => state.headerSlice.degressType
+     );
+     const renderPraimaryBg = useSelector(
+          (state: StoreState) => state.headerSlice.renderPraimaryBackground
+     );
      const openMobileMenu = useSelector(
           (state: StoreState) => state.headerSlice.openMobileMenu
      );
      const dispatch = useDispatch();
      return (
-          <StyledMenu display={openMobileMenu}>
+          <StyledMenu display={openMobileMenu ? "true" : undefined}>
                <StyledTitle>Menu</StyledTitle>
                <StyledRowFlexContainer>
                     <StyledColumnContainer>
@@ -62,11 +70,12 @@ export const MobileMenuBottom = () => {
                          <Checkbox
                               onClick={() => dispatch(toggleBackground())}
                               variant="checkbox"
-                              LeftIcon={<IconMoonDark />}
-                              rightIcon={<IconSunDark />}
-                              top="37.5%"
-                              rotate={true}
-                              id="mobileMood"
+                              LeftIcon={<IconSunDark />}
+                              rightIcon={<IconMoonDark />}
+                              top="38.5%"
+                              rotate={"true"}
+                              id="mobileTheme"
+                              checked={!renderPraimaryBg}
                          ></Checkbox>
                     </StyledColumnContainer>
                     <StyledColumnContainer>
@@ -74,10 +83,11 @@ export const MobileMenuBottom = () => {
                          <Checkbox
                               onClick={() => dispatch(toggleDegress())}
                               variant="checkbox"
-                              LeftIcon="F°"
-                              rightIcon="C°"
+                              LeftIcon="C°"
+                              rightIcon="F°"
                               top="55%"
-                              id="mobileMood"
+                              id="mobileDegressType"
+                              checked={degressType === "F"}
                          ></Checkbox>
                     </StyledColumnContainer>
                </StyledRowFlexContainer>
