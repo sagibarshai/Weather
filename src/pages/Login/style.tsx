@@ -5,8 +5,14 @@ import { Props } from "./types";
 export const StyledLoginPageContainer = styled.div<Props>`
      display: inline-block;
      width: 100vw;
-     height: 100vh;
-     overflow: hidden;
+     min-height: 100vh;
+     @media ${cssBreakPoints.laptop} {
+          padding: 125px 0;
+     }
+     @media ${cssBreakPoints.mobile} {
+          height: 100vh;
+          overflow: hidden;
+     } ;
 `;
 export const StyledLoginContainer = styled.form<Props>`
      background-color: ${themes.white};
@@ -26,6 +32,8 @@ export const StyledLoginContainer = styled.form<Props>`
      @media ${cssBreakPoints.laptop} {
           width: 588px;
           height: ${(props) => (props.serverError ? "675px" : "559px")};
+          position: absolute;
+          margin:100px 0;
      }
      @media ${cssBreakPoints.mobile} {
           width: 100vw;
