@@ -1,3 +1,17 @@
+WeatherApp allows to get real time update forecast for any where in the
+world with visual information by clicking on the map or by or searching city.
+There is an option to manage favorite cites list and watch them on the
+map with current weather conditions.
+Login with social media is an option as well.
+Developed with React-TS with help of Redux, Styled-components,
+React-query, Google-maps and more.
+The app was developed with cache memo, debounce, Optimizations,
+error handling, modularity and used 3 Api’s.
+Designed for phone, laptop and desktop screens.
+The app designed to support bad and happy flow of user or program
+potential errors.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
