@@ -10,6 +10,7 @@ error handling, modularity and used 3 Api’s.
 Designed for phone, laptop and desktop screens.
 The app designed to support bad and happy flow of user or program
 potential errors.
+try it out- https://weather-91c3b.web.app/
 
 
 # Getting Started with Create React App
