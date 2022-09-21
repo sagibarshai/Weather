@@ -1,6 +1,5 @@
-import { axiosAbraInstence } from "./axiosAbraInstence";
 import store from "../../../../redux/store";
-import authSlice from "../../../../redux/authSlice";
+import { axiosAbraInstence } from "./axiosAbraInstence";
 const token = store.getState().authSlice.token;
 export const checkToken = async () => {
      const res = await axiosAbraInstence.post("/auth/verify-token/", {
