@@ -11,9 +11,7 @@ export const StyledMobileMenuContainer = styled.div<Props>`
      position: relative;
      @media ${cssBreakPoints.mobile} {
           ${(props) =>
-               props.display === "true"
-                    ? "display:none"
-                    : "display:inline-block"}
+               props.display === "true" ? "display:none" : "display:flex"}
      }
 `;
 

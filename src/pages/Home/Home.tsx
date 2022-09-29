@@ -104,33 +104,24 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
      if (openMap) {
           return (
                <>
-                    <StyledPageContainer
-                         onClick={onClickHandler}
-                         openMobileMenu={openMobileMenu}
-                         renderPraimaryBackground={renderPraimaryBackground}
-                         openPopup={openPopup}
-                    >
-                         <DisplayMap
-                              setServerError={pageProps.setServerError}
-                              coords={pageProps.coords}
-                              setSelectedCityDataFromMap={
-                                   setSelectedCityDataFromMap
-                              }
+                    <DisplayMap
+                         setServerError={pageProps.setServerError}
+                         coords={pageProps.coords}
+                         setSelectedCityDataFromMap={setSelectedCityDataFromMap}
+                    />
+                    {showInfo && (
+                         <Notification
+                              padding="10px"
+                              variant="success"
+                              animationTime={5000}
+                              animation={true}
+                              mobileWidth="80vw"
+                              message="Click anywhere and get real time forecast"
+                              icon={<IconLogo />}
+                              position="fixed"
+                              mobileBottom="70%"
                          />
-                         {showInfo && (
-                              <Notification
-                                   padding="10px"
-                                   variant="success"
-                                   animationTime={5000}
-                                   animation={true}
-                                   mobileWidth="80vw"
-                                   message="Click anywhere and get real time forecast"
-                                   icon={<IconLogo />}
-                                   position="fixed"
-                                   mobileBottom="70%"
-                              />
-                         )}
-                    </StyledPageContainer>
+                    )}
                </>
           );
      } else if (pageProps.noResultAndEnter)

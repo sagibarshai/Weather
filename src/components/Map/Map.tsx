@@ -22,7 +22,7 @@ import { Coords } from "./types";
 import { StoreState } from "../../redux/store";
 import { SearchResult } from "../SearchBox/types";
 
-const containerStyle = { width: "100vw", height: "100vh" };
+const containerStyle = { width: "100vw", height: "100vh", overflow: "hidden" };
 
 const DisplayMap: React.FC<Props> = (props) => {
      const dispatch = useDispatch();

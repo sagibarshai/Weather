@@ -241,11 +241,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           );
      else if (openMap) {
           return (
-               <StyledFavoritePageContainer
-                    openPopup={
-                         openMenuMobile || openPopup || openPopupRemoveFavorites
-                    }
-               >
+               <>
                     <DisplayMap
                          setServerError={pageProps.setServerError}
                          citiesHourlyForcast={citiesHourlyForcast}
@@ -265,7 +261,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                               message="add cites to your favorites and watch their forecast on map"
                          />
                     )}
-               </StyledFavoritePageContainer>
+               </>
           );
      } else if (
           favoritesList &&
