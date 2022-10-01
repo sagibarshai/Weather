@@ -19,6 +19,7 @@ export type SharedPageProps = {
           locationIsOpen?: boolean;
           setLocationIsOpen: (x: boolean) => void;
           setCoords: (x: Coords) => void;
+          serverError: boolean;
      };
 };
 export type Props = {

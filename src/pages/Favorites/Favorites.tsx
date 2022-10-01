@@ -163,6 +163,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                               })
                               .catch((err) => {
                                    console.log(err);
+                                   pageProps.setServerError(true);
                               }),
                     staleTime: Infinity,
                     cacheTime: Infinity,
@@ -179,6 +180,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                               .then((res) => res?.Key)
                               .catch((err) => {
                                    console.log(err);
+                                   pageProps.setServerError(true);
                               }),
                     staleTime: Infinity,
                     cacheTime: Infinity,
@@ -204,6 +206,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
                               })
                               .catch((err) => {
                                    console.log(err);
+                                   pageProps.setServerError(true);
                               }),
                     staleTime: 1000 * 60 * 60,
                     cacheTime: 1000 * 60 * 60,
@@ -243,6 +246,7 @@ const Favorites: React.FC<SharedPageProps> = ({ pageProps }) => {
           return (
                <>
                     <DisplayMap
+                         serverError={pageProps.serverError}
                          setServerError={pageProps.setServerError}
                          citiesHourlyForcast={citiesHourlyForcast}
                          markerCoordsArray={markerCoordsArray}

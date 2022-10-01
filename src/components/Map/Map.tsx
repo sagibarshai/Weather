@@ -39,7 +39,6 @@ const DisplayMap: React.FC<Props> = (props) => {
           id: "google-map-script",
           googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY || "",
      });
-
      let coordsFromLocalStorage = localStorage.getItem("coords");
      if (coordsFromLocalStorage)
           coordsFromLocalStorage = JSON.parse(coordsFromLocalStorage);
@@ -100,7 +99,8 @@ const DisplayMap: React.FC<Props> = (props) => {
                     {props.markerCoordsArray.map(
                          (fav, index) =>
                               fav.data?.lat &&
-                              fav.data?.lng && (
+                              fav.data?.lng &&
+                              !props.serverError && (
                                    <Marker
                                         position={
                                              {

@@ -105,6 +105,7 @@ const Home: React.FC<SharedPageProps> = ({ pageProps }) => {
           return (
                <>
                     <DisplayMap
+                         serverError={pageProps.serverError}
                          setServerError={pageProps.setServerError}
                          coords={pageProps.coords}
                          setSelectedCityDataFromMap={setSelectedCityDataFromMap}

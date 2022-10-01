@@ -106,6 +106,7 @@ const PageSharedTamplate: React.FC<Props> = (props) => {
 
      const pageProps = {
           setServerError,
+          serverError,
           notFoundCityName,
           setNotFoundCityName,
           renderLaptopAnDesktop: props.renderLaptopAnDesktop,
